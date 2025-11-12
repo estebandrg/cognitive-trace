@@ -5,7 +5,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 import CTA from "@/components/landing/CTA";
 import Footer from "@/components/landing/Footer";
 
-export default function HomePage() {
+export default function LandingPage() {
   return (
     <>
       <Navbar />
