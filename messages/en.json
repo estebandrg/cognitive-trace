@@ -94,5 +94,40 @@
       "features": "Features",
       "start": "Start"
     }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Find answers to the most common questions about CognitiveTrace",
+    "backToHome": "Back to home",
+    "questions": {
+      "whatIs": {
+        "question": "What is CognitiveTrace?",
+        "answer": "CognitiveTrace is a cognitive assessment tool that uses stimulus-response tasks to measure aspects of attention such as focus, consistency, and responsiveness. It is based on scientifically validated methodologies."
+      },
+      "howLong": {
+        "question": "How long does it take to complete the test?",
+        "answer": "The complete test takes approximately 5-10 minutes. It includes several short tasks designed to evaluate different aspects of your attention without causing fatigue."
+      },
+      "needRegistration": {
+        "question": "Do I need to register to use CognitiveTrace?",
+        "answer": "No, you don't need to register. You can start the test immediately from your browser. Results are shown at the end of each session."
+      },
+      "accuracy": {
+        "question": "How accurate are the results?",
+        "answer": "The results are based on scientifically validated methodologies such as SART, Stroop, Flanker, N-Back, and PVT. However, for clinical diagnoses always consult with a healthcare professional."
+      },
+      "dataPrivacy": {
+        "question": "What happens to my data?",
+        "answer": "Your assessment data is processed locally on your device when possible. We do not store personally identifiable information without your explicit consent."
+      },
+      "preparation": {
+        "question": "How do I prepare for the test?",
+        "answer": "Find a quiet place, make sure you have sound available, and dedicate a few minutes without interruptions. No special prior preparation is needed."
+      },
+      "retake": {
+        "question": "Can I retake the test?",
+        "answer": "Yes, you can retake the test as many times as you want. However, we recommend waiting at least a few hours between sessions for more representative results."
+      }
+    }
   }
 }

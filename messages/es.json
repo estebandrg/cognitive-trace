@@ -94,5 +94,40 @@
       "features": "Características",
       "start": "Comenzar"
     }
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "description": "Encontrá respuestas a las preguntas más comunes sobre CognitiveTrace",
+    "backToHome": "Volver al inicio",
+    "questions": {
+      "whatIs": {
+        "question": "¿Qué es CognitiveTrace?",
+        "answer": "CognitiveTrace es una herramienta de evaluación cognitiva que utiliza tareas de estímulo-respuesta para medir aspectos de la atención como el foco, la consistencia y la capacidad de respuesta. Está basado en metodologías científicamente validadas."
+      },
+      "howLong": {
+        "question": "¿Cuánto tiempo toma completar el test?",
+        "answer": "El test completo toma aproximadamente 5-10 minutos. Incluye varias tareas cortas diseñadas para evaluar diferentes aspectos de tu atención sin generar fatiga."
+      },
+      "needRegistration": {
+        "question": "¿Necesito registrarme para usar CognitiveTrace?",
+        "answer": "No, no necesitás registrarte. Podés comenzar el test inmediatamente desde tu navegador. Los resultados se muestran al finalizar cada sesión."
+      },
+      "accuracy": {
+        "question": "¿Qué tan precisos son los resultados?",
+        "answer": "Los resultados están basados en metodologías científicamente validadas como SART, Stroop, Flanker, N-Back y PVT. Sin embargo, para diagnósticos clínicos siempre consultá con un profesional de la salud."
+      },
+      "dataPrivacy": {
+        "question": "¿Qué pasa con mis datos?",
+        "answer": "Tus datos de evaluación se procesan localmente en tu dispositivo cuando es posible. No almacenamos información personal identificable sin tu consentimiento explícito."
+      },
+      "preparation": {
+        "question": "¿Cómo me preparo para el test?",
+        "answer": "Buscá un lugar tranquilo, asegurate de tener sonido disponible, y dedicá unos minutos sin interrupciones. No necesitás preparación especial previa."
+      },
+      "retake": {
+        "question": "¿Puedo repetir el test?",
+        "answer": "Sí, podés repetir el test las veces que quieras. Sin embargo, recomendamos esperar al menos unas horas entre sesiones para obtener resultados más representativos."
+      }
+    }
   }
 }
