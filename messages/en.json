@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "CognitiveTrace",
+    "description": "Intuitive test to evaluate scattered attention through stimulus tasks. Clear results in minutes."
+  },
+  "navbar": {
+    "faq": "Frequently Asked Questions",
+    "startTest": "Start test",
+    "menuLabel": "Navigation menu"
+  },
+  "hero": {
+    "badge": "Fast cognitive evaluation",
+    "title": "Evaluate your attention with stimuli",
+    "description": "CognitiveTrace is an intuitive test that detects signs of scattered attention through short and simple tasks. Clear results in minutes.",
+    "startTest": "Start test",
+    "learnMore": "Learn more",
+    "features": {
+      "noRegistration": "• No registration required",
+      "stimulusBased": "• Based on stimulus response tasks",
+      "multiDevice": "• Compatible with mobile and desktop"
+    }
+  },
+  "features": {
+    "badge": "Features",
+    "title": "What does CognitiveTrace offer?",
+    "stimulusTests": {
+      "title": "Stimulus tests",
+      "description": "Short stimulus response tasks to measure focus and consistency."
+    },
+    "clearResults": {
+      "title": "Clear results",
+      "description": "Simple metrics: reaction time, accuracy and variability."
+    },
+    "uxDesign": {
+      "title": "UX-centered design",
+      "description": "Simple and intuitive interface to minimize cognitive friction."
+    },
+    "multiDevice": {
+      "title": "Multi-device",
+      "description": "Works on desktop and mobile without installation."
+    }
+  },
+  "scientificValidation": {
+    "badge": "Methodology",
+    "title": "Scientific Foundation",
+    "description": "Our evaluations are backed by scientifically validated methodologies to accurately measure cognitive abilities.",
+    "methodologies": {
+      "sart": {
+        "name": "SART Task",
+        "description": "Measures the ability to maintain sustained attentional focus and detect attention lapses in real time, evaluating consistency in stimulus response."
+      },
+      "stroopFlanker": {
+        "name": "Stroop and Flanker",
+        "description": "Evaluate inhibitory control and the ability to resist interference from distracting stimuli, measuring reaction time to cognitive conflicts."
+      },
+      "nBack": {
+        "name": "N-Back Task",
+        "description": "Analyzes working memory, information retention and the ability to update attentional focus under different cognitive loads."
+      },
+      "pvt": {
+        "name": "PVT Task",
+        "description": "Records reaction times and variability in attentional processing, being a sensitive indicator of mental fatigue."
+      }
+    }
+  },
+  "howItWorks": {
+    "badge": "How it works",
+    "title": "Three simple steps",
+    "steps": {
+      "preparation": {
+        "title": "1. Preparation",
+        "description": "Find a quiet place and make sure you have sound if necessary."
+      },
+      "stimulusTasks": {
+        "title": "2. Stimulus tasks",
+        "description": "Respond to visual or auditory stimuli as quickly and accurately as possible."
+      },
+      "results": {
+        "title": "3. Results",
+        "description": "Get key metrics and a clear interpretation of your attention."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to evaluate your attention",
+    "description": "Start now. The test takes less than 5 minutes.",
+    "startTest": "Start test",
+    "howItWorks": "See how it works"
+  },
+  "footer": {
+    "copyright": "© {year} CognitiveTrace",
+    "navigation": {
+      "howItWorks": "How it works",
+      "features": "Features",
+      "start": "Start"
+    }
+  }
+}

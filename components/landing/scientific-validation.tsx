@@ -1,6 +1,7 @@
 import { BrainCircuit, Clock, Gauge, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {useTranslations} from 'next-intl';
 
 type Methodology = {
   name: string;
@@ -9,29 +10,27 @@ type Methodology = {
 };
 
 export default function ScientificValidation() {
+  const t = useTranslations('scientificValidation');
+  
   const methodologies: Methodology[] = [
     {
-      name: "Tarea SART",
-      description:
-        "Mide la capacidad de mantener el foco atencional sostenido y detectar lapsos de atención en tiempo real, evaluando la consistencia en la respuesta a estímulos.",
+      name: t('methodologies.sart.name'),
+      description: t('methodologies.sart.description'),
       icon: <BrainCircuit className="h-5 w-5 text-blue-600 dark:text-blue-500" />,
     },
     {
-      name: "Stroop y Flanker",
-      description:
-        "Evalúan el control inhibitorio y la capacidad de resistir la interferencia de estímulos distractores, midiendo el tiempo de reacción ante conflictos cognitivos.",
+      name: t('methodologies.stroopFlanker.name'),
+      description: t('methodologies.stroopFlanker.description'),
       icon: <Gauge className="h-5 w-5 text-blue-600 dark:text-blue-500" />,
     },
     {
-      name: "Tarea N-Back",
-      description:
-        "Analiza la memoria de trabajo, la retención de información y la capacidad de actualizar el foco atencional bajo diferentes cargas cognitivas.",
+      name: t('methodologies.nBack.name'),
+      description: t('methodologies.nBack.description'),
       icon: <Zap className="h-5 w-5 text-blue-600 dark:text-blue-500" />,
     },
     {
-      name: "Tarea PVT",
-      description:
-        "Registra los tiempos de reacción y la variabilidad en el procesamiento atencional, siendo un indicador sensible a la fatiga mental.",
+      name: t('methodologies.pvt.name'),
+      description: t('methodologies.pvt.description'),
       icon: <Clock className="h-5 w-5 text-blue-600 dark:text-blue-500" />,
     },
   ];
@@ -41,11 +40,11 @@ export default function ScientificValidation() {
       <div className="pointer-events-none absolute inset-x-0 -z-10 h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center gap-3">
-          <Badge className="hidden sm:inline-flex">Metodología</Badge>
-          <h2 className="text-2xl font-semibold tracking-tight">Base Científica</h2>
+          <Badge className="hidden sm:inline-flex">{t('badge')}</Badge>
+          <h2 className="text-2xl font-semibold tracking-tight">{t('title')}</h2>
         </div>
         <p className="mb-8 max-w-3xl text-muted-foreground">
-          Nuestras evaluaciones están respaldadas por metodologías validadas científicamente para medir con precisión las capacidades cognitivas.
+          {t('description')}
         </p>
         
         <div className="grid gap-6 sm:grid-cols-2">

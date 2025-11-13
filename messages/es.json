@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "CognitiveTrace",
+    "description": "Test intuitivo para evaluar atención dispersa mediante tareas de estímulos. Resultados claros en minutos."
+  },
+  "navbar": {
+    "faq": "Preguntas Frecuentes",
+    "startTest": "Comenzar test",
+    "menuLabel": "Menú de navegación"
+  },
+  "hero": {
+    "badge": "Evaluación cognitiva rápida",
+    "title": "Evaluá tu atención con estímulos",
+    "description": "CognitiveTrace es un test intuitivo que detecta señales de atención dispersa mediante tareas cortas y simples. Resultados claros en minutos.",
+    "startTest": "Comenzar test",
+    "learnMore": "Saber más",
+    "features": {
+      "noRegistration": "• Sin registro requerido",
+      "stimulusBased": "• Basado en tareas de respuesta a estímulos",
+      "multiDevice": "• Compatible con móvil y escritorio"
+    }
+  },
+  "features": {
+    "badge": "Características",
+    "title": "¿Qué ofrece CognitiveTrace?",
+    "stimulusTests": {
+      "title": "Pruebas de estímulo",
+      "description": "Tareas cortas de respuesta a estímulos para medir foco y consistencia."
+    },
+    "clearResults": {
+      "title": "Resultados claros",
+      "description": "Métricas sencillas: tiempo de reacción, precisión y variabilidad."
+    },
+    "uxDesign": {
+      "title": "Diseño centrado en UX",
+      "description": "Interfaz simple e intuitiva para minimizar fricción cognitiva."
+    },
+    "multiDevice": {
+      "title": "Multi-dispositivo",
+      "description": "Funciona en escritorio y móvil sin instalación."
+    }
+  },
+  "scientificValidation": {
+    "badge": "Metodología",
+    "title": "Base Científica",
+    "description": "Nuestras evaluaciones están respaldadas por metodologías validadas científicamente para medir con precisión las capacidades cognitivas.",
+    "methodologies": {
+      "sart": {
+        "name": "Tarea SART",
+        "description": "Mide la capacidad de mantener el foco atencional sostenido y detectar lapsos de atención en tiempo real, evaluando la consistencia en la respuesta a estímulos."
+      },
+      "stroopFlanker": {
+        "name": "Stroop y Flanker",
+        "description": "Evalúan el control inhibitorio y la capacidad de resistir la interferencia de estímulos distractores, midiendo el tiempo de reacción ante conflictos cognitivos."
+      },
+      "nBack": {
+        "name": "Tarea N-Back",
+        "description": "Analiza la memoria de trabajo, la retención de información y la capacidad de actualizar el foco atencional bajo diferentes cargas cognitivas."
+      },
+      "pvt": {
+        "name": "Tarea PVT",
+        "description": "Registra los tiempos de reacción y la variabilidad en el procesamiento atencional, siendo un indicador sensible a la fatiga mental."
+      }
+    }
+  },
+  "howItWorks": {
+    "badge": "Cómo funciona",
+    "title": "Tres pasos simples",
+    "steps": {
+      "preparation": {
+        "title": "1. Preparación",
+        "description": "Buscá un lugar tranquilo y asegurate de tener sonido si es necesario."
+      },
+      "stimulusTasks": {
+        "title": "2. Tareas de estímulo",
+        "description": "Respondé a estímulos visuales o auditivos lo más rápido y preciso posible."
+      },
+      "results": {
+        "title": "3. Resultados",
+        "description": "Obtené métricas clave y una interpretación clara de tu atención."
+      }
+    }
+  },
+  "cta": {
+    "title": "Listo para evaluar tu atención",
+    "description": "Empezá ahora. La prueba lleva menos de 5 minutos.",
+    "startTest": "Iniciar test",
+    "howItWorks": "Ver cómo funciona"
+  },
+  "footer": {
+    "copyright": "© {year} CognitiveTrace",
+    "navigation": {
+      "howItWorks": "Cómo funciona",
+      "features": "Características",
+      "start": "Comenzar"
+    }
+  }
+}

@@ -10,24 +10,28 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Menu } from "lucide-react";
+import {useTranslations} from 'next-intl';
+import {Link as IntlLink} from '@/i18n/routing';
 
 export default function MarketingNavbar() {
+  const t = useTranslations('navbar');
+  
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+        <IntlLink href="/" className="flex items-center gap-2">
           <span className="text-lg font-semibold tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             CognitiveTrace
           </span>
-        </Link>
+        </IntlLink>
         
         {/* Desktop navigation */}
         <nav className="hidden items-center gap-6 md:flex">
-          <Link href="/faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Preguntas Frecuentes
-          </Link>
+          <IntlLink href="/faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            {t('faq')}
+          </IntlLink>
           <Button asChild>
-            <Link href="/test" className="group">Start test</Link>
+            <IntlLink href="/test" className="group">{t('startTest')}</IntlLink>
           </Button>
           <ThemeSwitcher />
         </nav>
@@ -37,16 +41,16 @@ export default function MarketingNavbar() {
           <ThemeSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" aria-label="Menú de navegación">
+              <Button variant="outline" size="icon" aria-label={t('menuLabel')}>
                 <Menu className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <Link href="/faq" className="w-full">Preguntas Frecuentes</Link>
+                <IntlLink href="/faq" className="w-full">{t('faq')}</IntlLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/test" className="w-full">Start test</Link>
+                <IntlLink href="/test" className="w-full">{t('startTest')}</IntlLink>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
