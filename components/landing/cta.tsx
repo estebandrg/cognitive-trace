@@ -19,7 +19,7 @@ export default function CTA() {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button asChild size="lg">
-                  <Link href="#">{t('startTest')}</Link>
+                  <Link href="/tests">{t('startTest')}</Link>
                 </Button>
                 <Button asChild variant="secondary" size="lg">
                   <Link href="#como-funciona">{t('howItWorks')}</Link>

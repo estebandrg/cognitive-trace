@@ -22,7 +22,7 @@ export default function Hero() {
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
-              <Link href="#comenzar">{t('startTest')}</Link>
+              <Link href="/tests">{t('startTest')}</Link>
             </Button>
             <Button variant="secondary" asChild size="lg">
               <Link href="#como-funciona">{t('learnMore')}</Link>
