@@ -1,7 +1,10 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {useTranslations} from 'next-intl';
+import {Link} from '@/i18n/routing';
 
 export default function Hero() {
+  const t = useTranslations('hero');
+  
   return (
     <section className="relative overflow-hidden py-24">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -10,26 +13,25 @@ export default function Hero() {
       </div>
       <div className="container mx-auto px-4 grid gap-14 md:grid-cols-2 md:items-center">
         <div className="space-y-6">
-          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs text-muted-foreground">Evaluación cognitiva rápida</span>
+          <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs text-muted-foreground">{t('badge')}</span>
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Evaluá tu atención con estímulos
+            {t('title')}
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            CognitiveTrace es un test intuitivo que detecta señales de atención dispersa
-            mediante tareas cortas y simples. Resultados claros en minutos.
+            {t('description')}
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
-              <Link href="#comenzar">Comenzar test</Link>
+              <Link href="#comenzar">{t('startTest')}</Link>
             </Button>
             <Button variant="secondary" asChild size="lg">
-              <Link href="#como-funciona">Saber más</Link>
+              <Link href="#como-funciona">{t('learnMore')}</Link>
             </Button>
           </div>
           <ul className="mt-2 text-sm text-muted-foreground grid gap-1">
-            <li>• Sin registro requerido</li>
-            <li>• Basado en tareas de respuesta a estímulos</li>
-            <li>• Compatible con móvil y escritorio</li>
+            <li>{t('features.noRegistration')}</li>
+            <li>{t('features.stimulusBased')}</li>
+            <li>{t('features.multiDevice')}</li>
           </ul>
         </div>
         <div className="relative mx-auto w-full max-w-xl">

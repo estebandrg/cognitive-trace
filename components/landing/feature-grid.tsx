@@ -1,38 +1,42 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Brain, Clock, MousePointerClick, Smartphone } from "lucide-react";
+import {useTranslations} from 'next-intl';
 
-const features = [
-  {
-    title: "Pruebas de estímulo",
-    description: "Tareas cortas de respuesta a estímulos para medir foco y consistencia.",
-    icon: MousePointerClick,
-  },
-  {
-    title: "Resultados claros",
-    description: "Métricas sencillas: tiempo de reacción, precisión y variabilidad.",
-    icon: Clock,
-  },
-  {
-    title: "Diseño centrado en UX",
-    description: "Interfaz simple e intuitiva para minimizar fricción cognitiva.",
-    icon: Brain,
-  },
-  {
-    title: "Multi-dispositivo",
-    description: "Funciona en escritorio y móvil sin instalación.",
-    icon: Smartphone,
-  },
-];
 
 export default function FeatureGrid() {
+  const t = useTranslations('features');
+  
+  const features = [
+    {
+      title: t('stimulusTests.title'),
+      description: t('stimulusTests.description'),
+      icon: MousePointerClick,
+    },
+    {
+      title: t('clearResults.title'),
+      description: t('clearResults.description'),
+      icon: Clock,
+    },
+    {
+      title: t('uxDesign.title'),
+      description: t('uxDesign.description'),
+      icon: Brain,
+    },
+    {
+      title: t('multiDevice.title'),
+      description: t('multiDevice.description'),
+      icon: Smartphone,
+    },
+  ];
+  
   return (
     <section id="caracteristicas" className="py-20">
       <div className="pointer-events-none absolute inset-x-0 -z-10 h-[1px] bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center gap-3">
-          <Badge className="hidden sm:inline-flex">Características</Badge>
-          <h2 className="text-2xl font-semibold tracking-tight">¿Qué ofrece CognitiveTrace?</h2>
+          <Badge className="hidden sm:inline-flex">{t('badge')}</Badge>
+          <h2 className="text-2xl font-semibold tracking-tight">{t('title')}</h2>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => (

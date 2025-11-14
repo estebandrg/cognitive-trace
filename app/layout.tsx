@@ -10,8 +10,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "CognitiveTrace",
-  description:
-    "Test intuitivo para evaluar atención dispersa mediante tareas de estímulos. Resultados claros en minutos.",
+  description: "Advanced cognitive assessment and training platform",
 };
 
 const geistSans = Geist({
@@ -25,8 +24,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
         <ThemeProvider
           attribute="class"

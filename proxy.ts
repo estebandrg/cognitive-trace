@@ -1,7 +1,18 @@
 import { updateSession } from "@/lib/supabase/middleware";
 import { type NextRequest } from "next/server";
+import createMiddleware from 'next-intl/middleware';
+import {routing} from './i18n/routing';
 
-export async function middleware(request: NextRequest) {
+const intlMiddleware = createMiddleware(routing);
+
+export async function proxy(request: NextRequest) {
+  // Handle internationalization first
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse) {
+    return intlResponse;
+  }
+  
+  // Then handle Supabase session
   return await updateSession(request);
 }
 
