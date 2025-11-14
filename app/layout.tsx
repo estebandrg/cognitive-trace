@@ -1,27 +1,17 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import {getTranslations} from 'next-intl/server';
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-export async function generateMetadata({
-  params
-}: {
-  params: Promise<{locale: string}>;
-}): Promise<Metadata> {
-  const {locale} = await params;
-  const t = await getTranslations({locale, namespace: 'metadata'});
-
-  return {
-    metadataBase: new URL(defaultUrl),
-    title: t('title'),
-    description: t('description'),
-  };
-}
+export const metadata: Metadata = {
+  metadataBase: new URL(defaultUrl),
+  title: "CognitiveTrace",
+  description: "Advanced cognitive assessment and training platform",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,17 +19,14 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
-  params
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
 }>) {
-  const {locale} = await params;
   
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
         <ThemeProvider
           attribute="class"
