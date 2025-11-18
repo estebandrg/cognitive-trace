@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { TestConfig, TestType } from '@/lib/types/tests';
-import { Brain, Eye, Zap, Target } from 'lucide-react';
+import { Brain, Eye, Zap, Target, ArrowLeft } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
 const SARTTest = dynamic(() => import('./sart-test'), { ssr: false });
@@ -56,7 +56,11 @@ const iconMap = {
   zap: Zap
 };
 
-export default function TestDashboard() {
+interface TestDashboardProps {
+  onBack?: () => void;
+}
+
+export default function TestDashboard({ onBack }: TestDashboardProps) {
   const t = useTranslations();
   const [selectedTest, setSelectedTest] = useState<TestType | null>(null);
   const [isTestActive, setIsTestActive] = useState(false);
@@ -93,6 +97,14 @@ export default function TestDashboard() {
       
       <div className="container mx-auto px-4 py-24">
         <div className="text-center mb-16 space-y-6">
+          {onBack && (
+            <div className="flex justify-start mb-8">
+              <Button onClick={onBack} variant="outline">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Volver
+              </Button>
+            </div>
+          )}
           <Badge className="inline-flex">Evaluación Cognitiva</Badge>
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             Tests Cognitivos

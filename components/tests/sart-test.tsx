@@ -20,6 +20,7 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
   const [stimulusStartTime, setStimulusStartTime] = useState(0);
   const [countdown, setCountdown] = useState(3);
   const [testResult, setTestResult] = useState<SARTResult | null>(null);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const TOTAL_TRIALS = 45;
   const NO_GO_NUMBER = 3;
@@ -43,24 +44,39 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
 
   const [sequence] = useState(() => generateSequence());
 
+  const handleResponse = useCallback(() => {
+    if (phase !== 'test' || currentNumber === null) return;
+    
+    const responseTime = Date.now() - stimulusStartTime;
+    const correct = currentNumber !== NO_GO_NUMBER;
+    
+    const response: Response = {
+      stimulus: currentNumber,
+      responseTime,
+      correct,
+      timestamp: Date.now()
+    };
+    
+    setResponses(prev => [...prev, response]);
+    
+    // Show visual feedback
+    setShowFeedback(true);
+    setTimeout(() => setShowFeedback(false), 150);
+  }, [phase, currentNumber, stimulusStartTime]);
+
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (phase !== 'test' || currentNumber === null) return;
     
     if (event.code === 'Space') {
       event.preventDefault();
-      const responseTime = Date.now() - stimulusStartTime;
-      const correct = currentNumber !== NO_GO_NUMBER;
-      
-      const response: Response = {
-        stimulus: currentNumber,
-        responseTime,
-        correct,
-        timestamp: Date.now()
-      };
-      
-      setResponses(prev => [...prev, response]);
+      handleResponse();
     }
-  }, [phase, currentNumber, stimulusStartTime]);
+  }, [phase, currentNumber, handleResponse]);
+
+  const handleTouch = useCallback(() => {
+    if (phase !== 'test' || currentNumber === null) return;
+    handleResponse();
+  }, [phase, currentNumber, handleResponse]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -181,8 +197,8 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
           <h3 className="text-xl font-semibold">Instructions</h3>
           <div className="text-left space-y-3">
             <p>• Numbers from 0-9 will appear on screen, one at a time</p>
-            <p>• Press the <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">SPACEBAR</kbd> for all numbers</p>
-            <p>• <strong>DO NOT press anything when you see the number 3</strong></p>
+            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">SPACEBAR</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP ANYWHERE</kbd> for all numbers</p>
+            <p>• <strong>DO NOT respond when you see the number 3</strong></p>
             <p>• Respond as quickly and accurately as possible</p>
             <p>• The test will take about 45 seconds</p>
           </div>
@@ -202,13 +218,25 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
         {countdown}
       </div>
       <p className="mt-4 text-slate-600 dark:text-slate-400">
-        Remember: Press SPACE for all numbers except 3
+        Remember: Press SPACE or TAP for all numbers except 3
       </p>
     </div>
   );
 
   const renderTest = () => (
-    <div className="text-center space-y-8">
+    <div 
+      className="text-center space-y-8 relative min-h-[80vh] flex flex-col justify-center cursor-pointer select-none"
+      onClick={handleTouch}
+      onTouchStart={(e) => {
+        e.preventDefault();
+        handleTouch();
+      }}
+    >
+      {/* Visual feedback overlay for entire screen */}
+      {showFeedback && (
+        <div className="absolute inset-0 bg-blue-500/10 rounded-lg animate-ping pointer-events-none" />
+      )}
+      
       <div className="flex justify-between items-center max-w-md mx-auto">
         <span className="text-sm text-slate-600 dark:text-slate-400">
           Trial {trialCount} / {TOTAL_TRIALS}
@@ -216,9 +244,12 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
         <Progress value={(trialCount / TOTAL_TRIALS) * 100} className="w-32" />
       </div>
       
-      <div className="h-64 flex items-center justify-center">
+      {/* Number display area */}
+      <div className="h-64 flex items-center justify-center relative">
         {currentNumber !== null ? (
-          <div className="text-9xl font-bold text-slate-900 dark:text-slate-100 animate-pulse">
+          <div className={`text-9xl font-bold text-slate-900 dark:text-slate-100 transition-all duration-150 ${
+            showFeedback ? 'scale-110 text-blue-600 dark:text-blue-400' : 'animate-pulse'
+          }`}>
             {currentNumber}
           </div>
         ) : (
@@ -227,7 +258,7 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
       </div>
       
       <p className="text-sm text-slate-600 dark:text-slate-400">
-        Press SPACEBAR for all numbers except 3
+        Press SPACEBAR or TAP ANYWHERE for all numbers except 3
       </p>
     </div>
   );

@@ -58,45 +58,61 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
   }, []);
 
   const [sequence] = useState(() => generateSequence());
+  const [showResponseFeedback, setShowResponseFeedback] = useState(false);
+
+  const handleResponse = useCallback(() => {
+    if (phase !== 'test' || currentLetter === null || showFeedback) return;
+    
+    const responseTime = Date.now() - stimulusStartTime;
+    
+    // Check if this is actually a match
+    const isMatch = trialCount >= N_BACK && sequence[trialCount - 1] === sequence[trialCount - 1 - N_BACK];
+    const correct = isMatch; // Response given and it's a match
+    
+    const response: Response = {
+      stimulus: currentLetter,
+      responseTime,
+      correct,
+      timestamp: Date.now()
+    };
+    
+    setResponses(prev => [...prev, response]);
+    setLastResponse({ correct, isMatch });
+    setShowFeedback(true);
+    
+    // Show visual feedback
+    setShowResponseFeedback(true);
+    setTimeout(() => setShowResponseFeedback(false), 150);
+    
+    // Continue to next trial
+    setTimeout(() => {
+      setShowFeedback(false);
+      setCurrentLetter(null);
+      setLastResponse(null);
+      
+      setTimeout(() => {
+        if (trialCount < TOTAL_TRIALS - 1) {
+          showNextTrial();
+        } else {
+          calculateResults();
+        }
+      }, ITI_DURATION);
+    }, FEEDBACK_DURATION);
+  }, [phase, currentLetter, stimulusStartTime, showFeedback, trialCount, sequence]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (phase !== 'test' || currentLetter === null || showFeedback) return;
     
     if (event.code === 'Space') {
       event.preventDefault();
-      const responseTime = Date.now() - stimulusStartTime;
-      
-      // Check if this is actually a match
-      const isMatch = trialCount >= N_BACK && sequence[trialCount - 1] === sequence[trialCount - 1 - N_BACK];
-      const correct = isMatch; // Response given and it's a match
-      
-      const response: Response = {
-        stimulus: currentLetter,
-        responseTime,
-        correct,
-        timestamp: Date.now()
-      };
-      
-      setResponses(prev => [...prev, response]);
-      setLastResponse({ correct, isMatch });
-      setShowFeedback(true);
-      
-      // Continue to next trial
-      setTimeout(() => {
-        setShowFeedback(false);
-        setCurrentLetter(null);
-        setLastResponse(null);
-        
-        setTimeout(() => {
-          if (trialCount < TOTAL_TRIALS - 1) {
-            showNextTrial();
-          } else {
-            calculateResults();
-          }
-        }, ITI_DURATION);
-      }, FEEDBACK_DURATION);
+      handleResponse();
     }
-  }, [phase, currentLetter, stimulusStartTime, showFeedback, trialCount, sequence]);
+  }, [phase, currentLetter, showFeedback, handleResponse]);
+
+  const handleTouch = useCallback(() => {
+    if (phase !== 'test' || currentLetter === null || showFeedback) return;
+    handleResponse();
+  }, [phase, currentLetter, showFeedback, handleResponse]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -235,7 +251,7 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
           <h3 className="text-xl font-semibold">Instructions</h3>
           <div className="text-left space-y-3">
             <p>• Letters will appear on screen one at a time</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">SPACEBAR</kbd> when the current letter matches the letter from <strong>2 positions back</strong></p>
+            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">SPACEBAR</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP SCREEN</kbd> when the current letter matches the letter from <strong>2 positions back</strong></p>
             <p>• Do NOT press anything if the letters don't match</p>
             <p>• Focus and try to remember the sequence</p>
             <p>• The test will show 30 letters total</p>
@@ -284,7 +300,20 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
         <Progress value={(trialCount / TOTAL_TRIALS) * 100} className="w-32" />
       </div>
       
-      <div className="h-64 flex items-center justify-center">
+      {/* Touch area with visual feedback */}
+      <div 
+        className="h-64 flex items-center justify-center relative cursor-pointer select-none"
+        onClick={handleTouch}
+        onTouchStart={(e) => {
+          e.preventDefault();
+          handleTouch();
+        }}
+      >
+        {/* Visual feedback overlay */}
+        {showResponseFeedback && (
+          <div className="absolute inset-0 bg-purple-500/20 rounded-lg animate-ping pointer-events-none" />
+        )}
+        
         {showFeedback ? (
           <div className="space-y-4">
             <div className={`text-4xl font-bold ${lastResponse?.correct ? 'text-green-600' : 'text-red-600'}`}>
@@ -295,7 +324,9 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
             </div>
           </div>
         ) : currentLetter ? (
-          <div className="text-9xl font-bold text-slate-900 dark:text-slate-100 font-mono">
+          <div className={`text-9xl font-bold text-slate-900 dark:text-slate-100 font-mono transition-all duration-150 ${
+            showResponseFeedback ? 'scale-110 text-purple-600 dark:text-purple-400' : ''
+          }`}>
             {currentLetter}
           </div>
         ) : (
@@ -304,7 +335,7 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
       </div>
       
       <div className="text-sm text-slate-600 dark:text-slate-400">
-        <p>Press SPACEBAR when letter matches 2 positions back</p>
+        <p>Press SPACEBAR or TAP SCREEN when letter matches 2 positions back</p>
         {trialCount > N_BACK && (
           <p className="mt-2">
             Current: <span className="font-mono font-bold">{currentLetter}</span> | 

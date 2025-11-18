@@ -24,6 +24,7 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [lastRT, setLastRT] = useState<number | null>(null);
   const [falseStart, setFalseStart] = useState(false);
+  const [showResponseFeedback, setShowResponseFeedback] = useState(false);
 
   const TOTAL_TRIALS = 8;
   const MIN_WAIT_TIME = 2000; // 2 seconds minimum
@@ -69,6 +70,10 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
       setIsWaiting(false);
       setShowFeedback(true);
       
+      // Show visual feedback
+      setShowResponseFeedback(true);
+      setTimeout(() => setShowResponseFeedback(false), 150);
+      
       setTimeout(() => {
         setShowFeedback(false);
         setLastRT(null);
@@ -86,6 +91,10 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
       event.preventDefault();
       handleClick();
     }
+  }, [handleClick]);
+
+  const handleTouch = useCallback(() => {
+    handleClick();
   }, [handleClick]);
 
   useEffect(() => {
@@ -211,7 +220,7 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
           <div className="text-left space-y-3">
             <p>• The screen will show a waiting state</p>
             <p>• After a random delay (2-7 seconds), a stimulus will appear</p>
-            <p>• <strong>Click the button or press SPACEBAR as quickly as possible</strong> when you see the stimulus</p>
+            <p>• <strong>Click the button, tap the screen, or press SPACEBAR as quickly as possible</strong> when you see the stimulus</p>
             <p>• <strong>DO NOT respond before the stimulus appears</strong> (false start)</p>
             <p>• You will complete 8 trials</p>
             <p>• Focus on being as fast and accurate as possible</p>
@@ -279,16 +288,35 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
             )}
           </div>
         ) : showStimulus ? (
-          <Button
-            onClick={handleClick}
-            size="lg"
-            className="w-64 h-64 text-4xl font-bold bg-red-500 hover:bg-red-600 text-white rounded-full animate-pulse"
-          >
-            CLICK!
-          </Button>
+          <div className="relative">
+            {/* Visual feedback overlay */}
+            {showResponseFeedback && (
+              <div className="absolute inset-0 bg-orange-500/30 rounded-full animate-ping pointer-events-none z-10" />
+            )}
+            <Button
+              onClick={handleTouch}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                handleTouch();
+              }}
+              size="lg"
+              className={`w-64 h-64 text-4xl font-bold bg-red-500 hover:bg-red-600 text-white rounded-full animate-pulse transition-all duration-150 ${
+                showResponseFeedback ? 'scale-110 bg-orange-500' : ''
+              }`}
+            >
+              CLICK!
+            </Button>
+          </div>
         ) : isWaiting ? (
-          <div className="text-center">
-            <div className="w-64 h-64 border-4 border-slate-300 dark:border-slate-600 rounded-full flex items-center justify-center">
+          <div 
+            className="text-center cursor-pointer select-none"
+            onClick={handleTouch}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleTouch();
+            }}
+          >
+            <div className="w-64 h-64 border-4 border-slate-300 dark:border-slate-600 rounded-full flex items-center justify-center hover:border-slate-400 dark:hover:border-slate-500 transition-colors">
               <div className="text-2xl text-slate-500 dark:text-slate-400">
                 Wait...
               </div>
@@ -303,7 +331,7 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
       </div>
       
       <p className="text-sm text-slate-600 dark:text-slate-400">
-        Click the button or press SPACEBAR when it appears
+        Click the button, tap the screen, or press SPACEBAR when it appears
       </p>
     </div>
   );

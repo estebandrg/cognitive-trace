@@ -80,6 +80,40 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
 
   const [trials] = useState(() => generateTrials());
 
+  const handleResponse = useCallback((responseDirection: Direction) => {
+    if (phase !== 'test' || currentTrial === null || showFeedback) return;
+    
+    const responseTime = Date.now() - stimulusStartTime;
+    const correct = responseDirection === currentTrial.targetDirection;
+    
+    const response: Response = {
+      stimulus: `${currentTrial.type}-${currentTrial.targetDirection}`,
+      responseTime,
+      correct,
+      timestamp: Date.now()
+    };
+    
+    setResponses(prev => [...prev, response]);
+    setLastResponse({ correct, rt: responseTime });
+    setShowFeedback(true);
+    
+    // Hide stimulus and show feedback
+    setTimeout(() => {
+      setShowFeedback(false);
+      setCurrentTrial(null);
+      setLastResponse(null);
+      
+      // Continue to next trial after ITI
+      setTimeout(() => {
+        if (trialCount < TOTAL_TRIALS - 1) {
+          showNextTrial();
+        } else {
+          calculateResults();
+        }
+      }, ITI_DURATION);
+    }, FEEDBACK_DURATION);
+  }, [phase, currentTrial, stimulusStartTime, showFeedback, trialCount]);
+
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (phase !== 'test' || currentTrial === null || showFeedback) return;
     
@@ -93,37 +127,14 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
     
     if (responseDirection) {
       event.preventDefault();
-      const responseTime = Date.now() - stimulusStartTime;
-      const correct = responseDirection === currentTrial.targetDirection;
-      
-      const response: Response = {
-        stimulus: `${currentTrial.type}-${currentTrial.targetDirection}`,
-        responseTime,
-        correct,
-        timestamp: Date.now()
-      };
-      
-      setResponses(prev => [...prev, response]);
-      setLastResponse({ correct, rt: responseTime });
-      setShowFeedback(true);
-      
-      // Hide stimulus and show feedback
-      setTimeout(() => {
-        setShowFeedback(false);
-        setCurrentTrial(null);
-        setLastResponse(null);
-        
-        // Continue to next trial after ITI
-        setTimeout(() => {
-          if (trialCount < TOTAL_TRIALS - 1) {
-            showNextTrial();
-          } else {
-            calculateResults();
-          }
-        }, ITI_DURATION);
-      }, FEEDBACK_DURATION);
+      handleResponse(responseDirection);
     }
-  }, [phase, currentTrial, stimulusStartTime, showFeedback, trialCount]);
+  }, [phase, currentTrial, showFeedback, handleResponse]);
+
+  const handleTouch = useCallback((direction: Direction) => {
+    if (phase !== 'test' || currentTrial === null || showFeedback) return;
+    handleResponse(direction);
+  }, [phase, currentTrial, showFeedback, handleResponse]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -242,8 +253,8 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
           <div className="text-left space-y-3">
             <p>• You will see 5 arrows arranged horizontally</p>
             <p>• Focus on the <strong>center arrow</strong> only</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">←</kbd> if center arrow points left</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">→</kbd> if center arrow points right</p>
+            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">←</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP LEFT</kbd> if center arrow points left</p>
+            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">→</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP RIGHT</kbd> if center arrow points right</p>
             <p>• Ignore the surrounding arrows - they may point in different directions</p>
             <p>• Respond as quickly and accurately as possible</p>
           </div>
@@ -312,15 +323,36 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
             <div className="text-6xl font-mono tracking-wider">
               {currentTrial.arrows}
             </div>
-            <div className="flex justify-center gap-8 text-sm text-slate-600 dark:text-slate-400">
-              <div className="flex items-center gap-2">
-                <ArrowLeft size={16} />
-                <span>Left Arrow</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ArrowRight size={16} />
-                <span>Right Arrow</span>
-              </div>
+            
+            {/* Touch buttons for mobile */}
+            <div className="flex justify-center gap-8">
+              <button
+                onClick={() => handleTouch('left')}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  handleTouch('left');
+                }}
+                className="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-150 active:scale-95 active:bg-blue-100 dark:active:bg-blue-900/30 cursor-pointer select-none"
+              >
+                <ArrowLeft size={24} className="text-slate-600 dark:text-slate-400" />
+                <span className="text-sm text-slate-600 dark:text-slate-400">Left</span>
+              </button>
+              
+              <button
+                onClick={() => handleTouch('right')}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  handleTouch('right');
+                }}
+                className="flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-150 active:scale-95 active:bg-blue-100 dark:active:bg-blue-900/30 cursor-pointer select-none"
+              >
+                <ArrowRight size={24} className="text-slate-600 dark:text-slate-400" />
+                <span className="text-sm text-slate-600 dark:text-slate-400">Right</span>
+              </button>
+            </div>
+            
+            <div className="text-xs text-slate-500 dark:text-slate-500">
+              Use arrow keys or tap buttons above
             </div>
           </div>
         ) : (
