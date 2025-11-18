@@ -16,7 +16,7 @@ export interface TestSessionSlice {
   
   startSession: (isSequential?: boolean) => void;
   addTestResult: (result: TestResult) => void;
-  completeSession: () => void;
+  completeSession: () => TestSession | undefined;
   clearSession: () => void;
   
   getCompletedTests: () => TestType[];
@@ -61,7 +61,7 @@ export const createTestSessionSlice: StateCreator<
 
   completeSession: () => {
     const { currentSession } = get();
-    if (!currentSession) return;
+    if (!currentSession) return undefined;
 
     const completedSession: TestSession = {
       ...currentSession,

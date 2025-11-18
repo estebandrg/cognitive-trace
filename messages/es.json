@@ -240,6 +240,29 @@
         "retry": "Repetir Evaluación"
       }
     },
+    "resultsDashboard": {
+      "title": "Resultados de {testName}",
+      "subtitle": "{testFullName}",
+      "metrics": {
+        "accuracy": "Precisión",
+        "avgTime": "Tiempo Prom.",
+        "correct": "Correctas",
+        "performance": "Rendimiento"
+      },
+      "continueAssessment": {
+        "title": "Continúa tu Evaluación",
+        "description": "Completa estos tests restantes para una evaluación integral"
+      },
+      "startTest": "Iniciar {testName}",
+      "allComplete": {
+        "title": "¡Evaluación Completa!",
+        "description": "Has completado todos los tests cognitivos disponibles"
+      },
+      "buttons": {
+        "viewHistory": "Ver Historial",
+        "continue": "Continuar"
+      }
+    },
     "testNames": {
       "sart": "SART",
       "flanker": "Flanker",

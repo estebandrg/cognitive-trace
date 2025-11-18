@@ -240,6 +240,29 @@
         "retry": "Retry Assessment"
       }
     },
+    "resultsDashboard": {
+      "title": "{testName} Results",
+      "subtitle": "{testFullName}",
+      "metrics": {
+        "accuracy": "Accuracy",
+        "avgTime": "Avg Time",
+        "correct": "Correct",
+        "performance": "Performance"
+      },
+      "continueAssessment": {
+        "title": "Continue Your Assessment",
+        "description": "Complete these remaining tests for a comprehensive evaluation"
+      },
+      "startTest": "Start {testName}",
+      "allComplete": {
+        "title": "Assessment Complete!",
+        "description": "You have completed all available cognitive tests"
+      },
+      "buttons": {
+        "viewHistory": "View History",
+        "continue": "Continue"
+      }
+    },
     "testNames": {
       "sart": "SART",
       "flanker": "Flanker",
