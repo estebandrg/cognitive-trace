@@ -1,17 +1,33 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PlayCircle, Grid3X3, Clock, Target } from 'lucide-react';
 
 interface TestModeSelectionProps {
-  onModeSelect: (mode: 'sequential' | 'dashboard') => void;
+  onModeSelect?: (mode: 'sequential' | 'dashboard') => void; // Made optional for backward compatibility
 }
 
 export default function TestModeSelection({ onModeSelect }: TestModeSelectionProps) {
   const t = useTranslations();
+  const router = useRouter();
+
+  const handleModeSelect = (mode: 'sequential' | 'dashboard') => {
+    if (onModeSelect) {
+      // Use callback if provided (backward compatibility)
+      onModeSelect(mode);
+    } else {
+      // Use navigation to specific routes
+      if (mode === 'sequential') {
+        router.push('/tests/sequential');
+      } else {
+        router.push('/tests/individual');
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -85,7 +101,7 @@ export default function TestModeSelection({ onModeSelect }: TestModeSelectionPro
               </div>
 
               <Button 
-                onClick={() => onModeSelect('sequential')}
+                onClick={() => handleModeSelect('sequential')}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
                 size="lg"
               >
@@ -146,7 +162,7 @@ export default function TestModeSelection({ onModeSelect }: TestModeSelectionPro
               </div>
 
               <Button 
-                onClick={() => onModeSelect('dashboard')}
+                onClick={() => handleModeSelect('dashboard')}
                 className="w-full bg-gradient-to-r from-green-600 to-purple-600 hover:from-green-700 hover:to-purple-700 text-white border-0"
                 size="lg"
               >

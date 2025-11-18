@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TestConfig, TestType } from '@/lib/types/tests';
+import { TestConfig, TestType, TestResult } from '@/lib/types/tests';
 import { Brain, Eye, Zap, Target, ArrowLeft } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
@@ -58,9 +58,10 @@ const iconMap = {
 
 interface TestDashboardProps {
   onBack?: () => void;
+  onTestComplete?: (result: TestResult) => void;
 }
 
-export default function TestDashboard({ onBack }: TestDashboardProps) {
+export default function TestDashboard({ onBack, onTestComplete }: TestDashboardProps) {
   const t = useTranslations();
   const [selectedTest, setSelectedTest] = useState<TestType | null>(null);
   const [isTestActive, setIsTestActive] = useState(false);
@@ -70,9 +71,13 @@ export default function TestDashboard({ onBack }: TestDashboardProps) {
     setIsTestActive(true);
   };
 
-  const handleTestComplete = () => {
+  const handleTestComplete = (result?: TestResult) => {
     setIsTestActive(false);
     setSelectedTest(null);
+    
+    if (result && onTestComplete) {
+      onTestComplete(result);
+    }
   };
 
   if (isTestActive && selectedTest) {
