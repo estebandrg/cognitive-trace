@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -25,6 +25,8 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
   const [lastRT, setLastRT] = useState<number | null>(null);
   const [falseStart, setFalseStart] = useState(false);
   const [showResponseFeedback, setShowResponseFeedback] = useState(false);
+  const hasRespondedRef = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const TOTAL_TRIALS = 8;
   const MIN_WAIT_TIME = 2000; // 2 seconds minimum
@@ -33,140 +35,7 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
   const FEEDBACK_DURATION = 1500; // 1.5 seconds feedback
   const LAPSE_THRESHOLD = 500; // RT > 500ms is considered a lapse
 
-  const handleClick = useCallback(() => {
-    if (phase !== 'test') return;
-    
-    if (isWaiting && !showStimulus) {
-      // False start
-      setFalseStart(true);
-      setShowFeedback(true);
-      
-      setTimeout(() => {
-        setFalseStart(false);
-        setShowFeedback(false);
-        if (trialCount < TOTAL_TRIALS - 1) {
-          startNextTrial();
-        } else {
-          calculateResults();
-        }
-      }, FEEDBACK_DURATION);
-      
-      return;
-    }
-    
-    if (showStimulus) {
-      const responseTime = Date.now() - stimulusStartTime;
-      
-      const response: Response = {
-        stimulus: 'reaction-stimulus',
-        responseTime,
-        correct: true,
-        timestamp: Date.now()
-      };
-      
-      setResponses(prev => [...prev, response]);
-      setLastRT(responseTime);
-      setShowStimulus(false);
-      setIsWaiting(false);
-      setShowFeedback(true);
-      
-      // Show visual feedback
-      setShowResponseFeedback(true);
-      setTimeout(() => setShowResponseFeedback(false), 150);
-      
-      setTimeout(() => {
-        setShowFeedback(false);
-        setLastRT(null);
-        if (trialCount < TOTAL_TRIALS - 1) {
-          startNextTrial();
-        } else {
-          calculateResults();
-        }
-      }, FEEDBACK_DURATION);
-    }
-  }, [phase, isWaiting, showStimulus, stimulusStartTime, trialCount]);
-
-  const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    if (event.code === 'Space') {
-      event.preventDefault();
-      handleClick();
-    }
-  }, [handleClick]);
-
-  const handleTouch = useCallback(() => {
-    handleClick();
-  }, [handleClick]);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [handleKeyPress]);
-
-  const startTest = () => {
-    setPhase('countdown');
-    setCountdown(3);
-    
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval);
-          setPhase('test');
-          setStartTime(Date.now());
-          startNextTrial();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const startNextTrial = () => {
-    setTrialCount(prev => prev + 1);
-    setIsWaiting(true);
-    setShowStimulus(false);
-    setFalseStart(false);
-    
-    // Random wait time
-    const waitTime = MIN_WAIT_TIME + Math.random() * (MAX_WAIT_TIME - MIN_WAIT_TIME);
-    
-    setTimeout(() => {
-      if (isWaiting && !falseStart) {
-        setShowStimulus(true);
-        setStimulusStartTime(Date.now());
-        
-        // Auto timeout if no response
-        setTimeout(() => {
-          if (showStimulus) {
-            // Record timeout
-            const response: Response = {
-              stimulus: 'reaction-stimulus',
-              responseTime: STIMULUS_TIMEOUT,
-              correct: false,
-              timestamp: Date.now()
-            };
-            
-            setResponses(prev => [...prev, response]);
-            setShowStimulus(false);
-            setIsWaiting(false);
-            setShowFeedback(true);
-            setLastRT(STIMULUS_TIMEOUT);
-            
-            setTimeout(() => {
-              setShowFeedback(false);
-              setLastRT(null);
-              if (trialCount < TOTAL_TRIALS - 1) {
-                startNextTrial();
-              } else {
-                calculateResults();
-              }
-            }, FEEDBACK_DURATION);
-          }
-        }, STIMULUS_TIMEOUT);
-      }
-    }, waitTime);
-  };
-
-  const calculateResults = () => {
+  const calculateResults = useCallback(() => {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
@@ -199,7 +68,165 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
     
     setTestResult(result);
     setPhase('results');
+  }, [startTime, responses]);
+
+  const runTrial = useCallback((currentTrial: number) => {
+    if (currentTrial > TOTAL_TRIALS) {
+      calculateResults();
+      return;
+    }
+    
+    setTrialCount(currentTrial);
+    setIsWaiting(true);
+    setShowStimulus(false);
+    setFalseStart(false);
+    hasRespondedRef.current = false;
+    
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    // Random wait time
+    const waitTime = MIN_WAIT_TIME + Math.random() * (MAX_WAIT_TIME - MIN_WAIT_TIME);
+    
+    setTimeout(() => {
+      if (hasRespondedRef.current) return; // User already responded (false start)
+      
+      setShowStimulus(true);
+      setStimulusStartTime(Date.now());
+      
+      // Auto timeout if no response
+      timeoutRef.current = setTimeout(() => {
+        if (hasRespondedRef.current) return; // User already responded
+        
+        // Record timeout only if user hasn't responded
+        hasRespondedRef.current = true;
+        const response: Response = {
+          stimulus: 'reaction-stimulus',
+          responseTime: STIMULUS_TIMEOUT,
+          correct: false,
+          timestamp: Date.now()
+        };
+        
+        setResponses(prev => [...prev, response]);
+        setShowStimulus(false);
+        setIsWaiting(false);
+        setShowFeedback(true);
+        setLastRT(STIMULUS_TIMEOUT);
+        
+        setTimeout(() => {
+          setShowFeedback(false);
+          setLastRT(null);
+          runTrial(currentTrial + 1);
+        }, FEEDBACK_DURATION);
+      }, STIMULUS_TIMEOUT);
+    }, waitTime);
+  }, [calculateResults]);
+
+  const startNextTrial = useCallback(() => {
+    setTrialCount(prev => {
+      runTrial(prev + 1);
+      return prev;
+    });
+  }, [runTrial]);
+
+  const handleClick = useCallback(() => {
+    if (phase !== 'test' || hasRespondedRef.current) return;
+    
+    // Mark that user has responded
+    hasRespondedRef.current = true;
+    
+    // Clear the timeout since user responded
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    
+    // Check current states directly
+    if (showStimulus) {
+      // Valid response - stimulus is showing
+      const responseTime = Date.now() - stimulusStartTime;
+      
+      const response: Response = {
+        stimulus: 'reaction-stimulus',
+        responseTime,
+        correct: true,
+        timestamp: Date.now()
+      };
+      
+      setResponses(prev => [...prev, response]);
+      setLastRT(responseTime);
+      setShowStimulus(false);
+      setIsWaiting(false);
+      setShowFeedback(true);
+      
+      // Show visual feedback
+      setShowResponseFeedback(true);
+      setTimeout(() => setShowResponseFeedback(false), 150);
+      
+      setTimeout(() => {
+        setShowFeedback(false);
+        setLastRT(null);
+        setTrialCount(currentTrialCount => {
+          runTrial(currentTrialCount + 1);
+          return currentTrialCount;
+        });
+      }, FEEDBACK_DURATION);
+    } else if (isWaiting && !showStimulus) {
+      // False start - clicked while waiting
+      setFalseStart(true);
+      setShowFeedback(true);
+      setIsWaiting(false);
+      
+      setTimeout(() => {
+        setFalseStart(false);
+        setShowFeedback(false);
+        setTrialCount(currentTrialCount => {
+          runTrial(currentTrialCount + 1);
+          return currentTrialCount;
+        });
+      }, FEEDBACK_DURATION);
+    } else {
+      // Reset the flag if it was an invalid click
+      hasRespondedRef.current = false;
+    }
+  }, [phase, stimulusStartTime, runTrial, showStimulus, isWaiting]);
+
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      event.preventDefault();
+      handleClick();
+    }
+  }, [handleClick]);
+
+  const handleTouch = useCallback(() => {
+    handleClick();
+  }, [handleClick]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [handleKeyPress]);
+
+  const startTest = () => {
+    setPhase('countdown');
+    setCountdown(3);
+    
+    const countdownInterval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval);
+          setPhase('test');
+          setStartTime(Date.now());
+          runTrial(1);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
+
 
   const renderInstructions = () => (
     <div className="max-w-2xl mx-auto text-center space-y-6">
