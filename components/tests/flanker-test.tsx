@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -80,10 +80,10 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
 
   const [trials] = useState(() => generateTrials());
 
-  const handleResponse = useCallback((responseDirection: Direction) => {
+  const handleResponse = useCallback((responseDirection: Direction, trialStartTime: number) => {
     if (phase !== 'test' || currentTrial === null || showFeedback) return;
     
-    const responseTime = Date.now() - stimulusStartTime;
+    const responseTime = Date.now() - trialStartTime;
     const correct = responseDirection === currentTrial.targetDirection;
     
     const response: Response = {
@@ -97,25 +97,30 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
     setLastResponse({ correct, rt: responseTime });
     setShowFeedback(true);
     
-    // Hide stimulus and show feedback
+    // Mark that response was given and cancel stimulus timeout
+    responseGivenRef.current = true;
+    if (stimulusTimeoutRef.current) {
+      clearTimeout(stimulusTimeoutRef.current);
+      stimulusTimeoutRef.current = null;
+    }
+    
+    // Schedule transition after feedback
     setTimeout(() => {
       setShowFeedback(false);
-      setCurrentTrial(null);
       setLastResponse(null);
+      setCurrentTrial(null);
       
-      // Continue to next trial after ITI
-      setTimeout(() => {
-        setTrialCount(currentTrialCount => {
-          if (currentTrialCount < TOTAL_TRIALS) {
-            setTimeout(showNextTrial, 100);
-          } else {
-            calculateResults();
-          }
-          return currentTrialCount;
-        });
+      // Advance to next trial
+      trialIndexRef.current++;
+      if (nextTrialTimeoutRef.current) clearTimeout(nextTrialTimeoutRef.current);
+      
+      nextTrialTimeoutRef.current = setTimeout(() => {
+        if (showNextTrialRef.current) {
+          showNextTrialRef.current();
+        }
       }, ITI_DURATION);
     }, FEEDBACK_DURATION);
-  }, [phase, currentTrial, stimulusStartTime, showFeedback, trialCount]);
+  }, [phase, currentTrial, showFeedback]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (phase !== 'test' || currentTrial === null || showFeedback) return;
@@ -130,14 +135,14 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
     
     if (responseDirection) {
       event.preventDefault();
-      handleResponse(responseDirection);
+      handleResponse(responseDirection, stimulusStartTime);
     }
-  }, [phase, currentTrial, showFeedback, handleResponse]);
+  }, [phase, currentTrial, showFeedback, handleResponse, stimulusStartTime]);
 
   const handleTouch = useCallback((direction: Direction) => {
     if (phase !== 'test' || currentTrial === null || showFeedback) return;
-    handleResponse(direction);
-  }, [phase, currentTrial, showFeedback, handleResponse]);
+    handleResponse(direction, stimulusStartTime);
+  }, [phase, currentTrial, showFeedback, handleResponse, stimulusStartTime]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
@@ -184,46 +189,111 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
     setPhase('results');
   }, [startTime, responses]);
 
-  const showNextTrial = useCallback(() => {
-    setTrialCount(prevTrialCount => {
-      if (prevTrialCount >= TOTAL_TRIALS) {
-        calculateResults();
-        return prevTrialCount;
-      }
-      
-      const trial = trials[prevTrialCount];
-      setCurrentTrial(trial);
-      setStimulusStartTime(Date.now());
-      
-      // Auto-advance if no response
-      const timeoutId = setTimeout(() => {
-        setShowFeedback(currentShowFeedback => {
-          if (!currentShowFeedback) {
-            // Record no response
-            const response: Response = {
-              stimulus: `${trial.type}-${trial.targetDirection}`,
-              responseTime: STIMULUS_DURATION,
-              correct: false,
-              timestamp: Date.now()
-            };
-            setResponses(prev => [...prev, response]);
-            setCurrentTrial(null);
+  const trialIndexRef = useRef(0);
+  const showNextTrialRef = useRef<(() => void) | null>(null);
+  const responseGivenRef = useRef(false);
+  const stimulusTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const nextTrialTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+
+  useEffect(() => {
+    if (phase !== 'test') return;
+
+    trialIndexRef.current = 0;
+    let isRunning = true;
+
+    const cleanup = () => {
+      if (stimulusTimeoutRef.current) clearTimeout(stimulusTimeoutRef.current);
+      if (nextTrialTimeoutRef.current) clearTimeout(nextTrialTimeoutRef.current);
+      isRunning = false;
+    };
+
+    const showNextTrial = () => {
+      if (!isRunning || trialIndexRef.current >= TOTAL_TRIALS) {
+        if (trialIndexRef.current >= TOTAL_TRIALS) {
+          // Calculate results inline to avoid dependency
+          const endTime = Date.now();
+          const duration = endTime - startTime;
+          
+          setResponses(currentResponses => {
+            const validResponses = currentResponses.filter(r => r.responseTime < STIMULUS_DURATION && r.responseTime > 100);
+            const correctResponses = validResponses.filter(r => r.correct);
             
-            setTimeout(() => {
-              if (prevTrialCount + 1 < TOTAL_TRIALS) {
-                setTimeout(showNextTrial, 100);
-              } else {
-                calculateResults();
-              }
-            }, ITI_DURATION);
+            const congruentResponses = validResponses.filter(r => String(r.stimulus).includes('congruent') && r.correct);
+            const incongruentResponses = validResponses.filter(r => String(r.stimulus).includes('incongruent') && r.correct);
+            
+            const congruentRT = congruentResponses.length > 0 ? 
+              congruentResponses.reduce((sum, r) => sum + r.responseTime, 0) / congruentResponses.length : 0;
+            
+            const incongruentRT = incongruentResponses.length > 0 ? 
+              incongruentResponses.reduce((sum, r) => sum + r.responseTime, 0) / incongruentResponses.length : 0;
+            
+            const interferenceEffect = incongruentRT - congruentRT;
+            
+            const averageRT = correctResponses.length > 0 ? 
+              correctResponses.reduce((sum, r) => sum + r.responseTime, 0) / correctResponses.length : 0;
+            
+            const accuracy = correctResponses.length / currentResponses.length;
+            
+            const result: FlankerResult = {
+              testType: 'flanker',
+              startTime,
+              endTime,
+              duration,
+              accuracy,
+              averageReactionTime: averageRT,
+              responses: currentResponses,
+              congruentRT,
+              incongruentRT,
+              interferenceEffect
+            };
+            
+            setTestResult(result);
+            setPhase('results');
+            
+            return currentResponses;
+          });
+        }
+        return;
+      }
+
+      const trial = trials[trialIndexRef.current];
+      const trialStartTime = Date.now();
+      responseGivenRef.current = false;
+
+      setCurrentTrial(trial);
+      setStimulusStartTime(trialStartTime);
+      setTrialCount(trialIndexRef.current + 1);
+
+      stimulusTimeoutRef.current = setTimeout(() => {
+        if (!isRunning || responseGivenRef.current) return;
+
+        // No response was given - record it
+        const response: Response = {
+          stimulus: `${trial.type}-${trial.targetDirection}`,
+          responseTime: STIMULUS_DURATION,
+          correct: false,
+          timestamp: Date.now()
+        };
+        
+        setResponses(prevResponses => [...prevResponses, response]);
+        setCurrentTrial(null);
+        trialIndexRef.current++;
+
+        nextTrialTimeoutRef.current = setTimeout(() => {
+          if (isRunning) {
+            showNextTrial();
           }
-          return currentShowFeedback;
-        });
+        }, ITI_DURATION);
       }, STIMULUS_DURATION);
-      
-      return prevTrialCount + 1;
-    });
-  }, [trials, calculateResults]);
+    };
+
+    showNextTrialRef.current = showNextTrial;
+
+    showNextTrial();
+
+    return cleanup;
+  }, [phase, trials, startTime]);
 
   const startTest = () => {
     setPhase('countdown');
@@ -235,7 +305,6 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
           clearInterval(countdownInterval);
           setPhase('test');
           setStartTime(Date.now());
-          showNextTrial();
           return 0;
         }
         return prev - 1;

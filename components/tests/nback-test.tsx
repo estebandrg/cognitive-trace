@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -60,13 +60,20 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
   const [sequence] = useState(() => generateSequence());
   const [showResponseFeedback, setShowResponseFeedback] = useState(false);
 
+  const trialIndexRef = useRef(0);
+  const showNextTrialRef = useRef<(() => void) | null>(null);
+  const responseGivenRef = useRef(false);
+  const stimulusTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const nextTrialTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleResponse = useCallback(() => {
     if (phase !== 'test' || currentLetter === null || showFeedback) return;
     
     const responseTime = Date.now() - stimulusStartTime;
+    const currentIndex = trialIndexRef.current - 1; // Already incremented in showNextTrial
     
     // Check if this is actually a match
-    const isMatch = trialCount >= N_BACK && sequence[trialCount - 1] === sequence[trialCount - 1 - N_BACK];
+    const isMatch = currentIndex >= N_BACK && sequence[currentIndex] === sequence[currentIndex - N_BACK];
     const correct = isMatch; // Response given and it's a match
     
     const response: Response = {
@@ -80,28 +87,32 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
     setLastResponse({ correct, isMatch });
     setShowFeedback(true);
     
+    // Mark that response was given and cancel stimulus timeout
+    responseGivenRef.current = true;
+    if (stimulusTimeoutRef.current) {
+      clearTimeout(stimulusTimeoutRef.current);
+      stimulusTimeoutRef.current = null;
+    }
+    
     // Show visual feedback
     setShowResponseFeedback(true);
     setTimeout(() => setShowResponseFeedback(false), 150);
     
-    // Continue to next trial
+    // Continue to next trial after feedback
     setTimeout(() => {
       setShowFeedback(false);
       setCurrentLetter(null);
       setLastResponse(null);
       
-      setTimeout(() => {
-        setTrialCount(currentTrialCount => {
-          if (currentTrialCount < TOTAL_TRIALS) {
-            setTimeout(showNextTrial, 100);
-          } else {
-            calculateResults();
-          }
-          return currentTrialCount;
-        });
+      if (nextTrialTimeoutRef.current) clearTimeout(nextTrialTimeoutRef.current);
+      
+      nextTrialTimeoutRef.current = setTimeout(() => {
+        if (showNextTrialRef.current) {
+          showNextTrialRef.current();
+        }
       }, ITI_DURATION);
     }, FEEDBACK_DURATION);
-  }, [phase, currentLetter, stimulusStartTime, showFeedback, trialCount, sequence]);
+  }, [phase, currentLetter, stimulusStartTime, showFeedback, sequence, N_BACK]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (phase !== 'test' || currentLetter === null || showFeedback) return;
@@ -126,103 +137,122 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
-    // Calculate signal detection theory metrics
-    let hits = 0;
-    let misses = 0;
-    let falsePositives = 0;
-    let correctRejections = 0;
-    
-    for (let i = 0; i < TOTAL_TRIALS; i++) {
-      const isMatch = i >= N_BACK && sequence[i] === sequence[i - N_BACK];
-      const response = responses.find(r => String(r.stimulus) === sequence[i]);
-      const responded = response !== undefined;
+    setResponses(currentResponses => {
+      // Calculate signal detection theory metrics
+      let hits = 0;
+      let misses = 0;
+      let falsePositives = 0;
+      let correctRejections = 0;
       
-      if (isMatch) {
-        if (responded && response.correct) {
-          hits++;
+      for (let i = 0; i < TOTAL_TRIALS; i++) {
+        const isMatch = i >= N_BACK && sequence[i] === sequence[i - N_BACK];
+        const response = currentResponses.find(r => String(r.stimulus) === sequence[i]);
+        const responded = response !== undefined;
+        
+        if (isMatch) {
+          if (responded && response.correct) {
+            hits++;
+          } else {
+            misses++;
+          }
         } else {
-          misses++;
-        }
-      } else {
-        if (responded) {
-          falsePositives++;
-        } else {
-          correctRejections++;
+          if (responded) {
+            falsePositives++;
+          } else {
+            correctRejections++;
+          }
         }
       }
-    }
-    
-    const validResponses = responses.filter(r => r.responseTime < STIMULUS_DURATION && r.responseTime > 100);
-    const averageRT = validResponses.length > 0 ? 
-      validResponses.reduce((sum, r) => sum + r.responseTime, 0) / validResponses.length : 0;
-    
-    const accuracy = (hits + correctRejections) / TOTAL_TRIALS;
-    
-    const result: NBackResult = {
-      testType: 'nback',
-      startTime,
-      endTime,
-      duration,
-      accuracy,
-      averageReactionTime: averageRT,
-      responses,
-      hits,
-      falsePositives,
-      misses,
-      correctRejections
-    };
-    
-    setTestResult(result);
-    setPhase('results');
-  }, [startTime, responses, sequence]);
+      
+      const validResponses = currentResponses.filter(r => r.responseTime < STIMULUS_DURATION && r.responseTime > 100);
+      const averageRT = validResponses.length > 0 ? 
+        validResponses.reduce((sum, r) => sum + r.responseTime, 0) / validResponses.length : 0;
+      
+      const accuracy = (hits + correctRejections) / TOTAL_TRIALS;
+      
+      const result: NBackResult = {
+        testType: 'nback',
+        startTime,
+        endTime,
+        duration,
+        accuracy,
+        averageReactionTime: averageRT,
+        responses: currentResponses,
+        hits,
+        falsePositives,
+        misses,
+        correctRejections
+      };
+      
+      setTestResult(result);
+      setPhase('results');
+      
+      return currentResponses;
+    });
+  }, [startTime, sequence, N_BACK]);
 
-  const showNextTrial = useCallback(() => {
-    setTrialCount(prevTrialCount => {
-      if (prevTrialCount >= TOTAL_TRIALS) {
-        calculateResults();
-        return prevTrialCount;
+  useEffect(() => {
+    if (phase !== 'test') return;
+
+    trialIndexRef.current = 0;
+    let isRunning = true;
+
+    const cleanup = () => {
+      if (stimulusTimeoutRef.current) clearTimeout(stimulusTimeoutRef.current);
+      if (nextTrialTimeoutRef.current) clearTimeout(nextTrialTimeoutRef.current);
+      isRunning = false;
+    };
+
+    const showNextTrial = () => {
+      if (!isRunning || trialIndexRef.current >= TOTAL_TRIALS) {
+        if (trialIndexRef.current >= TOTAL_TRIALS) {
+          calculateResults();
+        }
+        return;
       }
-      
-      const letter = sequence[prevTrialCount];
+
+      const currentIndex = trialIndexRef.current;
+      const letter = sequence[currentIndex];
+      responseGivenRef.current = false;
+
       setCurrentLetter(letter);
       setStimulusStartTime(Date.now());
-      
-      // Auto-advance if no response
-      setTimeout(() => {
-        setShowFeedback(currentShowFeedback => {
-          if (!currentShowFeedback) {
-            // Check if this was a miss (should have responded but didn't)
-            const isMatch = prevTrialCount >= N_BACK && sequence[prevTrialCount] === sequence[prevTrialCount - N_BACK];
-            
-            if (isMatch) {
-              // This was a miss
-              const response: Response = {
-                stimulus: letter,
-                responseTime: STIMULUS_DURATION,
-                correct: false,
-                timestamp: Date.now()
-              };
-              setResponses(prev => [...prev, response]);
-            }
-            // If not a match, no response is correct (correct rejection)
-            
-            setCurrentLetter(null);
-            
-            setTimeout(() => {
-              if (prevTrialCount + 1 < TOTAL_TRIALS) {
-                setTimeout(showNextTrial, 100);
-              } else {
-                calculateResults();
-              }
-            }, ITI_DURATION);
+      setTrialCount(currentIndex + 1);
+      trialIndexRef.current++;
+
+      stimulusTimeoutRef.current = setTimeout(() => {
+        if (!isRunning || responseGivenRef.current) return;
+
+        // Check if this was a miss (should have responded but didn't)
+        const isMatch = currentIndex >= N_BACK && sequence[currentIndex] === sequence[currentIndex - N_BACK];
+        
+        if (isMatch) {
+          // This was a miss - record it
+          const response: Response = {
+            stimulus: letter,
+            responseTime: STIMULUS_DURATION,
+            correct: false,
+            timestamp: Date.now()
+          };
+          setResponses(prev => [...prev, response]);
+        }
+        // If not a match, no response is correct (correct rejection) - no need to record
+        
+        setCurrentLetter(null);
+
+        nextTrialTimeoutRef.current = setTimeout(() => {
+          if (isRunning) {
+            showNextTrial();
           }
-          return currentShowFeedback;
-        });
+        }, ITI_DURATION);
       }, STIMULUS_DURATION);
-      
-      return prevTrialCount + 1;
-    });
-  }, [sequence, calculateResults]);
+    };
+
+    showNextTrialRef.current = showNextTrial;
+    showNextTrial();
+
+    return cleanup;
+  }, [phase, sequence, calculateResults, N_BACK]);
 
   const startTest = () => {
     setPhase('countdown');
@@ -234,7 +264,6 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
           clearInterval(countdownInterval);
           setPhase('test');
           setStartTime(Date.now());
-          showNextTrial();
           return 0;
         }
         return prev - 1;
