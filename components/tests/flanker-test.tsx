@@ -105,11 +105,14 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
       
       // Continue to next trial after ITI
       setTimeout(() => {
-        if (trialCount < TOTAL_TRIALS - 1) {
-          showNextTrial();
-        } else {
-          calculateResults();
-        }
+        setTrialCount(currentTrialCount => {
+          if (currentTrialCount < TOTAL_TRIALS) {
+            setTimeout(showNextTrial, 100);
+          } else {
+            calculateResults();
+          }
+          return currentTrialCount;
+        });
       }, ITI_DURATION);
     }, FEEDBACK_DURATION);
   }, [phase, currentTrial, stimulusStartTime, showFeedback, trialCount]);
@@ -141,60 +144,7 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
 
-  const startTest = () => {
-    setPhase('countdown');
-    setCountdown(3);
-    
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval);
-          setPhase('test');
-          setStartTime(Date.now());
-          showNextTrial();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const showNextTrial = () => {
-    if (trialCount >= TOTAL_TRIALS) {
-      calculateResults();
-      return;
-    }
-    
-    const trial = trials[trialCount];
-    setCurrentTrial(trial);
-    setStimulusStartTime(Date.now());
-    setTrialCount(prev => prev + 1);
-    
-    // Auto-advance if no response
-    setTimeout(() => {
-      if (!showFeedback) {
-        // Record no response
-        const response: Response = {
-          stimulus: `${trial.type}-${trial.targetDirection}`,
-          responseTime: STIMULUS_DURATION,
-          correct: false,
-          timestamp: Date.now()
-        };
-        setResponses(prev => [...prev, response]);
-        setCurrentTrial(null);
-        
-        setTimeout(() => {
-          if (trialCount < TOTAL_TRIALS - 1) {
-            showNextTrial();
-          } else {
-            calculateResults();
-          }
-        }, ITI_DURATION);
-      }
-    }, STIMULUS_DURATION);
-  };
-
-  const calculateResults = () => {
+  const calculateResults = useCallback(() => {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
@@ -232,6 +182,65 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
     
     setTestResult(result);
     setPhase('results');
+  }, [startTime, responses]);
+
+  const showNextTrial = useCallback(() => {
+    setTrialCount(prevTrialCount => {
+      if (prevTrialCount >= TOTAL_TRIALS) {
+        calculateResults();
+        return prevTrialCount;
+      }
+      
+      const trial = trials[prevTrialCount];
+      setCurrentTrial(trial);
+      setStimulusStartTime(Date.now());
+      
+      // Auto-advance if no response
+      const timeoutId = setTimeout(() => {
+        setShowFeedback(currentShowFeedback => {
+          if (!currentShowFeedback) {
+            // Record no response
+            const response: Response = {
+              stimulus: `${trial.type}-${trial.targetDirection}`,
+              responseTime: STIMULUS_DURATION,
+              correct: false,
+              timestamp: Date.now()
+            };
+            setResponses(prev => [...prev, response]);
+            setCurrentTrial(null);
+            
+            setTimeout(() => {
+              if (prevTrialCount + 1 < TOTAL_TRIALS) {
+                setTimeout(showNextTrial, 100);
+              } else {
+                calculateResults();
+              }
+            }, ITI_DURATION);
+          }
+          return currentShowFeedback;
+        });
+      }, STIMULUS_DURATION);
+      
+      return prevTrialCount + 1;
+    });
+  }, [trials, calculateResults]);
+
+  const startTest = () => {
+    setPhase('countdown');
+    setCountdown(3);
+    
+    const countdownInterval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval);
+          setPhase('test');
+          setStartTime(Date.now());
+          showNextTrial();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   const renderInstructions = () => (
