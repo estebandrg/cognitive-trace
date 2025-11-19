@@ -244,53 +244,165 @@ export default function FlankerTest({ onComplete }: FlankerTestProps) {
   };
 
   const renderInstructions = () => (
-    <div className="max-w-2xl mx-auto text-center space-y-6">
-      <div className="flex justify-center">
-        <div className="p-4 bg-green-100 dark:bg-green-900 rounded-full">
-          <Target size={48} className="text-green-600 dark:text-green-400" />
-        </div>
-      </div>
-      
-      <h2 className="text-3xl font-bold">Flanker Task</h2>
-      <p className="text-lg text-slate-600 dark:text-slate-400">
-        Cognitive Conflict & Inhibition Test
-      </p>
-      
-      <Card>
-        <CardContent className="p-6 space-y-4">
-          <h3 className="text-xl font-semibold">Instructions</h3>
-          <div className="text-left space-y-3">
-            <p>• You will see 5 arrows arranged horizontally</p>
-            <p>• Focus on the <strong>center arrow</strong> only</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">←</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP LEFT</kbd> if center arrow points left</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">→</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP RIGHT</kbd> if center arrow points right</p>
-            <p>• Ignore the surrounding arrows - they may point in different directions</p>
-            <p>• Respond as quickly and accurately as possible</p>
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <div className="flex justify-center">
+          <div className="p-6 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-2xl shadow-lg">
+            <Target size={64} className="text-green-600 dark:text-green-400" />
           </div>
+        </div>
+        
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+          Flanker Task
+        </h2>
+        <p className="text-xl text-muted-foreground">
+          Cognitive Conflict & Inhibition Test
+        </p>
+        <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+          Mide tu control cognitivo y capacidad para resistir interferencias
+        </p>
+      </div>
+
+      {/* Visual Demo */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5" />
+        <CardContent className="relative p-8">
+          <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            ¿Cómo Funciona?
+          </h3>
           
-          <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">Examples:</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">→ → → → →</span>
-                <span>Press →</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Step 1: Congruent */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-xl border-2 border-green-300 dark:border-green-600 flex items-center justify-center">
+                <div className="text-4xl font-mono tracking-wider">
+                  <span className="text-gray-400">→→</span>
+                  <span className="text-green-600 font-bold">→</span>
+                  <span className="text-gray-400">→→</span>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">← ← ← ← ←</span>
-                <span>Press ←</span>
+              <div>
+                <h4 className="font-semibold text-green-600">1. Congruente</h4>
+                <p className="text-sm text-muted-foreground">
+                  Todas las flechas apuntan igual
+                </p>
+                <div className="flex justify-center mt-2">
+                  <div className="px-3 py-1 bg-green-100 dark:bg-green-900 rounded border text-xs font-bold text-green-600">→</div>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">→ → ← → →</span>
-                <span>Press ← (ignore sides)</span>
+            </div>
+
+            {/* Step 2: Incongruent */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900 dark:to-red-900 rounded-xl border-2 border-orange-300 dark:border-orange-600 flex items-center justify-center">
+                <div className="text-4xl font-mono tracking-wider">
+                  <span className="text-gray-400">→→</span>
+                  <span className="text-orange-600 font-bold">←</span>
+                  <span className="text-gray-400">→→</span>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-orange-600">2. Incongruente</h4>
+                <p className="text-sm text-muted-foreground">
+                  Flecha central diferente
+                </p>
+                <div className="flex justify-center mt-2">
+                  <div className="px-3 py-1 bg-orange-100 dark:bg-orange-900 rounded border text-xs font-bold text-orange-600">←</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3: Focus */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-xl border-2 border-blue-300 dark:border-blue-600 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">🎯</div>
+                  <div className="text-sm font-bold text-blue-600">Solo el Centro</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-blue-600">3. Enfoque</h4>
+                <p className="text-sm text-muted-foreground">
+                  Ignora las flechas laterales
+                </p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Instructions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-green-600">✓</span>
+              </div>
+              Qué Hacer
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Enfócate <strong>solo en la flecha central</strong></span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Presiona <strong>←</strong> o <strong>toca IZQUIERDA</strong> si apunta izquierda</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Presiona <strong>→</strong> o <strong>toca DERECHA</strong> si apunta derecha</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Responde <strong>rápido y preciso</strong> (40 trials)</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-red-600">✗</span>
+              </div>
+              Qué Evitar
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> te dejes distraer por las flechas laterales</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> respondas basándote en la mayoría</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> te apresures sin mirar el centro</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> pierdas la concentración</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
       
-      <Button onClick={startTest} size="lg" className="px-8">
-        Start Test
-      </Button>
+      <div className="text-center">
+        <Button 
+          onClick={startTest} 
+          size="lg" 
+          className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <Target className="w-5 h-5 mr-2" />
+          Comenzar Test Flanker
+        </Button>
+      </div>
     </div>
   );
 

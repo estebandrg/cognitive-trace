@@ -229,42 +229,156 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
 
 
   const renderInstructions = () => (
-    <div className="max-w-2xl mx-auto text-center space-y-6">
-      <div className="flex justify-center">
-        <div className="p-4 bg-orange-100 dark:bg-orange-900 rounded-full">
-          <Zap size={48} className="text-orange-600 dark:text-orange-400" />
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <div className="flex justify-center">
+          <div className="p-6 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900 dark:to-red-900 rounded-2xl shadow-lg">
+            <Zap size={64} className="text-orange-600 dark:text-orange-400" />
+          </div>
         </div>
+        
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+          PVT Task
+        </h2>
+        <p className="text-xl text-muted-foreground">
+          Psychomotor Vigilance Test
+        </p>
+        <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+          Mide tu tiempo de reacción y capacidad de mantener alerta sostenida
+        </p>
       </div>
-      
-      <h2 className="text-3xl font-bold">PVT Task</h2>
-      <p className="text-lg text-slate-600 dark:text-slate-400">
-        Psychomotor Vigilance Test
-      </p>
-      
-      <Card>
-        <CardContent className="p-6 space-y-4">
-          <h3 className="text-xl font-semibold">Instructions</h3>
-          <div className="text-left space-y-3">
-            <p>• The screen will show a waiting state</p>
-            <p>• After a random delay (2-7 seconds), a stimulus will appear</p>
-            <p>• <strong>Click the button, tap the screen, or press SPACEBAR as quickly as possible</strong> when you see the stimulus</p>
-            <p>• <strong>DO NOT respond before the stimulus appears</strong> (false start)</p>
-            <p>• You will complete 8 trials</p>
-            <p>• Focus on being as fast and accurate as possible</p>
-          </div>
+
+      {/* Visual Demo */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5" />
+        <CardContent className="relative p-8">
+          <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            ¿Cómo Funciona?
+          </h3>
           
-          <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
-            <h4 className="font-medium mb-2 text-orange-800 dark:text-orange-200">Important:</h4>
-            <p className="text-sm text-orange-700 dark:text-orange-300">
-              This test measures your alertness and reaction time. Stay focused and respond only when you see the stimulus.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Step 1: Wait */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                <div className="text-2xl font-bold text-gray-500 animate-pulse">
+                  Espera...
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-orange-600">1. Esperar</h4>
+                <p className="text-sm text-muted-foreground">
+                  Mantente alerta durante 2-7 segundos
+                </p>
+              </div>
+            </div>
+
+            {/* Step 2: Stimulus */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900 dark:to-orange-900 rounded-xl border-2 border-red-300 dark:border-red-600 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-600 rounded-full animate-pulse shadow-lg shadow-red-500/50">
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-red-600">2. ¡Estímulo!</h4>
+                <p className="text-sm text-muted-foreground">
+                  Aparece el círculo rojo
+                </p>
+              </div>
+            </div>
+
+            {/* Step 3: Response */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-xl border-2 border-green-300 dark:border-green-600 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-1">245ms</div>
+                  <div className="text-xs text-green-500">¡Excelente!</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-green-600">3. Responder</h4>
+                <p className="text-sm text-muted-foreground">
+                  Click lo más rápido posible
+                </p>
+              </div>
+            </div>
           </div>
+
         </CardContent>
       </Card>
+
+      {/* Instructions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-green-600">✓</span>
+              </div>
+              Qué Hacer
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Mantente concentrado en la pantalla</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Responde <strong>inmediatamente</strong> cuando veas el círculo rojo</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Usa el método que prefieras: click, touch o ESPACIO</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Completa los 8 trials lo más rápido posible</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-red-600">✗</span>
+              </div>
+              Qué Evitar
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> respondas antes de que aparezca el estímulo</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> te distraigas con otros elementos</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> hagas clicks múltiples</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> te apresures durante la espera</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
       
-      <Button onClick={startTest} size="lg" className="px-8">
-        Start Test
-      </Button>
+      <div className="text-center">
+        <Button 
+          onClick={startTest} 
+          size="lg" 
+          className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <Zap className="w-5 h-5 mr-2" />
+          Comenzar Test PVT
+        </Button>
+      </div>
     </div>
   );
 

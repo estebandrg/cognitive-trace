@@ -243,48 +243,189 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
   };
 
   const renderInstructions = () => (
-    <div className="max-w-2xl mx-auto text-center space-y-6">
-      <div className="flex justify-center">
-        <div className="p-4 bg-purple-100 dark:bg-purple-900 rounded-full">
-          <Brain size={48} className="text-purple-600 dark:text-purple-400" />
-        </div>
-      </div>
-      
-      <h2 className="text-3xl font-bold">N-Back Task</h2>
-      <p className="text-lg text-slate-600 dark:text-slate-400">
-        Working Memory Assessment (2-Back)
-      </p>
-      
-      <Card>
-        <CardContent className="p-6 space-y-4">
-          <h3 className="text-xl font-semibold">Instructions</h3>
-          <div className="text-left space-y-3">
-            <p>• Letters will appear on screen one at a time</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">SPACEBAR</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP SCREEN</kbd> when the current letter matches the letter from <strong>2 positions back</strong></p>
-            <p>• Do NOT press anything if the letters don't match</p>
-            <p>• Focus and try to remember the sequence</p>
-            <p>• The test will show 30 letters total</p>
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <div className="flex justify-center">
+          <div className="p-6 bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900 dark:to-indigo-900 rounded-2xl shadow-lg">
+            <Brain size={64} className="text-purple-600 dark:text-purple-400" />
           </div>
+        </div>
+        
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+          N-Back Task
+        </h2>
+        <p className="text-xl text-muted-foreground">
+          Working Memory Assessment (2-Back)
+        </p>
+        <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+          Mide tu memoria de trabajo y capacidad para mantener información en mente
+        </p>
+      </div>
+
+      {/* Visual Demo */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-indigo-500/5" />
+        <CardContent className="relative p-8">
+          <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            ¿Cómo Funciona?
+          </h3>
           
-          <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg">
-            <h4 className="font-medium mb-2">Example Sequence:</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="font-mono">A → B → A</span>
-                <span className="text-green-600">Press SPACE (A matches 2 back)</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Step 1: Sequence */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 rounded-xl border-2 border-blue-300 dark:border-blue-600 flex items-center justify-center">
+                <div className="flex items-center gap-2 text-2xl font-mono">
+                  <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded border flex items-center justify-center font-bold">A</div>
+                  <span className="text-gray-400">→</span>
+                  <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded border flex items-center justify-center font-bold">B</div>
+                  <span className="text-gray-400">→</span>
+                  <div className="w-10 h-10 bg-blue-200 dark:bg-blue-800 rounded border flex items-center justify-center font-bold text-blue-600">?</div>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono">A → B → C</span>
-                <span className="text-slate-600">Don't press (C ≠ A)</span>
+              <div>
+                <h4 className="font-semibold text-blue-600">1. Secuencia</h4>
+                <p className="text-sm text-muted-foreground">
+                  Las letras aparecen una por una
+                </p>
               </div>
+            </div>
+
+            {/* Step 2: Memory */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 rounded-xl border-2 border-purple-300 dark:border-purple-600 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-4xl mb-2">🧠</div>
+                  <div className="text-sm font-bold text-purple-600">2 Atrás</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-purple-600">2. Memoria</h4>
+                <p className="text-sm text-muted-foreground">
+                  Recuerda la letra de 2 posiciones atrás
+                </p>
+              </div>
+            </div>
+
+            {/* Step 3: Match */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-xl border-2 border-green-300 dark:border-green-600 flex items-center justify-center">
+                <div className="flex items-center gap-2 text-2xl font-mono">
+                  <div className="w-10 h-10 bg-green-200 dark:bg-green-800 rounded border flex items-center justify-center font-bold text-green-600">A</div>
+                  <span className="text-green-600 font-bold">=</span>
+                  <div className="w-10 h-10 bg-green-200 dark:bg-green-800 rounded border flex items-center justify-center font-bold text-green-600">A</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-green-600">3. ¡Match!</h4>
+                <p className="text-sm text-muted-foreground">
+                  Presiona ESPACIO si coinciden
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Example */}
+          <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950 dark:to-indigo-950 rounded-xl border border-purple-200 dark:border-purple-800">
+            <h4 className="font-semibold text-center mb-4 text-purple-800 dark:text-purple-200">
+              Ejemplo de Secuencia
+            </h4>
+            <div className="space-y-4">
+              <div className="flex justify-center items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded border flex items-center justify-center font-bold text-lg">F</div>
+                  <span className="text-xs text-muted-foreground">Pos 1</span>
+                </div>
+                <span className="text-gray-400">→</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded border flex items-center justify-center font-bold text-lg">A</div>
+                  <span className="text-xs text-muted-foreground">Pos 2</span>
+                </div>
+                <span className="text-gray-400">→</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-12 h-12 bg-green-200 dark:bg-green-800 rounded border flex items-center justify-center font-bold text-lg text-green-600">F</div>
+                  <span className="text-xs text-green-600 font-semibold">Pos 3 - ¡MATCH!</span>
+                </div>
+              </div>
+              <p className="text-center text-sm text-muted-foreground">
+                La <strong>F</strong> en posición 3 coincide con la <strong>F</strong> de 2 posiciones atrás (posición 1)
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Instructions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-green-600">✓</span>
+              </div>
+              Qué Hacer
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Mantén en mente las últimas <strong>2 letras</strong> que aparecieron</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Presiona <strong>ESPACIO</strong> o <strong>toca la pantalla</strong> si hay match</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Concéntrate en la <strong>secuencia</strong> de letras</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Completa <strong>30 letras</strong> (~50 segundos)</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-red-600">✗</span>
+              </div>
+              Qué Evitar
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> respondas si las letras no coinciden</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> te confundas con 1-back o 3-back</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> pierdas el hilo de la secuencia</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> respondas por impulso</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
       
-      <Button onClick={startTest} size="lg" className="px-8">
-        Start Test
-      </Button>
+      <div className="text-center">
+        <Button 
+          onClick={startTest} 
+          size="lg" 
+          className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <Brain className="w-5 h-5 mr-2" />
+          Comenzar Test N-Back
+        </Button>
+      </div>
     </div>
   );
 

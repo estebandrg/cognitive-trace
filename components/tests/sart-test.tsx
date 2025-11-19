@@ -206,34 +206,161 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
   };
 
   const renderInstructions = () => (
-    <div className="max-w-2xl mx-auto text-center space-y-6">
-      <div className="flex justify-center">
-        <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded-full">
-          <Eye size={48} className="text-blue-600 dark:text-blue-400" />
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <div className="flex justify-center">
+          <div className="p-6 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 rounded-2xl shadow-lg">
+            <Eye size={64} className="text-blue-600 dark:text-blue-400" />
+          </div>
         </div>
+        
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          SART Task
+        </h2>
+        <p className="text-xl text-muted-foreground">
+          Sustained Attention to Response Task
+        </p>
+        <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+          Mide tu capacidad para mantener atención sostenida y resistir respuestas automáticas
+        </p>
       </div>
-      
-      <h2 className="text-3xl font-bold">SART Task</h2>
-      <p className="text-lg text-slate-600 dark:text-slate-400">
-        Sustained Attention to Response Task
-      </p>
-      
-      <Card>
-        <CardContent className="p-6 space-y-4">
-          <h3 className="text-xl font-semibold">Instructions</h3>
-          <div className="text-left space-y-3">
-            <p>• Numbers from 0-9 will appear on screen, one at a time</p>
-            <p>• Press <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">SPACEBAR</kbd> or <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">TAP ANYWHERE</kbd> for all numbers</p>
-            <p>• <strong>DO NOT respond when you see the number 3</strong></p>
-            <p>• Respond as quickly and accurately as possible</p>
-            <p>• The test will take about 45 seconds</p>
+
+      {/* Visual Demo */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5" />
+        <CardContent className="relative p-8">
+          <h3 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            ¿Cómo Funciona?
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Step 1: Regular Numbers */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-xl border-2 border-green-300 dark:border-green-600 flex items-center justify-center">
+                <div className="text-6xl font-bold text-green-600">
+                  7
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-green-600">1. Números 0-9</h4>
+                <p className="text-sm text-muted-foreground">
+                  Presiona ESPACIO o toca la pantalla
+                </p>
+                <div className="flex justify-center mt-2">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded border flex items-center justify-center text-xs font-bold text-green-600">✓</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2: Number 3 */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-red-100 to-pink-100 dark:from-red-900 dark:to-pink-900 rounded-xl border-2 border-red-300 dark:border-red-600 flex items-center justify-center">
+                <div className="text-6xl font-bold text-red-600">
+                  3
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-red-600">2. ¡NO al 3!</h4>
+                <p className="text-sm text-muted-foreground">
+                  NO presiones nada cuando veas el 3
+                </p>
+                <div className="flex justify-center mt-2">
+                  <div className="w-8 h-8 bg-red-100 dark:bg-red-900 rounded border flex items-center justify-center text-xs font-bold text-red-600">✗</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3: Speed */}
+            <div className="text-center space-y-4">
+              <div className="h-32 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-xl border-2 border-blue-300 dark:border-blue-600 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-1">350ms</div>
+                  <div className="text-xs text-blue-500">¡Rápido!</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-blue-600">3. Velocidad</h4>
+                <p className="text-sm text-muted-foreground">
+                  Responde lo más rápido posible
+                </p>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Instructions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-green-600">✓</span>
+              </div>
+              Qué Hacer
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Presiona <strong>ESPACIO</strong> o <strong>toca la pantalla</strong> para todos los números</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Responde <strong>rápidamente</strong> cuando veas 0, 1, 2, 4, 5, 6, 7, 8, 9</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Mantén tu <strong>concentración</strong> durante todo el test</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 mt-0.5">•</span>
+                <span>Completa <strong>45 trials</strong> (~45 segundos)</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold text-red-600">✗</span>
+              </div>
+              Qué Evitar
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> respondas cuando veas el número <strong>3</strong></span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> te distraigas o pierdas la concentración</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> respondas demasiado lento</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-red-600 mt-0.5">•</span>
+                <span><strong>NO</strong> hagas respuestas múltiples por número</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
       
-      <Button onClick={startTest} size="lg" className="px-8">
-        Start Test
-      </Button>
+      <div className="text-center">
+        <Button 
+          onClick={startTest} 
+          size="lg" 
+          className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <Eye className="w-5 h-5 mr-2" />
+          Comenzar Test SART
+        </Button>
+      </div>
     </div>
   );
 
