@@ -91,11 +91,14 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
       setLastResponse(null);
       
       setTimeout(() => {
-        if (trialCount < TOTAL_TRIALS - 1) {
-          showNextTrial();
-        } else {
-          calculateResults();
-        }
+        setTrialCount(currentTrialCount => {
+          if (currentTrialCount < TOTAL_TRIALS) {
+            setTimeout(showNextTrial, 100);
+          } else {
+            calculateResults();
+          }
+          return currentTrialCount;
+        });
       }, ITI_DURATION);
     }, FEEDBACK_DURATION);
   }, [phase, currentLetter, stimulusStartTime, showFeedback, trialCount, sequence]);
@@ -119,67 +122,7 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
 
-  const startTest = () => {
-    setPhase('countdown');
-    setCountdown(3);
-    
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval);
-          setPhase('test');
-          setStartTime(Date.now());
-          showNextTrial();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const showNextTrial = () => {
-    if (trialCount >= TOTAL_TRIALS) {
-      calculateResults();
-      return;
-    }
-    
-    const letter = sequence[trialCount];
-    setCurrentLetter(letter);
-    setStimulusStartTime(Date.now());
-    setTrialCount(prev => prev + 1);
-    
-    // Auto-advance if no response
-    setTimeout(() => {
-      if (!showFeedback) {
-        // Check if this was a miss (should have responded but didn't)
-        const isMatch = trialCount >= N_BACK && sequence[trialCount - 1] === sequence[trialCount - 1 - N_BACK];
-        
-        if (isMatch) {
-          // This was a miss
-          const response: Response = {
-            stimulus: letter,
-            responseTime: STIMULUS_DURATION,
-            correct: false,
-            timestamp: Date.now()
-          };
-          setResponses(prev => [...prev, response]);
-        }
-        // If not a match, no response is correct (correct rejection)
-        
-        setCurrentLetter(null);
-        
-        setTimeout(() => {
-          if (trialCount < TOTAL_TRIALS - 1) {
-            showNextTrial();
-          } else {
-            calculateResults();
-          }
-        }, ITI_DURATION);
-      }
-    }, STIMULUS_DURATION);
-  };
-
-  const calculateResults = () => {
+  const calculateResults = useCallback(() => {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
@@ -231,6 +174,72 @@ export default function NBackTest({ onComplete }: NBackTestProps) {
     
     setTestResult(result);
     setPhase('results');
+  }, [startTime, responses, sequence]);
+
+  const showNextTrial = useCallback(() => {
+    setTrialCount(prevTrialCount => {
+      if (prevTrialCount >= TOTAL_TRIALS) {
+        calculateResults();
+        return prevTrialCount;
+      }
+      
+      const letter = sequence[prevTrialCount];
+      setCurrentLetter(letter);
+      setStimulusStartTime(Date.now());
+      
+      // Auto-advance if no response
+      setTimeout(() => {
+        setShowFeedback(currentShowFeedback => {
+          if (!currentShowFeedback) {
+            // Check if this was a miss (should have responded but didn't)
+            const isMatch = prevTrialCount >= N_BACK && sequence[prevTrialCount] === sequence[prevTrialCount - N_BACK];
+            
+            if (isMatch) {
+              // This was a miss
+              const response: Response = {
+                stimulus: letter,
+                responseTime: STIMULUS_DURATION,
+                correct: false,
+                timestamp: Date.now()
+              };
+              setResponses(prev => [...prev, response]);
+            }
+            // If not a match, no response is correct (correct rejection)
+            
+            setCurrentLetter(null);
+            
+            setTimeout(() => {
+              if (prevTrialCount + 1 < TOTAL_TRIALS) {
+                setTimeout(showNextTrial, 100);
+              } else {
+                calculateResults();
+              }
+            }, ITI_DURATION);
+          }
+          return currentShowFeedback;
+        });
+      }, STIMULUS_DURATION);
+      
+      return prevTrialCount + 1;
+    });
+  }, [sequence, calculateResults]);
+
+  const startTest = () => {
+    setPhase('countdown');
+    setCountdown(3);
+    
+    const countdownInterval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval);
+          setPhase('test');
+          setStartTime(Date.now());
+          showNextTrial();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   const renderInstructions = () => (
