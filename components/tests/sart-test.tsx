@@ -83,66 +83,7 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress]);
 
-  const startTest = () => {
-    setPhase('countdown');
-    setCountdown(3);
-    
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval);
-          setPhase('test');
-          setStartTime(Date.now());
-          runTest();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const runTest = () => {
-    let currentTrial = 0;
-    
-    const showNextStimulus = () => {
-      if (currentTrial >= TOTAL_TRIALS) {
-        calculateResults();
-        return;
-      }
-      
-      const number = sequence[currentTrial];
-      setCurrentNumber(number);
-      setStimulusStartTime(Date.now());
-      setTrialCount(currentTrial + 1);
-      
-      setTimeout(() => {
-        // Check if no response was given for a go trial
-        const responseGiven = responses.some(r => 
-          r.timestamp > stimulusStartTime && r.timestamp < Date.now()
-        );
-        
-        if (!responseGiven && number !== NO_GO_NUMBER) {
-          // Record omission
-          const response: Response = {
-            stimulus: number,
-            responseTime: STIMULUS_DURATION,
-            correct: false,
-            timestamp: Date.now()
-          };
-          setResponses(prev => [...prev, response]);
-        }
-        
-        setCurrentNumber(null);
-        currentTrial++;
-        
-        setTimeout(showNextStimulus, 200); // Brief pause between stimuli
-      }, STIMULUS_DURATION);
-    };
-    
-    showNextStimulus();
-  };
-
-  const calculateResults = () => {
+  const calculateResults = useCallback(() => {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
@@ -177,6 +118,91 @@ export default function SARTTest({ onComplete }: SARTTestProps) {
     
     setTestResult(result);
     setPhase('results');
+  }, [startTime, responses]);
+
+  const runTest = useCallback(() => {
+    let currentTrial = 0;
+    let isRunning = true;
+    let stimulusTimeout: NodeJS.Timeout | null = null;
+    let nextTrialTimeout: NodeJS.Timeout | null = null;
+    
+    const cleanup = () => {
+      if (stimulusTimeout) clearTimeout(stimulusTimeout);
+      if (nextTrialTimeout) clearTimeout(nextTrialTimeout);
+      isRunning = false;
+    };
+    
+    const showNextStimulus = () => {
+      if (!isRunning || currentTrial >= TOTAL_TRIALS) {
+        if (currentTrial >= TOTAL_TRIALS) {
+          calculateResults();
+        }
+        return;
+      }
+      
+      const number = sequence[currentTrial];
+      const trialStartTime = Date.now();
+      
+      setCurrentNumber(number);
+      setStimulusStartTime(trialStartTime);
+      setTrialCount(currentTrial + 1);
+      
+      stimulusTimeout = setTimeout(() => {
+        if (!isRunning) return;
+        
+        // Check if response was given during this stimulus period
+        setResponses(prevResponses => {
+          const responseGiven = prevResponses.some(r => 
+            r.timestamp >= trialStartTime && r.timestamp <= Date.now()
+          );
+          
+          if (!responseGiven && number !== NO_GO_NUMBER) {
+            // Record omission
+            const omissionResponse: Response = {
+              stimulus: number,
+              responseTime: STIMULUS_DURATION,
+              correct: false,
+              timestamp: Date.now()
+            };
+            return [...prevResponses, omissionResponse];
+          }
+          return prevResponses;
+        });
+        
+        setCurrentNumber(null);
+        currentTrial++;
+        
+        nextTrialTimeout = setTimeout(() => {
+          if (isRunning) {
+            showNextStimulus();
+          }
+        }, 200);
+      }, STIMULUS_DURATION);
+    };
+    
+    showNextStimulus();
+    
+    // Return cleanup function
+    return cleanup;
+  }, [sequence, calculateResults]);
+
+  const startTest = () => {
+    setPhase('countdown');
+    setCountdown(3);
+    
+    const countdownInterval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval);
+          setPhase('test');
+          setStartTime(Date.now());
+          const cleanup = runTest();
+          // Store cleanup function for potential cleanup
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   const renderInstructions = () => (
