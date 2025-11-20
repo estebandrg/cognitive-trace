@@ -129,5 +129,151 @@
         "answer": "Yes, you can retake the test as many times as you want. However, we recommend waiting at least a few hours between sessions for more representative results."
       }
     }
+  },
+  "tests": {
+    "modeSelection": {
+      "badge": "Cognitive Assessment",
+      "title": "Cognitive Tests",
+      "description": "Choose how you want to take the cognitive tests: all sequentially for a complete assessment, or access the dashboard to take them individually.",
+      "sequential": {
+        "title": "Complete Assessment",
+        "description": "All tests sequentially",
+        "duration": "~4-5 min",
+        "recommended": "Recommended",
+        "content": "Take all cognitive tests one after another to get a complete assessment of your cognitive performance. Includes SART, Flanker, N-Back and PVT.",
+        "includes": "Includes:",
+        "includesList": {
+          "sart": "SART Test (Sustained attention)",
+          "flanker": "Flanker Test (Cognitive control)",
+          "nback": "N-Back Test (Working memory)",
+          "pvt": "PVT Test (Psychomotor vigilance)"
+        },
+        "button": "Start Complete Assessment"
+      },
+      "dashboard": {
+        "title": "Individual Dashboard",
+        "description": "Choose specific tests",
+        "flexible": "Flexible",
+        "customizable": "Customizable",
+        "content": "Access the dashboard to choose and take specific tests according to your needs. Perfect for training particular cognitive skills.",
+        "advantages": "Advantages:",
+        "advantagesList": {
+          "choose": "Choose specific tests",
+          "repeat": "Repeat individual tests",
+          "control": "Control your pace",
+          "focus": "Focus on specific areas"
+        },
+        "button": "Go to Dashboard"
+      },
+      "recommendations": {
+        "title": "Recommendations",
+        "complete": "Complete Assessment: Ideal for getting a complete cognitive profile",
+        "individual": "Individual Dashboard: Perfect for training specific skills",
+        "environment": "Find a quiet environment free from distractions",
+        "connection": "Make sure you have a stable internet connection"
+      }
+    },
+    "sequential": {
+      "badge": "Complete Assessment",
+      "title": "Cognitive Test Battery",
+      "description": "You will take 4 cognitive tests sequentially. Each test evaluates different aspects of your cognitive performance.",
+      "instructions": {
+        "title": "General Instructions",
+        "duration": "Total duration: Approximately 4-5 minutes",
+        "environment": "Environment: Find a quiet place without distractions",
+        "focus": "Concentration: Maintain focus throughout the sequence",
+        "breaks": "Breaks: There will be brief pauses between tests",
+        "results": "Results: You will get a complete report at the end"
+      },
+      "progress": {
+        "test": "Test {current} of {total}",
+        "completed": "{percent}% completed",
+        "completedTests": "Completed Tests",
+        "next": "Next: {testName}",
+        "preparing": "Preparing for the next test..."
+      },
+      "buttons": {
+        "back": "Back",
+        "start": "Start Assessment"
+      }
+    },
+    "results": {
+      "badge": "Assessment Completed",
+      "title": "Cognitive Assessment Results",
+      "description": "You have completed all cognitive tests. Here is a complete summary of your performance.",
+      "overallScore": {
+        "title": "Overall Score",
+        "description": "Score based on accuracy and response speed",
+        "duration": "Total duration: {minutes} min",
+        "testsCompleted": "{count} tests completed"
+      },
+      "performance": {
+        "excellent": "Excellent",
+        "good": "Good",
+        "regular": "Fair",
+        "needsImprovement": "Needs Improvement"
+      },
+      "metrics": {
+        "accuracy": "Accuracy",
+        "averageTime": "Average Time",
+        "omissions": "Omissions",
+        "commissions": "Commissions",
+        "congruentRT": "Congruent RT",
+        "interference": "Interference",
+        "hits": "Hits",
+        "falsePositives": "False Positives",
+        "minRT": "Min RT",
+        "lapses": "Lapses"
+      },
+      "summary": {
+        "title": "Summary and Recommendations",
+        "strengths": "Identified Strengths",
+        "improvements": "Areas for Improvement",
+        "goodPerformance": "Good performance in {area}",
+        "fastReactions": "Fast reaction times",
+        "practice": "Practice {area}",
+        "workOnSpeed": "Work on response speed",
+        "maintainPractice": "Maintain regular practice to improve consistency"
+      },
+      "buttons": {
+        "home": "Back to Home",
+        "retry": "Retry Assessment"
+      }
+    },
+    "resultsDashboard": {
+      "title": "{testName} Results",
+      "subtitle": "{testFullName}",
+      "metrics": {
+        "accuracy": "Accuracy",
+        "avgTime": "Avg Time",
+        "correct": "Correct",
+        "performance": "Performance"
+      },
+      "continueAssessment": {
+        "title": "Continue Your Assessment",
+        "description": "Complete these remaining tests for a comprehensive evaluation"
+      },
+      "startTest": "Start {testName}",
+      "allComplete": {
+        "title": "Assessment Complete!",
+        "description": "You have completed all available cognitive tests"
+      },
+      "buttons": {
+        "viewHistory": "View History",
+        "continue": "Continue"
+      }
+    },
+    "testNames": {
+      "sart": "SART",
+      "flanker": "Flanker",
+      "nback": "N-Back",
+      "pvt": "PVT"
+    },
+    "testDescriptions": {
+      "sart": "Sustained Attention",
+      "flanker": "Cognitive Control",
+      "nback": "Working Memory",
+      "pvt": "Psychomotor Vigilance"
+    }
   }
 }

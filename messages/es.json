@@ -129,5 +129,151 @@
         "answer": "Sí, podés repetir el test las veces que quieras. Sin embargo, recomendamos esperar al menos unas horas entre sesiones para obtener resultados más representativos."
       }
     }
+  },
+  "tests": {
+    "modeSelection": {
+      "badge": "Evaluación Cognitiva",
+      "title": "Tests Cognitivos",
+      "description": "Elige cómo quieres realizar los tests cognitivos: todos de manera secuencial para una evaluación completa, o accede al dashboard para hacerlos individualmente.",
+      "sequential": {
+        "title": "Evaluación Completa",
+        "description": "Todos los tests de manera secuencial",
+        "duration": "~4-5 min",
+        "recommended": "Recomendado",
+        "content": "Realiza todos los tests cognitivos uno tras otro para obtener una evaluación completa de tu rendimiento cognitivo. Incluye SART, Flanker, N-Back y PVT.",
+        "includes": "Incluye:",
+        "includesList": {
+          "sart": "Test SART (Atención sostenida)",
+          "flanker": "Test Flanker (Control cognitivo)",
+          "nback": "Test N-Back (Memoria de trabajo)",
+          "pvt": "Test PVT (Vigilancia psicomotora)"
+        },
+        "button": "Comenzar Evaluación Completa"
+      },
+      "dashboard": {
+        "title": "Dashboard Individual",
+        "description": "Elige tests específicos",
+        "flexible": "Flexible",
+        "customizable": "Personalizable",
+        "content": "Accede al dashboard para elegir y realizar tests específicos según tus necesidades. Perfecto para entrenar habilidades cognitivas particulares.",
+        "advantages": "Ventajas:",
+        "advantagesList": {
+          "choose": "Elige tests específicos",
+          "repeat": "Repite tests individuales",
+          "control": "Controla tu ritmo",
+          "focus": "Enfoque en áreas específicas"
+        },
+        "button": "Ir al Dashboard"
+      },
+      "recommendations": {
+        "title": "Recomendaciones",
+        "complete": "Evaluación Completa: Ideal para obtener un perfil cognitivo completo",
+        "individual": "Dashboard Individual: Perfecto para entrenar habilidades específicas",
+        "environment": "Busca un ambiente silencioso libre de distracciones",
+        "connection": "Asegúrate de tener una conexión a internet estable"
+      }
+    },
+    "sequential": {
+      "badge": "Evaluación Completa",
+      "title": "Batería de Tests Cognitivos",
+      "description": "Vas a realizar 4 tests cognitivos de manera secuencial. Cada test evalúa diferentes aspectos de tu rendimiento cognitivo.",
+      "instructions": {
+        "title": "Instrucciones Generales",
+        "duration": "Duración total: Aproximadamente 4-5 minutos",
+        "environment": "Ambiente: Busca un lugar silencioso y sin distracciones",
+        "focus": "Concentración: Mantén el foco durante toda la secuencia",
+        "breaks": "Descansos: Habrá breves pausas entre tests",
+        "results": "Resultados: Obtendrás un reporte completo al final"
+      },
+      "progress": {
+        "test": "Test {current} de {total}",
+        "completed": "{percent}% completado",
+        "completedTests": "Tests Completados",
+        "next": "Siguiente: {testName}",
+        "preparing": "Preparándote para el siguiente test..."
+      },
+      "buttons": {
+        "back": "Volver",
+        "start": "Comenzar Evaluación"
+      }
+    },
+    "results": {
+      "badge": "Evaluación Completada",
+      "title": "Resultados de la Evaluación Cognitiva",
+      "description": "Has completado todos los tests cognitivos. Aquí tienes un resumen completo de tu rendimiento.",
+      "overallScore": {
+        "title": "Puntuación General",
+        "description": "Puntuación basada en precisión y velocidad de respuesta",
+        "duration": "Duración total: {minutes} min",
+        "testsCompleted": "{count} tests completados"
+      },
+      "performance": {
+        "excellent": "Excelente",
+        "good": "Bueno",
+        "regular": "Regular",
+        "needsImprovement": "Necesita Mejora"
+      },
+      "metrics": {
+        "accuracy": "Precisión",
+        "averageTime": "Tiempo Promedio",
+        "omissions": "Omisiones",
+        "commissions": "Comisiones",
+        "congruentRT": "RT Congruente",
+        "interference": "Interferencia",
+        "hits": "Aciertos",
+        "falsePositives": "Falsos Positivos",
+        "minRT": "RT Mínimo",
+        "lapses": "Lapsos"
+      },
+      "summary": {
+        "title": "Resumen y Recomendaciones",
+        "strengths": "Fortalezas Identificadas",
+        "improvements": "Áreas de Mejora",
+        "goodPerformance": "Buen rendimiento en {area}",
+        "fastReactions": "Tiempos de reacción rápidos",
+        "practice": "Practicar {area}",
+        "workOnSpeed": "Trabajar en velocidad de respuesta",
+        "maintainPractice": "Mantener práctica regular para mejorar consistencia"
+      },
+      "buttons": {
+        "home": "Volver al Inicio",
+        "retry": "Repetir Evaluación"
+      }
+    },
+    "resultsDashboard": {
+      "title": "Resultados de {testName}",
+      "subtitle": "{testFullName}",
+      "metrics": {
+        "accuracy": "Precisión",
+        "avgTime": "Tiempo Prom.",
+        "correct": "Correctas",
+        "performance": "Rendimiento"
+      },
+      "continueAssessment": {
+        "title": "Continúa tu Evaluación",
+        "description": "Completa estos tests restantes para una evaluación integral"
+      },
+      "startTest": "Iniciar {testName}",
+      "allComplete": {
+        "title": "¡Evaluación Completa!",
+        "description": "Has completado todos los tests cognitivos disponibles"
+      },
+      "buttons": {
+        "viewHistory": "Ver Historial",
+        "continue": "Continuar"
+      }
+    },
+    "testNames": {
+      "sart": "SART",
+      "flanker": "Flanker",
+      "nback": "N-Back",
+      "pvt": "PVT"
+    },
+    "testDescriptions": {
+      "sart": "Atención Sostenida",
+      "flanker": "Control Cognitivo",
+      "nback": "Memoria de Trabajo",
+      "pvt": "Vigilancia Psicomotora"
+    }
   }
 }

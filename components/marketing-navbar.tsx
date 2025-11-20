@@ -31,7 +31,7 @@ export default function MarketingNavbar() {
             {t('faq')}
           </IntlLink>
           <Button asChild>
-            <IntlLink href="/test" className="group">{t('startTest')}</IntlLink>
+            <IntlLink href="/tests" className="group">{t('startTest')}</IntlLink>
           </Button>
           <ThemeSwitcher />
         </nav>
@@ -50,7 +50,7 @@ export default function MarketingNavbar() {
                 <IntlLink href="/faq" className="w-full">{t('faq')}</IntlLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <IntlLink href="/test" className="w-full">{t('startTest')}</IntlLink>
+                <IntlLink href="/tests" className="w-full">{t('startTest')}</IntlLink>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
