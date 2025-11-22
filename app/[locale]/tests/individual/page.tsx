@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TestResult, TestType } from '@/lib/types/tests';
 import { useTestSession } from '@/hooks/use-test-session';
-import TestDashboard from '@/components/tests/test-dashboard';
-import ResultsDashboard from '@/components/tests/results-dashboard';
+import TestDashboard from '@/components/tests/orchestration/test-dashboard';
+import ResultsDashboard from '@/components/tests/orchestration/results-dashboard';
 
 type PageState = 'dashboard' | 'individual-result';
 

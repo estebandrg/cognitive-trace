@@ -1,6 +1,6 @@
 'use client';
 
-import TestModeSelection from '@/components/tests/test-mode-selection';
+import TestModeSelection from '@/components/tests/orchestration/test-mode-selection';
 
 export default function TestsPage() {
   // This page now only shows the mode selection
