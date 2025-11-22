@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TestResult } from '@/lib/types/tests';
 import { useTestSession } from '@/hooks/use-test-session';
-import SequentialTestRunner from '@/components/tests/sequential-test-runner';
-import SequentialResults from '@/components/tests/sequential-results';
+import SequentialTestRunner from '@/components/tests/orchestration/sequential-test-runner';
+import SequentialResults from '@/components/tests/orchestration/sequential-results';
 
 type PageState = 'sequential' | 'results';
 

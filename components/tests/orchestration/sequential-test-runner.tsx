@@ -9,10 +9,10 @@ import { TestType, TestResult, SARTResult, FlankerResult, NBackResult, PVTResult
 import { CheckCircle, Clock, ArrowLeft } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
-const SARTTest = dynamic(() => import('./sart-test'), { ssr: false });
-const FlankerTest = dynamic(() => import('./flanker-test'), { ssr: false });
-const NBackTest = dynamic(() => import('./nback-test'), { ssr: false });
-const PVTTest = dynamic(() => import('./pvt-test'), { ssr: false });
+const SARTTest = dynamic(() => import('../tasks/sart/sart-test'), { ssr: false });
+const FlankerTest = dynamic(() => import('../tasks/flanker/flanker-test'), { ssr: false });
+const NBackTest = dynamic(() => import('../tasks/nback/nback-test'), { ssr: false });
+const PVTTest = dynamic(() => import('../tasks/pvt/pvt-test'), { ssr: false });
 
 interface SequentialTestRunnerProps {
   onComplete: (results: TestResult[]) => void;
