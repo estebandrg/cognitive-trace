@@ -2,8 +2,12 @@
 
 import { useStore } from '@/store';
 import { TestResult, TestType } from '@/lib/types/tests';
+import { saveTestResultWithSync } from '@/lib/helpers/test-session-helpers';
+import { completeSession as completeSessionAction } from '@/lib/actions/session-actions';
+import { useRouter } from 'next/navigation';
 
 export function useTestSession() {
+  const router = useRouter();
   const {
     currentSession,
     startSession,
@@ -19,9 +23,26 @@ export function useTestSession() {
     addSession
   } = useStore();
 
-  const handleTestComplete = (result: TestResult) => {
-    // Add result to current session
-    addTestResult(result);
+  const handleTestComplete = async (result: TestResult) => {
+    // Save to DB if session exists
+    if (currentSession?.dbSessionId) {
+      try {
+        await saveTestResultWithSync(
+          currentSession.dbSessionId,
+          result,
+          addTestResult
+        );
+        
+        // Revalidate dashboard cache
+        router.refresh();
+      } catch (error) {
+        console.error('Error saving test result:', error);
+        // Result is already saved locally via saveTestResultWithSync
+      }
+    } else {
+      // No DB session, save only locally
+      addTestResult(result);
+    }
     
     // If this completes all tests in a sequential session, complete the session
     const completedTests = getCompletedTests();
@@ -31,6 +52,15 @@ export function useTestSession() {
       const completedSession = completeSession();
       if (completedSession !== undefined) {
         addSession(completedSession);
+        
+        // Complete session in DB
+        if (currentSession?.dbSessionId) {
+          try {
+            await completeSessionAction(currentSession.dbSessionId);
+          } catch (error) {
+            console.error('Error completing session in DB:', error);
+          }
+        }
       }
     }
     
