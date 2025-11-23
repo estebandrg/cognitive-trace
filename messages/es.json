@@ -6,7 +6,11 @@
   "navbar": {
     "faq": "Preguntas Frecuentes",
     "startTest": "Comenzar test",
-    "menuLabel": "Menú de navegación"
+    "menuLabel": "Menú de navegación",
+    "dashboard": "Dashboard",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión"
   },
   "hero": {
     "badge": "Evaluación cognitiva rápida",
@@ -274,6 +278,72 @@
       "flanker": "Control Cognitivo",
       "nback": "Memoria de Trabajo",
       "pvt": "Vigilancia Psicomotora"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "Bienvenido de nuevo",
+      "emailLabel": "Email",
+      "passwordLabel": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submitButton": "Iniciar Sesión",
+      "loadingButton": "Iniciando sesión...",
+      "orContinueWith": "O continúa con",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUpLink": "Regístrate",
+      "success": "Inicio de sesión exitoso",
+      "error": "Error al iniciar sesión"
+    },
+    "signup": {
+      "title": "Crear Cuenta",
+      "subtitle": "Únete a nosotros y comienza tu viaje",
+      "emailLabel": "Email",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "minChars": "Mínimo 8 caracteres",
+      "submitButton": "Crear Cuenta",
+      "loadingButton": "Creando cuenta...",
+      "alreadyAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión",
+      "success": "Cuenta creada exitosamente. Por favor verifica tu email.",
+      "error": "Error al crear la cuenta"
+    },
+    "forgotPassword": {
+      "title": "Recuperar Contraseña",
+      "subtitle": "Te enviaremos instrucciones a tu email",
+      "emailLabel": "Email",
+      "submitButton": "Enviar Instrucciones",
+      "loadingButton": "Enviando...",
+      "backToLogin": "Volver al inicio de sesión",
+      "success": "Se ha enviado un email con instrucciones",
+      "error": "Error al solicitar el restablecimiento"
+    },
+    "updatePassword": {
+      "title": "Nueva Contraseña",
+      "subtitle": "Ingresa tu nueva contraseña segura",
+      "passwordLabel": "Nueva Contraseña",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "submitButton": "Actualizar Contraseña",
+      "loadingButton": "Actualizando...",
+      "success": "Contraseña actualizada exitosamente",
+      "error": "Error al actualizar la contraseña"
+    },
+    "oauth": {
+      "continueWith": "Continuar con {provider}",
+      "redirecting": "Redirigiendo..."
+    },
+    "passwordStrength": {
+      "minChars": "Mínimo 8 caracteres",
+      "uppercase": "Una mayúscula",
+      "lowercase": "Una minúscula",
+      "number": "Un número",
+      "specialChar": "Un carácter especial"
+    },
+    "validation": {
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "weakPassword": "La contraseña no cumple con los requisitos",
+      "invalidEmail": "Dirección de email inválida"
     }
   }
 }

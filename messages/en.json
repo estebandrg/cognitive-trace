@@ -6,7 +6,11 @@
   "navbar": {
     "faq": "Frequently Asked Questions",
     "startTest": "Start test",
-    "menuLabel": "Navigation menu"
+    "menuLabel": "Navigation menu",
+    "dashboard": "Dashboard",
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out"
   },
   "hero": {
     "badge": "Fast cognitive evaluation",
@@ -274,6 +278,72 @@
       "flanker": "Cognitive Control",
       "nback": "Working Memory",
       "pvt": "Psychomotor Vigilance"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot your password?",
+      "submitButton": "Sign In",
+      "loadingButton": "Signing in...",
+      "orContinueWith": "Or continue with",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "success": "Signed in successfully",
+      "error": "Error signing in"
+    },
+    "signup": {
+      "title": "Create Account",
+      "subtitle": "Join us and start your journey",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "minChars": "Minimum 8 characters",
+      "submitButton": "Create Account",
+      "loadingButton": "Creating account...",
+      "alreadyAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "success": "Account created successfully. Please verify your email.",
+      "error": "Error creating account"
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "subtitle": "We'll send instructions to your email",
+      "emailLabel": "Email",
+      "submitButton": "Send Instructions",
+      "loadingButton": "Sending...",
+      "backToLogin": "Back to sign in",
+      "success": "Instructions sent to your email",
+      "error": "Error sending instructions"
+    },
+    "updatePassword": {
+      "title": "New Password",
+      "subtitle": "Enter your new secure password",
+      "passwordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "submitButton": "Update Password",
+      "loadingButton": "Updating...",
+      "success": "Password updated successfully",
+      "error": "Error updating password"
+    },
+    "oauth": {
+      "continueWith": "Continue with {provider}",
+      "redirecting": "Redirecting..."
+    },
+    "passwordStrength": {
+      "minChars": "Minimum 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "One number",
+      "specialChar": "One special character"
+    },
+    "validation": {
+      "passwordMismatch": "Passwords do not match",
+      "weakPassword": "Password does not meet requirements",
+      "invalidEmail": "Invalid email address"
     }
   }
 }

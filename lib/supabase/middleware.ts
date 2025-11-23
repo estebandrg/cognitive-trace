@@ -2,8 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+export async function updateSession(request: NextRequest, response?: NextResponse) {
+  let supabaseResponse = response ?? NextResponse.next({
     request,
   });
 
@@ -47,15 +47,30 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
+  const pathname = request.nextUrl.pathname;
+
+  // Extract locale from pathname if present
+  const localeMatch = pathname.match(/^\/(en|es)\//);
+  const locale = localeMatch ? localeMatch[1] : 'en';
+
+  // Check if the path is an auth path (either root or localized)
+  const isAuthPath = pathname.startsWith("/auth") ||
+    pathname.match(/^\/(?:en|es)\/auth/);
+
+  // Check if the path is a public path (root, localized root, or tests)
+  const isPublicPath = pathname === "/" ||
+    pathname.match(/^\/(?:en|es)$/) ||
+    pathname.startsWith("/tests") ||
+    pathname.match(/^\/(?:en|es)\/tests/);
+
   if (
-    request.nextUrl.pathname !== "/" &&
+    !isPublicPath &&
     !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
+    !isAuthPath
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = `/${locale}/auth/login`;
     return NextResponse.redirect(url);
   }
 

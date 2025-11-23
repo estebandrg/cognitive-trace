@@ -1,17 +1,10 @@
-"use client";
-
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ThemeSwitcher from "@/components/theme-switcher";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
 import {useTranslations} from 'next-intl';
 import {Link as IntlLink} from '@/i18n/routing';
+import { MobileMenu } from "./mobile-menu";
+import { AuthNavItems } from "./auth-nav-items";
+import { DesktopAuthNavWrapper } from "./desktop-auth-nav-wrapper";
 
 export default function MarketingNavbar() {
   const t = useTranslations('navbar');
@@ -30,30 +23,17 @@ export default function MarketingNavbar() {
           <IntlLink href="/faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             {t('faq')}
           </IntlLink>
-          <Button asChild>
-            <IntlLink href="/tests" className="group">{t('startTest')}</IntlLink>
-          </Button>
+          
+          <DesktopAuthNavWrapper />
           <ThemeSwitcher />
         </nav>
 
         {/* Mobile menu */}
         <div className="flex items-center gap-2 md:hidden">
           <ThemeSwitcher />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" aria-label={t('menuLabel')}>
-                <Menu className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem asChild>
-                <IntlLink href="/faq" className="w-full">{t('faq')}</IntlLink>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <IntlLink href="/tests" className="w-full">{t('startTest')}</IntlLink>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <MobileMenu>
+            <AuthNavItems />
+          </MobileMenu>
         </div>
       </div>
     </header>
