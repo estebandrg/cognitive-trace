@@ -36,20 +36,66 @@ export default function ResultsDashboard({
   const t = useTranslations();
   const [loadingTest, setLoadingTest] = useState<TestType | null>(null);
   const [loadingAction, setLoadingAction] = useState<'continue' | null>(null);
+  const [showDetailedFeedback, setShowDetailedFeedback] = useState(false);
   
   const testMetadata = getTestMetadata(completedResult.testType);
   const IconComponent = iconMap[completedResult.testType];
   
-  // Calculate performance level
-  const getPerformanceLevel = (accuracy: number) => {
-    if (accuracy >= 90) return { level: 'Excellent', color: 'text-green-600', bgColor: 'bg-green-100' };
-    if (accuracy >= 80) return { level: 'Good', color: 'text-blue-600', bgColor: 'bg-blue-100' };
-    if (accuracy >= 70) return { level: 'Fair', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
-    return { level: 'Needs Improvement', color: 'text-red-600', bgColor: 'bg-red-100' };
+  // Calculate performance level with detailed feedback
+  const getPerformanceLevel = (accuracy: number, avgRT: number) => {
+    const rtFeedback = avgRT < 350 ? 'fast' : avgRT < 500 ? 'moderate' : 'slow';
+    const accuracyPercent = accuracy * 100;
+    
+    if (accuracyPercent >= 90) {
+      return {
+        level: 'Excellent',
+        color: 'text-green-600 border-green-600',
+        gradientFrom: 'from-green-500',
+        gradientTo: 'to-emerald-500',
+        icon: '🎯',
+        description: 'Outstanding performance! You demonstrated excellent attention and accuracy.',
+        feedback: rtFeedback === 'fast' 
+          ? 'Your response times were impressively quick while maintaining high accuracy.'
+          : 'Consider working on response speed to complement your excellent accuracy.'
+      };
+    }
+    if (accuracyPercent >= 80) {
+      return {
+        level: 'Good',
+        color: 'text-blue-600 border-blue-600',
+        gradientFrom: 'from-blue-500',
+        gradientTo: 'to-cyan-500',
+        icon: '👍',
+        description: 'Good performance! You showed solid cognitive abilities in this test.',
+        feedback: rtFeedback === 'fast'
+          ? 'Great balance between speed and accuracy. Keep up the good work!'
+          : 'Try to respond a bit faster while maintaining your current accuracy level.'
+      };
+    }
+    if (accuracyPercent >= 70) {
+      return {
+        level: 'Fair',
+        color: 'text-yellow-600 border-yellow-600',
+        gradientFrom: 'from-yellow-500',
+        gradientTo: 'to-orange-500',
+        icon: '📊',
+        description: 'Fair performance. There is room for improvement in your cognitive performance.',
+        feedback: 'Focus on maintaining concentration throughout the test. Practice can help improve both accuracy and response time.'
+      };
+    }
+    return {
+      level: 'Needs Improvement',
+      color: 'text-red-600 border-red-600',
+      gradientFrom: 'from-red-500',
+      gradientTo: 'to-orange-500',
+      icon: '💪',
+      description: 'This test was challenging for you. Don\'t worry, cognitive skills can be improved with practice!',
+      feedback: 'Try taking breaks during tasks, minimizing distractions, and practicing regularly. Consider retaking this test after some rest to see if fatigue was a factor.'
+    };
   };
 
   // Memoize expensive calculations
-  const performance = useMemo(() => getPerformanceLevel(completedResult.accuracy), [completedResult.accuracy]);
+  const performance = useMemo(() => getPerformanceLevel(completedResult.accuracy, completedResult.averageReactionTime), [completedResult.accuracy, completedResult.averageReactionTime]);
   const overallScore = useMemo(() => calculateOverallScore([completedResult]), [completedResult]);
 
   // Prepare chart data
@@ -126,12 +172,87 @@ export default function ResultsDashboard({
         </div>
 
         <div className="max-w-6xl mx-auto space-y-8">
+          {/* Performance Assessment Card - Modern Design */}
+          <div className="relative group">
+            {/* Glowing background effect */}
+            <div className={`absolute -inset-0.5 bg-gradient-to-r ${performance.gradientFrom} ${performance.gradientTo} rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition duration-500`} />
+            
+            <Card className="relative overflow-hidden border-0 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-3xl">
+              {/* Animated gradient mesh background */}
+              <div className="absolute inset-0 opacity-30">
+                <div className={`absolute top-0 -left-4 w-96 h-96 bg-gradient-to-br ${performance.gradientFrom} ${performance.gradientTo} rounded-full mix-blend-multiply filter blur-3xl animate-pulse`} />
+                <div className={`absolute bottom-0 -right-4 w-96 h-96 bg-gradient-to-tl ${performance.gradientFrom} ${performance.gradientTo} rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700`} />
+              </div>
+              
+              <CardContent className="relative p-10 md:p-14">
+                <div className="space-y-8 md:space-y-10">
+                  {/* Score Display - Massive and centered */}
+                  <div className="text-center">
+                    <div className="inline-flex items-baseline gap-3 md:gap-4">
+                      <span className={`text-8xl md:text-9xl font-black bg-gradient-to-br ${performance.gradientFrom} ${performance.gradientTo} bg-clip-text text-transparent leading-none tracking-tight`}>
+                        {Math.round(completedResult.accuracy * 100)}
+                      </span>
+                      <span className="text-5xl md:text-6xl font-bold text-gray-400 dark:text-gray-500">%</span>
+                    </div>
+                    <div className="mt-4">
+                      <span className={`text-xl md:text-2xl font-bold ${performance.color.split(' ')[0]} uppercase tracking-wide`}>
+                        {performance.level}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Divider */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className={`w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent`} />
+                    </div>
+                  </div>
+                  
+                  {/* Description section */}
+                  <div className="space-y-5 text-center max-w-3xl mx-auto">
+                    <h3 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
+                      {performance.description}
+                    </h3>
+                    
+                    {/* Detailed feedback - Always visible on desktop, toggleable on mobile */}
+                    <div className={`${showDetailedFeedback ? 'block' : 'hidden'} md:block`}>
+                      <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {performance.feedback}
+                      </p>
+                    </div>
+                    
+                    {/* Toggle button - Only visible on mobile */}
+                    <button
+                      onClick={() => setShowDetailedFeedback(!showDetailedFeedback)}
+                      className="md:hidden inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                    >
+                      <span>{showDetailedFeedback ? 'Show less' : 'Show more details'}</span>
+                      <svg
+                        className={`w-4 h-4 transition-transform ${showDetailedFeedback ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </CardContent>
+              
+              {/* Subtle shine effect on hover */}
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0" />
+              </div>
+            </Card>
+          </div>
+
           {/* Performance Overview */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
             <Card className="p-4 sm:p-6">
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1">
-                  {Math.round(completedResult.accuracy)}%
+                  {Math.round(completedResult.accuracy * 100)}%
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground">
                   {t('tests.resultsDashboard.metrics.accuracy')}
@@ -157,17 +278,6 @@ export default function ResultsDashboard({
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground">
                   {t('tests.resultsDashboard.metrics.correct')}
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 sm:p-6">
-              <div className="text-center">
-                <Badge className={`${performance.bgColor} ${performance.color} text-xs sm:text-sm px-2 sm:px-3 py-1 mb-1`}>
-                  {performance.level}
-                </Badge>
-                <div className="text-xs sm:text-sm text-muted-foreground">
-                  {t('tests.resultsDashboard.metrics.performance')}
                 </div>
               </div>
             </Card>

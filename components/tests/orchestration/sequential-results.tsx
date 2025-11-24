@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +15,8 @@ interface SequentialResultsProps {
 }
 
 export default function SequentialResults({ results, onRetry, onHome }: SequentialResultsProps) {
+  const [showDetailedFeedback, setShowDetailedFeedback] = useState(false);
+
   const getTestIcon = (testType: string) => {
     switch (testType) {
       case 'sart': return Eye;
@@ -64,6 +67,60 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
   };
 
   const overallScore = calculateOverallScore();
+
+  const getOverallPerformanceAssessment = () => {
+    const totalAccuracy = results.reduce((sum, result) => sum + result.accuracy, 0) / results.length;
+    const avgReactionTime = results.reduce((sum, result) => sum + result.averageReactionTime, 0) / results.length;
+    
+    if (overallScore >= 85) {
+      return {
+        level: 'Excelente',
+        color: 'text-green-600 border-green-600',
+        gradientFrom: 'from-green-500',
+        gradientTo: 'to-emerald-500',
+        icon: '🏆',
+        description: '¡Rendimiento excepcional! Demostraste habilidades cognitivas sobresalientes en todas las áreas evaluadas.',
+        feedback: totalAccuracy >= 0.9 
+          ? 'Tu precisión y velocidad de respuesta son excelentes. Mantén este nivel con práctica regular.'
+          : 'Excelente balance entre velocidad y precisión. Considera practicar para mantener este alto rendimiento.'
+      };
+    }
+    if (overallScore >= 70) {
+      return {
+        level: 'Bueno',
+        color: 'text-blue-600 border-blue-600',
+        gradientFrom: 'from-blue-500',
+        gradientTo: 'to-cyan-500',
+        icon: '⭐',
+        description: '¡Buen rendimiento general! Mostraste sólidas habilidades cognitivas en la mayoría de áreas.',
+        feedback: avgReactionTime < 450
+          ? 'Buen equilibrio entre velocidad y precisión. Continúa practicando para mejorar aún más.'
+          : 'Tu precisión es buena. Intenta trabajar en la velocidad de respuesta para optimizar tu rendimiento.'
+      };
+    }
+    if (overallScore >= 55) {
+      return {
+        level: 'Regular',
+        color: 'text-yellow-600 border-yellow-600',
+        gradientFrom: 'from-yellow-500',
+        gradientTo: 'to-orange-500',
+        icon: '📈',
+        description: 'Rendimiento moderado. Hay áreas de oportunidad para mejorar tus habilidades cognitivas.',
+        feedback: 'Considera practicar las áreas donde tuviste menor rendimiento. La concentración y el descanso adecuado pueden mejorar significativamente tus resultados.'
+      };
+    }
+    return {
+      level: 'Necesita Mejora',
+      color: 'text-red-600 border-red-600',
+      gradientFrom: 'from-red-500',
+      gradientTo: 'to-orange-500',
+      icon: '💪',
+      description: 'La evaluación fue desafiante. ¡No te preocupes! Las habilidades cognitivas se pueden mejorar con práctica y descanso.',
+      feedback: 'Recomendaciones: 1) Asegúrate de estar bien descansado antes de realizar tests. 2) Minimiza distracciones durante las pruebas. 3) Practica regularmente para mejorar. 4) Considera consultar con un profesional si las dificultades persisten.'
+    };
+  };
+
+  const overallPerformance = getOverallPerformanceAssessment();
   const totalDuration = results.reduce((sum, result) => sum + result.duration, 0);
 
   // Chart data for visualizations
@@ -109,6 +166,81 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
             <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto px-2">
               Has completado todos los tests cognitivos. Aquí tienes un resumen completo de tu rendimiento.
             </p>
+          </div>
+
+          {/* Performance Assessment Card - Modern Design */}
+          <div className="relative group">
+            {/* Glowing background effect */}
+            <div className={`absolute -inset-0.5 bg-gradient-to-r ${overallPerformance.gradientFrom} ${overallPerformance.gradientTo} rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition duration-500`} />
+            
+            <Card className="relative overflow-hidden border-0 shadow-2xl backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-3xl">
+              {/* Animated gradient mesh background */}
+              <div className="absolute inset-0 opacity-30">
+                <div className={`absolute top-0 -left-4 w-96 h-96 bg-gradient-to-br ${overallPerformance.gradientFrom} ${overallPerformance.gradientTo} rounded-full mix-blend-multiply filter blur-3xl animate-pulse`} />
+                <div className={`absolute bottom-0 -right-4 w-96 h-96 bg-gradient-to-tl ${overallPerformance.gradientFrom} ${overallPerformance.gradientTo} rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700`} />
+              </div>
+              
+              <CardContent className="relative p-10 md:p-14">
+                <div className="space-y-8 md:space-y-10">
+                  {/* Score Display - Massive and centered */}
+                  <div className="text-center">
+                    <div className="inline-flex items-baseline gap-3 md:gap-4">
+                      <span className={`text-8xl md:text-9xl font-black bg-gradient-to-br ${overallPerformance.gradientFrom} ${overallPerformance.gradientTo} bg-clip-text text-transparent leading-none tracking-tight`}>
+                        {overallScore}
+                      </span>
+                      <span className="text-4xl md:text-5xl font-bold text-gray-400 dark:text-gray-500">pts</span>
+                    </div>
+                    <div className="mt-4">
+                      <span className={`text-xl md:text-2xl font-bold ${overallPerformance.color.split(' ')[0]} uppercase tracking-wide`}>
+                        {overallPerformance.level}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Divider */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className={`w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent`} />
+                    </div>
+                  </div>
+                  
+                  {/* Description section */}
+                  <div className="space-y-5 text-center max-w-3xl mx-auto">
+                    <h3 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
+                      {overallPerformance.description}
+                    </h3>
+                    
+                    {/* Detailed feedback - Always visible on desktop, toggleable on mobile */}
+                    <div className={`${showDetailedFeedback ? 'block' : 'hidden'} md:block`}>
+                      <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {overallPerformance.feedback}
+                      </p>
+                    </div>
+                    
+                    {/* Toggle button - Only visible on mobile */}
+                    <button
+                      onClick={() => setShowDetailedFeedback(!showDetailedFeedback)}
+                      className="md:hidden inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                    >
+                      <span>{showDetailedFeedback ? 'Mostrar menos' : 'Ver más detalles'}</span>
+                      <svg
+                        className={`w-4 h-4 transition-transform ${showDetailedFeedback ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </CardContent>
+              
+              {/* Subtle shine effect on hover */}
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0" />
+              </div>
+            </Card>
           </div>
 
           {/* Overall Score */}
