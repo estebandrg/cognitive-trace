@@ -6,6 +6,7 @@ import { deleteSession } from '@/lib/actions/session-actions';
 import { Button } from '@/components/ui/button';
 import { Trash2, Eye, Calendar, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import type { Database } from '@/lib/supabase/database.types';
+import { useTranslations } from 'next-intl';
 
 type Session = Database['public']['Tables']['sessions']['Row'];
 type TestResult = Database['public']['Tables']['test_results']['Row'];
@@ -26,12 +27,13 @@ interface SessionsListProps {
  * - Revalidación con router.refresh()
  */
 export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
+	const t = useTranslations('dashboard.sessions');
 	const router = useRouter();
 	const [sessions, setSessions] = useState(initialSessions);
 	const [deletingId, setDeletingId] = useState<string | null>(null);
 
 	const handleDelete = async (sessionId: string) => {
-		if (!confirm('¿Estás seguro de eliminar esta sesión?')) return;
+		if (!confirm(t('confirmDelete'))) return;
 
 		setDeletingId(sessionId);
 
@@ -52,7 +54,7 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 			console.error('Error deleting session:', error);
 			// Rollback en caso de error
 			setSessions(backup);
-			alert('Error al eliminar la sesión');
+			alert('Error deleting session');
 		} finally {
 			setDeletingId(null);
 		}
@@ -73,7 +75,7 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 	};
 
 	const formatDuration = (start: string, end?: string | null) => {
-		if (!end) return 'En progreso';
+		if (!end) return t('inProgress');
 		const duration = new Date(end).getTime() - new Date(start).getTime();
 		const minutes = Math.floor(duration / 60000);
 		const seconds = Math.floor((duration % 60000) / 1000);
@@ -85,7 +87,7 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 			<div className="text-center py-12">
 				<Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
 				<p className="text-gray-600 dark:text-gray-300">
-					No hay sesiones registradas todavía
+					{t('empty')}
 				</p>
 			</div>
 		);
@@ -102,8 +104,8 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 						<div className="flex-1">
 							<div className="flex items-center gap-3 mb-2">
 								<h3 className="font-semibold text-lg">
-									{session.is_sequential ? 'Evaluación Completa' : 'Tests Individuales'}
-								</h3>
+								{session.is_sequential ? t('completeAssessment') : t('individualTests')}
+							</h3>
 								{session.is_completed ? (
 									<CheckCircle2 className="w-5 h-5 text-green-500" />
 								) : (
@@ -121,7 +123,7 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 									{formatDuration(session.start_time, session.end_time)}
 								</div>
 								<div>
-									Tests: {session.total_tests_completed}/4
+									{t('tests')}: {session.total_tests_completed}/4
 								</div>
 							</div>
 
@@ -147,7 +149,7 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 								onClick={() => handleView(session.id)}
 							>
 								<Eye className="w-4 h-4 mr-1" />
-								Ver
+								{t('view')}
 							</Button>
 							<Button
 								variant="outline"
@@ -157,7 +159,7 @@ export function SessionsList({ sessions: initialSessions }: SessionsListProps) {
 								className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
 							>
 								<Trash2 className="w-4 h-4 mr-1" />
-								{deletingId === session.id ? 'Eliminando...' : 'Eliminar'}
+								{deletingId === session.id ? t('deleting') : t('delete')}
 							</Button>
 						</div>
 					</div>
