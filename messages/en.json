@@ -136,6 +136,7 @@
   },
   "tests": {
     "modeSelection": {
+      "backButton": "Back to home",
       "badge": "Cognitive Assessment",
       "title": "Cognitive Tests",
       "description": "Choose how you want to take the cognitive tests: all sequentially for a complete assessment, or access the dashboard to take them individually.",

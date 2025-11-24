@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { PlayCircle, Grid3X3, Clock, Target } from 'lucide-react';
+import { PlayCircle, Grid3X3, Clock, Target, ArrowLeft } from 'lucide-react';
 import { startTestSession } from '@/lib/helpers/test-session-helpers';
 import { useStore } from '@/store';
 
@@ -63,6 +63,18 @@ export default function TestModeSelection({ onModeSelect }: TestModeSelectionPro
       </div>
       
       <div className="container mx-auto px-4 py-8 md:py-24">
+        {/* Back button */}
+        <div className="mb-6 md:mb-8">
+          <Button 
+            onClick={() => router.push('/')} 
+            variant="outline"
+            className="gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('tests.modeSelection.backButton')}
+          </Button>
+        </div>
+
         <div className="text-center mb-8 md:mb-16 space-y-4 md:space-y-6">
           <Badge className="inline-flex">Evaluación Cognitiva</Badge>
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">

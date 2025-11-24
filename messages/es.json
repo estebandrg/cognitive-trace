@@ -136,6 +136,7 @@
   },
   "tests": {
     "modeSelection": {
+      "backButton": "Volver al inicio",
       "badge": "Evaluación Cognitiva",
       "title": "Tests Cognitivos",
       "description": "Elige cómo quieres realizar los tests cognitivos: todos de manera secuencial para una evaluación completa, o accede al dashboard para hacerlos individualmente.",
