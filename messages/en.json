@@ -13,35 +13,35 @@
     "logout": "Log out"
   },
   "hero": {
-    "badge": "Fast cognitive evaluation",
-    "title": "Evaluate your attention with stimuli",
-    "description": "CognitiveTrace is an intuitive test that detects signs of scattered attention through short and simple tasks. Clear results in minutes.",
+    "badge": "Complete cognitive assessment",
+    "title": "Assess your attention with stimuli",
+    "description": "CognitiveTrace is a complete cognitive assessment platform with scientifically validated tests, progress tracking, and detailed performance analysis. Improve your cognitive abilities through consistent practice.",
     "startTest": "Start test",
     "learnMore": "Learn more",
     "features": {
-      "noRegistration": "• No registration required",
-      "stimulusBased": "• Based on stimulus response tasks",
-      "multiDevice": "• Compatible with mobile and desktop"
+      "trackProgress": "• Progress tracking and evolution",
+      "stimulusBased": "• Scientifically validated tests",
+      "multiDevice": "• Dashboard with complete history"
     }
   },
   "features": {
     "badge": "Features",
     "title": "What does CognitiveTrace offer?",
     "stimulusTests": {
-      "title": "Stimulus tests",
-      "description": "Short stimulus response tasks to measure focus and consistency."
+      "title": "Validated Cognitive Tests",
+      "description": "4 scientifically validated tests: SART, Flanker, N-Back, and PVT to assess different cognitive aspects."
     },
     "clearResults": {
-      "title": "Clear results",
-      "description": "Simple metrics: reaction time, accuracy and variability."
+      "title": "Detailed Results",
+      "description": "Complete analysis with accuracy metrics, reaction time, charts, and personalized feedback."
     },
-    "uxDesign": {
-      "title": "UX-centered design",
-      "description": "Simple and intuitive interface to minimize cognitive friction."
+    "progressTracking": {
+      "title": "Progress Tracking",
+      "description": "Personal dashboard with complete history, statistics, temporal evolution, and trend analysis."
     },
     "multiDevice": {
       "title": "Multi-device",
-      "description": "Works on desktop and mobile without installation."
+      "description": "Access from any device. Your data syncs automatically."
     }
   },
   "scientificValidation": {
@@ -92,11 +92,46 @@
     "howItWorks": "See how it works"
   },
   "footer": {
-    "copyright": "© {year} CognitiveTrace",
+    "copyright": " {year} CognitiveTrace",
     "navigation": {
       "howItWorks": "How it works",
       "features": "Features",
       "start": "Start"
+    }
+  },
+  "dashboardShowcase": {
+    "badge": "Dashboard",
+    "title": "Complete tracking of your progress",
+    "description": "Visualize your evolution, analyze trends, and get detailed insights about your cognitive performance over time.",
+    "features": {
+      "history": {
+        "title": "Complete History",
+        "description": "Access all your previous results and compare your performance across sessions."
+      },
+      "evolution": {
+        "title": "Temporal Evolution",
+        "description": "Watch how your cognitive abilities improve with clear charts and trends."
+      },
+      "sessions": {
+        "title": "Session Management",
+        "description": "Organize and review each test session with detailed metrics and analysis."
+      },
+      "achievements": {
+        "title": "Achievements & Goals",
+        "description": "Celebrate your improvements and stay motivated with progress statistics."
+      }
+    },
+    "preview": {
+      "title": "Your Control Panel",
+      "subtitle": "Visualize your progress in real-time",
+      "badge": "Advanced Level",
+      "chart": "Interactive performance charts",
+      "stats": {
+        "tests": "Tests",
+        "accuracy": "Accuracy",
+        "sessions": "Sessions",
+        "streak": "Streak"
+      }
     }
   },
   "faq": {
@@ -114,15 +149,15 @@
       },
       "needRegistration": {
         "question": "Do I need to register to use CognitiveTrace?",
-        "answer": "No, you don't need to register. You can start the test immediately from your browser. Results are shown at the end of each session."
+        "answer": "You can take tests without registering, but creating an account allows you to save your history, track your progress over time, access detailed statistics, and view your evolution in a personalized dashboard."
       },
       "accuracy": {
         "question": "How accurate are the results?",
         "answer": "The results are based on scientifically validated methodologies such as SART, Stroop, Flanker, N-Back, and PVT. However, for clinical diagnoses always consult with a healthcare professional."
       },
       "dataPrivacy": {
-        "question": "What happens to my data?",
-        "answer": "Your assessment data is processed locally on your device when possible. We do not store personally identifiable information without your explicit consent."
+        "question": "What happens with my data?",
+        "answer": "If you create an account, your test results are securely saved so you can track your progress. We only store test performance data and your email. We don't share your information with third parties, and you can delete your account at any time."
       },
       "preparation": {
         "question": "How do I prepare for the test?",

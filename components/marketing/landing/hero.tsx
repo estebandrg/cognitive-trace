@@ -30,7 +30,7 @@ export default function Hero() {
             </Button>
           </div>
           <ul className="mt-2 text-sm text-muted-foreground grid gap-1">
-            <li>{t('features.noRegistration')}</li>
+            <li>{t('features.trackProgress')}</li>
             <li>{t('features.stimulusBased')}</li>
             <li>{t('features.multiDevice')}</li>
           </ul>

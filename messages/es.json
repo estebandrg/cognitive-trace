@@ -13,35 +13,35 @@
     "logout": "Cerrar sesión"
   },
   "hero": {
-    "badge": "Evaluación cognitiva rápida",
+    "badge": "Evaluación cognitiva completa",
     "title": "Evaluá tu atención con estímulos",
-    "description": "CognitiveTrace es un test intuitivo que detecta señales de atención dispersa mediante tareas cortas y simples. Resultados claros en minutos.",
+    "description": "CognitiveTrace es una plataforma completa de evaluación cognitiva con tests científicamente validados, seguimiento de progreso y análisis detallado de tu rendimiento. Mejorá tus habilidades cognitivas con práctica constante.",
     "startTest": "Comenzar test",
     "learnMore": "Saber más",
     "features": {
-      "noRegistration": "• Sin registro requerido",
-      "stimulusBased": "• Basado en tareas de respuesta a estímulos",
-      "multiDevice": "• Compatible con móvil y escritorio"
+      "trackProgress": "• Seguimiento de progreso y evolución",
+      "stimulusBased": "• Tests científicamente validados",
+      "multiDevice": "• Dashboard con historial completo"
     }
   },
   "features": {
     "badge": "Características",
     "title": "¿Qué ofrece CognitiveTrace?",
     "stimulusTests": {
-      "title": "Pruebas de estímulo",
-      "description": "Tareas cortas de respuesta a estímulos para medir foco y consistencia."
+      "title": "Tests Cognitivos Validados",
+      "description": "4 tests científicamente validados: SART, Flanker, N-Back y PVT para evaluar diferentes aspectos cognitivos."
     },
     "clearResults": {
-      "title": "Resultados claros",
-      "description": "Métricas sencillas: tiempo de reacción, precisión y variabilidad."
+      "title": "Resultados Detallados",
+      "description": "Análisis completo con métricas de precisión, tiempo de reacción, gráficos y feedback personalizado."
     },
-    "uxDesign": {
-      "title": "Diseño centrado en UX",
-      "description": "Interfaz simple e intuitiva para minimizar fricción cognitiva."
+    "progressTracking": {
+      "title": "Seguimiento de Progreso",
+      "description": "Dashboard personal con historial completo, estadísticas, evolución temporal y análisis de tendencias."
     },
     "multiDevice": {
       "title": "Multi-dispositivo",
-      "description": "Funciona en escritorio y móvil sin instalación."
+      "description": "Accedé desde cualquier dispositivo. Tus datos se sincronizan automáticamente."
     }
   },
   "scientificValidation": {
@@ -99,6 +99,41 @@
       "start": "Comenzar"
     }
   },
+  "dashboardShowcase": {
+    "badge": "Dashboard",
+    "title": "Seguimiento completo de tu progreso",
+    "description": "Visualiza tu evolución, analiza tendencias y obtén insights detallados sobre tu rendimiento cognitivo a lo largo del tiempo.",
+    "features": {
+      "history": {
+        "title": "Historial Completo",
+        "description": "Accede a todos tus resultados anteriores y compara tu rendimiento entre sesiones."
+      },
+      "evolution": {
+        "title": "Evolución Temporal",
+        "description": "Observa cómo mejoran tus habilidades cognitivas con gráficos y tendencias claras."
+      },
+      "sessions": {
+        "title": "Gestión de Sesiones",
+        "description": "Organiza y revisa cada sesión de tests con métricas detalladas y análisis."
+      },
+      "achievements": {
+        "title": "Logros y Metas",
+        "description": "Celebra tus mejoras y mantén la motivación con estadísticas de progreso."
+      }
+    },
+    "preview": {
+      "title": "Tu Panel de Control",
+      "subtitle": "Visualiza tu progreso en tiempo real",
+      "badge": "Nivel Avanzado",
+      "chart": "Gráficos interactivos de rendimiento",
+      "stats": {
+        "tests": "Tests",
+        "accuracy": "Precisión",
+        "sessions": "Sesiones",
+        "streak": "Racha"
+      }
+    }
+  },
   "faq": {
     "title": "Preguntas Frecuentes",
     "description": "Encontrá respuestas a las preguntas más comunes sobre CognitiveTrace",
@@ -114,7 +149,7 @@
       },
       "needRegistration": {
         "question": "¿Necesito registrarme para usar CognitiveTrace?",
-        "answer": "No, no necesitás registrarte. Podés comenzar el test inmediatamente desde tu navegador. Los resultados se muestran al finalizar cada sesión."
+        "answer": "Podés realizar tests sin registrarte, pero crear una cuenta te permite guardar tu historial, hacer seguimiento de tu progreso en el tiempo, acceder a estadísticas detalladas y ver tu evolución en un dashboard personalizado."
       },
       "accuracy": {
         "question": "¿Qué tan precisos son los resultados?",
@@ -122,7 +157,7 @@
       },
       "dataPrivacy": {
         "question": "¿Qué pasa con mis datos?",
-        "answer": "Tus datos de evaluación se procesan localmente en tu dispositivo cuando es posible. No almacenamos información personal identificable sin tu consentimiento explícito."
+        "answer": "Si creás una cuenta, tus resultados de tests se guardan de forma segura para que puedas hacer seguimiento de tu progreso. Solo almacenamos datos de rendimiento en los tests y tu email. No compartimos tu información con terceros y podés eliminar tu cuenta en cualquier momento."
       },
       "preparation": {
         "question": "¿Cómo me preparo para el test?",

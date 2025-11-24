@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Clock, MousePointerClick, Smartphone } from "lucide-react";
+import { Brain, BarChart3, MousePointerClick, Smartphone } from "lucide-react";
 import {useTranslations} from 'next-intl';
 
 
@@ -11,17 +11,17 @@ export default function FeatureGrid() {
     {
       title: t('stimulusTests.title'),
       description: t('stimulusTests.description'),
-      icon: MousePointerClick,
+      icon: Brain,
     },
     {
       title: t('clearResults.title'),
       description: t('clearResults.description'),
-      icon: Clock,
+      icon: MousePointerClick,
     },
     {
-      title: t('uxDesign.title'),
-      description: t('uxDesign.description'),
-      icon: Brain,
+      title: t('progressTracking.title'),
+      description: t('progressTracking.description'),
+      icon: BarChart3,
     },
     {
       title: t('multiDevice.title'),
