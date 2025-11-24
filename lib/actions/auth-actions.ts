@@ -175,8 +175,17 @@ export async function signInWithOAuth(
     try {
         const supabase = await createClient();
         const headersList = await headers();
-        const origin = headersList.get("origin");
         const referer = headersList.get("referer");
+        const forwardedHost = headersList.get("x-forwarded-host");
+        const origin = headersList.get("origin");
+        const isLocalEnv = process.env.NODE_ENV === "development";
+
+        // Build base URL dynamically from request headers
+        const baseUrl = isLocalEnv 
+            ? origin 
+            : forwardedHost 
+                ? `https://${forwardedHost}` 
+                : origin;
 
         // Extract locale from referer URL
         let locale = 'en';
@@ -191,7 +200,7 @@ export async function signInWithOAuth(
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: `${origin}/auth/callback?locale=${locale}`,
+                redirectTo: `${baseUrl}/auth/callback?locale=${locale}`,
             },
         });
 
