@@ -354,7 +354,17 @@
       "history": "History",
       "trends": "Trends Analysis",
       "achievements": "Achievements",
-      "startSession": "Start Session"
+      "startSession": "Start Session",
+      "descriptions": {
+        "home": "Overview & stats",
+        "history": "View all sessions",
+        "trends": "Performance insights",
+        "achievements": "Unlock achievements"
+      }
+    },
+    "sidebar": {
+      "yourProgress": "Your Progress",
+      "analytics": "Analytics"
     },
     "overview": {
       "title": "Overview",
@@ -371,12 +381,18 @@
       "quickStats": "Quick Stats",
       "improvementRate": "Improvement Rate",
       "favoriteTest": "Favorite Test",
-      "noData": "No sessions yet. Start your first assessment!"
-    },
-    "user": {
-      "logout": "Logout",
-      "language": "Language",
-      "theme": "Theme",
+      "noData": "No sessions yet. Start your first assessment!",
+      "personalRecord": "Personal record",
+      "mostPracticed": "Most practiced",
+      "overallPerformance": "Overall Performance",
+      "activityStreak": "Activity Streak",
+      "totalTests": "Total Tests",
+      "sessions": "Sessions",
+      "tests": "tests",
+      "motivationalMessage": "Keep up the great work! 🎉",
+      "progressMessage": "You're making steady progress.",
+      "streakMessage": "day streak!",
+      "startStreakMessage": "Start a streak today!",
       "lightMode": "Light Mode",
       "darkMode": "Dark Mode",
       "systemMode": "System",
@@ -436,16 +452,30 @@
     "trends": {
       "title": "Performance Trends",
       "noData": "Not enough data to show trends",
+      "needMoreSessions": "Complete at least 2 sessions to see trend analysis",
       "overallTrend": "Overall Trend",
       "improving": "Improving",
       "declining": "Declining",
       "stable": "Stable",
+      "accuracyChange": "Accuracy Change",
+      "reactionTime": "Reaction Time",
+      "totalSessions": "Total Sessions",
       "accuracyTrend": "Accuracy Trend",
       "reactionTimeTrend": "Reaction Time Trend",
       "performanceRadar": "Performance by Test",
       "weeklyProgress": "Weekly Progress",
       "testComparison": "Early vs Recent Performance",
-      "insights": "Insights & Recommendations"
+      "insights": "Insights & Recommendations",
+      "insightMessages": {
+        "greatProgress": "Great progress!",
+        "accuracyImproved": "Your accuracy has improved by {percent}% compared to earlier sessions.",
+        "fasterReactions": "Faster reactions!",
+        "reactionImproved": "Your average reaction time has decreased by {ms}ms, showing improved cognitive speed.",
+        "takeYourTime": "Take your time.",
+        "accuracyDeclined": "Accuracy has declined slightly. Consider focusing on accuracy over speed in your next session.",
+        "consistencyMilestone": "Consistency milestone!",
+        "sessionsCompleted": "You've completed {count} sessions. Regular practice is key to cognitive improvement."
+      }
     },
     "achievements": {
       "title": "Achievements",

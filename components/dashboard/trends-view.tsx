@@ -42,10 +42,14 @@ interface TrendsViewProps {
 	translations: {
 		title: string;
 		noData: string;
+		needMoreSessions: string;
 		overallTrend: string;
 		improving: string;
 		declining: string;
 		stable: string;
+		accuracyChange: string;
+		reactionTime: string;
+		totalSessions: string;
 		accuracyTrend: string;
 		reactionTimeTrend: string;
 		performanceRadar: string;
@@ -205,7 +209,7 @@ export function TrendsView({ sessions, translations }: TrendsViewProps) {
 						{translations.noData}
 					</p>
 					<p className="mt-2 text-sm text-gray-500">
-						Complete at least 2 sessions to see trend analysis
+						{translations.needMoreSessions}
 					</p>
 				</div>
 			</div>
@@ -255,7 +259,7 @@ export function TrendsView({ sessions, translations }: TrendsViewProps) {
 				<div className="rounded-xl border border-gray-200/50 bg-gradient-to-br from-blue-50/50 to-white/50 p-6 backdrop-blur-sm dark:border-gray-800/50 dark:from-blue-900/10 dark:to-gray-900/50">
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-gray-600 dark:text-gray-400">Accuracy Change</p>
+							<p className="text-sm text-gray-600 dark:text-gray-400">{translations.accuracyChange}</p>
 							<p className="mt-1 text-2xl font-bold">
 								{accuracyChange > 0 ? '+' : ''}{accuracyChange.toFixed(1)}%
 							</p>
@@ -269,7 +273,7 @@ export function TrendsView({ sessions, translations }: TrendsViewProps) {
 				<div className="rounded-xl border border-gray-200/50 bg-gradient-to-br from-purple-50/50 to-white/50 p-6 backdrop-blur-sm dark:border-gray-800/50 dark:from-purple-900/10 dark:to-gray-900/50">
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-gray-600 dark:text-gray-400">Reaction Time</p>
+							<p className="text-sm text-gray-600 dark:text-gray-400">{translations.reactionTime}</p>
 							<p className="mt-1 text-2xl font-bold">
 								{rtChange > 0 ? '-' : '+'}{Math.abs(rtChange).toFixed(0)}ms
 							</p>
@@ -283,7 +287,7 @@ export function TrendsView({ sessions, translations }: TrendsViewProps) {
 				<div className="rounded-xl border border-gray-200/50 bg-gradient-to-br from-pink-50/50 to-white/50 p-6 backdrop-blur-sm dark:border-gray-800/50 dark:from-pink-900/10 dark:to-gray-900/50">
 					<div className="flex items-center justify-between">
 						<div>
-							<p className="text-sm text-gray-600 dark:text-gray-400">Total Sessions</p>
+							<p className="text-sm text-gray-600 dark:text-gray-400">{translations.totalSessions}</p>
 							<p className="mt-1 text-2xl font-bold">{completedSessions.length}</p>
 						</div>
 						<Award className="h-10 w-10 text-pink-500" />

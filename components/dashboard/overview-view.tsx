@@ -38,6 +38,17 @@ interface OverviewViewProps {
 		improvementRate: string;
 		favoriteTest: string;
 		noData: string;
+		personalRecord: string;
+		mostPracticed: string;
+		overallPerformance: string;
+		activityStreak: string;
+		totalTests: string;
+		sessions: string;
+		tests: string;
+		motivationalMessage: string;
+		progressMessage: string;
+		streakMessage: string;
+		startStreakMessage: string;
 	};
 }
 
@@ -206,7 +217,7 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 					<div className="space-y-1">
 						<p className="text-sm text-gray-600 dark:text-gray-400">{translations.bestSession}</p>
 						<p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.bestAccuracy}%</p>
-						<p className="text-xs text-gray-500 dark:text-gray-400">Personal record</p>
+						<p className="text-xs text-gray-500 dark:text-gray-400">{translations.personalRecord}</p>
 					</div>
 				</div>
 
@@ -218,7 +229,7 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 					<div className="space-y-1">
 						<p className="text-sm text-gray-600 dark:text-gray-400">{translations.favoriteTest}</p>
 						<p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.favoriteTest || '-'}</p>
-						<p className="text-xs text-gray-500 dark:text-gray-400">Most practiced</p>
+						<p className="text-xs text-gray-500 dark:text-gray-400">{translations.mostPracticed}</p>
 					</div>
 				</div>
 			</div>
@@ -254,7 +265,7 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 												{format(new Date(session.start_time), 'MMM dd, yyyy')}
 											</p>
 											<p className="text-xs text-gray-500 dark:text-gray-400">
-												{session.total_tests_completed || 0} tests
+												{session.total_tests_completed || 0} {translations.tests}
 											</p>
 										</div>
 									</div>
@@ -278,7 +289,7 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 						<div className="space-y-3">
 							<div>
 								<div className="mb-1 flex items-center justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">Overall Performance</span>
+									<span className="text-gray-600 dark:text-gray-400">{translations.overallPerformance}</span>
 									<span className="font-semibold text-blue-600 dark:text-blue-400">{stats.avgAccuracy}%</span>
 								</div>
 								<div className="h-3 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
@@ -291,7 +302,7 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 
 							<div>
 								<div className="mb-1 flex items-center justify-between text-sm">
-									<span className="text-gray-600 dark:text-gray-400">Activity Streak</span>
+									<span className="text-gray-600 dark:text-gray-400">{translations.activityStreak}</span>
 									<span className="font-semibold text-orange-600 dark:text-orange-400">{Math.min((stats.currentStreak / 7) * 100, 100).toFixed(0)}%</span>
 								</div>
 								<div className="h-3 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
@@ -306,11 +317,11 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 						{/* Stats Grid */}
 						<div className="grid grid-cols-2 gap-3 pt-2">
 							<div className="rounded-lg bg-gradient-to-br from-gray-50 to-gray-100/50 p-3 dark:from-gray-900 dark:to-gray-800/50">
-								<p className="text-xs text-gray-600 dark:text-gray-400">Total Tests</p>
+								<p className="text-xs text-gray-600 dark:text-gray-400">{translations.totalTests}</p>
 								<p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{stats.totalTests}</p>
 							</div>
 							<div className="rounded-lg bg-gradient-to-br from-gray-50 to-gray-100/50 p-3 dark:from-gray-900 dark:to-gray-800/50">
-								<p className="text-xs text-gray-600 dark:text-gray-400">Sessions</p>
+								<p className="text-xs text-gray-600 dark:text-gray-400">{translations.sessions}</p>
 								<p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{stats.totalSessions}</p>
 							</div>
 						</div>
@@ -337,9 +348,9 @@ export function OverviewView({ sessions, translations }: OverviewViewProps) {
 				
 				<div className="relative flex items-center justify-between">
 					<div>
-						<h3 className="text-lg font-semibold">Keep up the great work! 🎉</h3>
+						<h3 className="text-lg font-semibold">{translations.motivationalMessage}</h3>
 						<p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-							You're making steady progress. {stats.currentStreak > 0 ? `${stats.currentStreak} day streak!` : 'Start a streak today!'}
+							{translations.progressMessage} {stats.currentStreak > 0 ? `${stats.currentStreak} ${translations.streakMessage}` : translations.startStreakMessage}
 						</p>
 					</div>
 					<Brain className="h-12 w-12 text-purple-600/20 dark:text-purple-400/20" />

@@ -105,6 +105,16 @@ export default function NewDashboardPage() {
 				trends: tNav('trends'),
 				achievements: tNav('achievements'),
 				startSession: tNav('startSession'),
+				descriptions: {
+					home: tNav('descriptions.home'),
+					history: tNav('descriptions.history'),
+					trends: tNav('descriptions.trends'),
+					achievements: tNav('descriptions.achievements'),
+				},
+				sidebar: {
+					yourProgress: t('sidebar.yourProgress'),
+					analytics: t('sidebar.analytics'),
+				},
 				user: {
 					logout: tUser('logout'),
 					language: tUser('language'),
@@ -113,7 +123,7 @@ export default function NewDashboardPage() {
 					darkMode: tUser('darkMode'),
 					systemMode: tUser('systemMode'),
 					english: tUser('english'),
-					spanish: tUser('spanish')
+					spanish: tUser('spanish'),
 				}
 			}}
 			locale={locale}
@@ -136,7 +146,18 @@ export default function NewDashboardPage() {
 						quickStats: tOverview('quickStats'),
 						improvementRate: tOverview('improvementRate'),
 						favoriteTest: tOverview('favoriteTest'),
-						noData: tOverview('noData')
+						noData: tOverview('noData'),
+						personalRecord: tOverview('personalRecord'),
+						mostPracticed: tOverview('mostPracticed'),
+						overallPerformance: tOverview('overallPerformance'),
+						activityStreak: tOverview('activityStreak'),
+						totalTests: tOverview('totalTests'),
+						sessions: tOverview('sessions'),
+						tests: tOverview('tests'),
+						motivationalMessage: tOverview('motivationalMessage'),
+						progressMessage: tOverview('progressMessage'),
+						streakMessage: tOverview('streakMessage'),
+						startStreakMessage: tOverview('startStreakMessage')
 					}}
 				/>
 			) : activeSection === 'history' ? (
@@ -198,10 +219,14 @@ export default function NewDashboardPage() {
 					translations={{
 						title: tTrends('title'),
 						noData: tTrends('noData'),
+						needMoreSessions: tTrends('needMoreSessions'),
 						overallTrend: tTrends('overallTrend'),
 						improving: tTrends('improving'),
 						declining: tTrends('declining'),
 						stable: tTrends('stable'),
+						accuracyChange: tTrends('accuracyChange'),
+						reactionTime: tTrends('reactionTime'),
+						totalSessions: tTrends('totalSessions'),
 						accuracyTrend: tTrends('accuracyTrend'),
 						reactionTimeTrend: tTrends('reactionTimeTrend'),
 						performanceRadar: tTrends('performanceRadar'),

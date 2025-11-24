@@ -354,7 +354,17 @@
       "history": "Historial",
       "trends": "Tendencias",
       "achievements": "Logros",
-      "startSession": "Iniciar Nueva Sesión"
+      "startSession": "Iniciar Nueva Sesión",
+      "descriptions": {
+        "home": "Resumen y estadísticas",
+        "history": "Ver todas las sesiones",
+        "trends": "Análisis de rendimiento",
+        "achievements": "Desbloquear logros"
+      }
+    },
+    "sidebar": {
+      "yourProgress": "Tu Progreso",
+      "analytics": "Analíticas"
     },
     "overview": {
       "title": "Resumen General",
@@ -371,7 +381,18 @@
       "quickStats": "Estadísticas Rápidas",
       "improvementRate": "Tasa de Mejora",
       "favoriteTest": "Test Favorito",
-      "noData": "No hay sesiones todavía. ¡Comienza tu primera evaluación!"
+      "noData": "No hay sesiones todavía. ¡Comienza tu primera evaluación!",
+      "personalRecord": "Récord personal",
+      "mostPracticed": "Más practicado",
+      "overallPerformance": "Rendimiento General",
+      "activityStreak": "Racha de Actividad",
+      "totalTests": "Tests Totales",
+      "sessions": "Sesiones",
+      "tests": "tests",
+      "motivationalMessage": "¡Sigue con el buen trabajo! 🎉",
+      "progressMessage": "Estás haciendo un progreso constante.",
+      "streakMessage": "días de racha!",
+      "startStreakMessage": "¡Comienza una racha hoy!"
     },
     "user": {
       "logout": "Cerrar Sesión",
@@ -436,16 +457,30 @@
     "trends": {
       "title": "Tendencias de Rendimiento",
       "noData": "No hay suficientes datos para mostrar tendencias",
+      "needMoreSessions": "Completa al menos 2 sesiones para ver el análisis de tendencias",
       "overallTrend": "Tendencia General",
       "improving": "Mejorando",
       "declining": "Declinando",
       "stable": "Estable",
+      "accuracyChange": "Cambio de Precisión",
+      "reactionTime": "Tiempo de Reacción",
+      "totalSessions": "Sesiones Totales",
       "accuracyTrend": "Tendencia de Precisión",
       "reactionTimeTrend": "Tendencia de Tiempo de Reacción",
       "performanceRadar": "Rendimiento por Prueba",
       "weeklyProgress": "Progreso Semanal",
       "testComparison": "Rendimiento Temprano vs Reciente",
-      "insights": "Perspectivas y Recomendaciones"
+      "insights": "Perspectivas y Recomendaciones",
+      "insightMessages": {
+        "greatProgress": "¡Gran progreso!",
+        "accuracyImproved": "Tu precisión ha mejorado un {percent}% en comparación con sesiones anteriores.",
+        "fasterReactions": "¡Reacciones más rápidas!",
+        "reactionImproved": "Tu tiempo de reacción promedio ha disminuido {ms}ms, mostrando una mejor velocidad cognitiva.",
+        "takeYourTime": "Tómate tu tiempo.",
+        "accuracyDeclined": "La precisión ha disminuido ligeramente. Considera enfocarte en la precisión sobre la velocidad en tu próxima sesión.",
+        "consistencyMilestone": "¡Hito de consistencia!",
+        "sessionsCompleted": "Has completado {count} sesiones. La práctica regular es clave para la mejora cognitiva."
+      }
     },
     "achievements": {
       "title": "Logros",

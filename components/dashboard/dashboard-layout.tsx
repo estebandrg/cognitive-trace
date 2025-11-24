@@ -15,6 +15,16 @@ interface DashboardLayoutProps {
 		trends: string;
 		achievements: string;
 		startSession: string;
+		descriptions: {
+			home: string;
+			history: string;
+			trends: string;
+			achievements: string;
+		};
+		sidebar: {
+			yourProgress: string;
+			analytics: string;
+		};
 		user: {
 			logout: string;
 			language: string;
@@ -47,7 +57,7 @@ export function DashboardLayout({
 			gradient: 'from-blue-500 via-purple-600 to-pink-600',
 			bgGradient: 'from-blue-500/10 via-purple-600/10 to-pink-600/10',
 			iconColor: 'text-blue-600 dark:text-blue-400',
-			description: 'Overview & stats'
+			description: translations.descriptions.home
 		},
 		{
 			id: 'history' as const,
@@ -56,7 +66,7 @@ export function DashboardLayout({
 			gradient: 'from-blue-500 via-blue-600 to-cyan-600',
 			bgGradient: 'from-blue-500/10 via-blue-600/10 to-cyan-600/10',
 			iconColor: 'text-blue-600 dark:text-blue-400',
-			description: 'View all sessions'
+			description: translations.descriptions.history
 		},
 		{
 			id: 'trends' as const,
@@ -65,7 +75,7 @@ export function DashboardLayout({
 			gradient: 'from-purple-500 via-purple-600 to-pink-600',
 			bgGradient: 'from-purple-500/10 via-purple-600/10 to-pink-600/10',
 			iconColor: 'text-purple-600 dark:text-purple-400',
-			description: 'Performance insights'
+			description: translations.descriptions.trends
 		},
 		{
 			id: 'achievements' as const,
@@ -74,7 +84,7 @@ export function DashboardLayout({
 			gradient: 'from-yellow-500 via-orange-600 to-red-600',
 			bgGradient: 'from-yellow-500/10 via-orange-600/10 to-red-600/10',
 			iconColor: 'text-yellow-600 dark:text-yellow-400',
-			description: 'Unlock achievements'
+			description: translations.descriptions.achievements
 		}
 	];
 
@@ -122,7 +132,7 @@ export function DashboardLayout({
 									CognitiveTrace
 								</h2>
 								<p className="text-xs font-medium text-gray-500 transition-colors duration-300 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300">
-									Your Progress
+									{translations.sidebar.yourProgress}
 								</p>
 							</div>
 						</button>
@@ -158,7 +168,7 @@ export function DashboardLayout({
 					{/* Navigation */}
 					<nav className="flex-1 space-y-1.5 p-4">
 						<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-							Analytics
+							{translations.sidebar.analytics}
 						</p>
 						{navigation.map((item) => {
 							const Icon = item.icon;
@@ -223,20 +233,6 @@ export function DashboardLayout({
 							);
 						})}
 					</nav>
-
-					{/* Footer with stats */}
-					<div className="space-y-2 border-t border-gray-200/50 p-4 dark:border-gray-800/50">
-						<div className="rounded-lg bg-gradient-to-br from-gray-50 to-gray-100/50 p-2.5 dark:from-gray-900 dark:to-gray-800/50">
-							<div className="mb-1 flex items-center gap-2">
-								<div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
-								<p className="text-xs font-medium text-gray-700 dark:text-gray-300">System Status</p>
-							</div>
-							<p className="text-xs text-gray-500 dark:text-gray-400">All systems operational</p>
-						</div>
-						<p className="text-center text-xs text-gray-400 dark:text-gray-500">
-							Dashboard v1.0
-						</p>
-					</div>
 				</div>
 			</aside>
 
