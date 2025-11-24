@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { TestResult, TestType } from '@/lib/types/tests';
 import { useTestSession } from '@/hooks/use-test-session';
@@ -13,18 +13,26 @@ export default function IndividualTestsPage() {
   const router = useRouter();
   const [pageState, setPageState] = useState<PageState>('dashboard');
   const [lastCompletedResult, setLastCompletedResult] = useState<TestResult | null>(null);
+  const hasInitialized = useRef(false);
   
   const { 
     handleTestComplete, 
     completedTests, 
     missingTests,
-    startNewSession
+    startNewSession,
+    currentSession
   } = useTestSession();
 
-  // Initialize individual session on mount
+  // Initialize individual session on mount only if no session exists
   React.useEffect(() => {
-    startNewSession(false);
-  }, []);
+    const initSession = async () => {
+      if (!currentSession && !hasInitialized.current) {
+        hasInitialized.current = true;
+        await startNewSession(false);
+      }
+    };
+    initSession();
+  }, [currentSession, startNewSession]);
 
   const handleIndividualTestComplete = (result: TestResult) => {
     handleTestComplete(result);

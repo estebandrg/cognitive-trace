@@ -27,27 +27,27 @@ export default function TestModeSelection({ onModeSelect }: TestModeSelectionPro
       return;
     }
     
-    // Create session in DB first
     const isSequential = mode === 'sequential';
     setIsLoading(isSequential ? 'sequential' : 'individual');
     
     try {
+      // Try to create session in DB (will fail silently if not authenticated)
       const result = await startTestSession(isSequential, startSession);
       
-      if (!result.success) {
-        alert(`Error: ${result.error}`);
-        return;
-      }
-      
-      // Navigate to specific route
+      // Navigate regardless of DB result - tests work with local state
       if (mode === 'sequential') {
         router.push('/tests/sequential');
       } else {
         router.push('/tests/individual');
       }
     } catch (error: any) {
-      console.error('Error starting session:', error);
-      alert('Error al iniciar los tests. Por favor, intenta nuevamente.');
+      console.error('Error starting tests:', error);
+      // Still navigate - tests work without DB
+      if (mode === 'sequential') {
+        router.push('/tests/sequential');
+      } else {
+        router.push('/tests/individual');
+      }
     } finally {
       setIsLoading(null);
     }

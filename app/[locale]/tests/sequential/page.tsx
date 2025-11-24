@@ -28,9 +28,9 @@ export default function SequentialTestsPage() {
     router.push('/tests');
   };
 
-  const handleRetrySequential = () => {
+  const handleRetrySequential = async () => {
     setSequentialResults([]);
-    startNewSession(true);
+    await startNewSession(true);
     setPageState('sequential');
   };
 
