@@ -35,11 +35,7 @@ export function useTestSession() {
           addTestResult
         );
         
-        if (saveResult.success && !saveResult.error) {
-          toast.success('Test results saved to database', {
-            description: `${result.testType.toUpperCase()} test completed successfully`,
-          });
-        } else if (saveResult.error) {
+        if (saveResult.error) {
           toast.warning('Saved locally only', {
             description: saveResult.error,
           });
@@ -57,9 +53,6 @@ export function useTestSession() {
     } else {
       // No DB session, save only locally
       addTestResult(result);
-      toast.info('Test saved locally', {
-        description: 'Sign in to sync your results to the cloud',
-      });
     }
     
     // If this completes all tests in a sequential session, complete the session
@@ -75,20 +68,12 @@ export function useTestSession() {
         if (currentSession?.dbSessionId) {
           try {
             await completeSessionAction(currentSession.dbSessionId);
-            toast.success('🎉 Sequential assessment completed!', {
-              description: 'All 4 tests finished. Great job!',
-              duration: 5000,
-            });
           } catch (error) {
             console.error('Error completing session in DB:', error);
             toast.warning('Session completed locally', {
               description: 'Could not sync completion status to database',
             });
           }
-        } else {
-          toast.success('🎉 Sequential assessment completed!', {
-            description: 'All tests finished locally',
-          });
         }
       }
     }
@@ -112,11 +97,6 @@ export function useTestSession() {
       });
     } else if (result.sessionId) {
       console.log('DB session created:', result.sessionId);
-      toast.success('Session started', {
-        description: isSequential 
-          ? 'Ready to begin sequential assessment' 
-          : 'Ready to begin individual tests',
-      });
     } else if (result.error?.includes('Local mode')) {
       // User not authenticated - silent, no need to spam with toasts
       console.log('Local mode:', result.error);

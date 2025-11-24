@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { TestResult, SARTResult, FlankerResult, NBackResult, PVTResult } from '@/lib/types/tests';
-import { Trophy, Clock, Target, Brain, Eye, Zap, RotateCcw, Home } from 'lucide-react';
+import { Trophy, Clock, Target, Brain, Eye, Zap, RotateCcw, Home, BarChart3, TrendingUp } from 'lucide-react';
+import { BarChart, Bar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts';
 
 interface SequentialResultsProps {
   results: TestResult[];
@@ -65,6 +66,29 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
   const overallScore = calculateOverallScore();
   const totalDuration = results.reduce((sum, result) => sum + result.duration, 0);
 
+  // Chart data for visualizations
+  const accuracyComparisonData = results.map(result => ({
+    test: getTestName(result.testType),
+    accuracy: (result.accuracy * 100).toFixed(1),
+    fill: result.testType === 'sart' ? '#3b82f6' : 
+          result.testType === 'flanker' ? '#10b981' :
+          result.testType === 'nback' ? '#8b5cf6' : '#f59e0b'
+  }));
+
+  const reactionTimeComparisonData = results.map(result => ({
+    test: getTestName(result.testType),
+    avgRT: result.averageReactionTime.toFixed(0),
+    fill: result.testType === 'sart' ? '#3b82f6' : 
+          result.testType === 'flanker' ? '#10b981' :
+          result.testType === 'nback' ? '#8b5cf6' : '#f59e0b'
+  }));
+
+  const cognitiveProfileData = results.map(result => ({
+    ability: getTestDescription(result.testType),
+    score: (result.accuracy * 100).toFixed(0),
+    fullMark: 100
+  }));
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background gradients */}
@@ -111,6 +135,137 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
                   <span>{results.length} tests completados</span>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Performance Visualizations */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            {/* Accuracy Comparison */}
+            <Card className="relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+              <CardHeader className="relative pb-3">
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-blue-600" />
+                  <CardTitle className="text-base md:text-lg">Comparación de Precisión</CardTitle>
+                </div>
+                <CardDescription className="text-xs md:text-sm">Rendimiento por test cognitivo</CardDescription>
+              </CardHeader>
+              <CardContent className="relative">
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={accuracyComparisonData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis 
+                      dataKey="test" 
+                      tick={{ fontSize: 11 }}
+                    />
+                    <YAxis 
+                      label={{ value: '% Precisión', angle: -90, position: 'insideLeft', style: { fontSize: 11 } }}
+                      tick={{ fontSize: 11 }}
+                      domain={[0, 100]}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        fontSize: '12px'
+                      }}
+                      formatter={(value: number) => [`${value}%`, 'Precisión']}
+                    />
+                    <Bar dataKey="accuracy" radius={[8, 8, 0, 0]}>
+                      {accuracyComparisonData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Reaction Time Comparison */}
+            <Card className="relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5" />
+              <CardHeader className="relative pb-3">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-green-600" />
+                  <CardTitle className="text-base md:text-lg">Tiempo de Reacción</CardTitle>
+                </div>
+                <CardDescription className="text-xs md:text-sm">Velocidad promedio por test</CardDescription>
+              </CardHeader>
+              <CardContent className="relative">
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={reactionTimeComparisonData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis 
+                      dataKey="test" 
+                      tick={{ fontSize: 11 }}
+                    />
+                    <YAxis 
+                      label={{ value: 'Tiempo (ms)', angle: -90, position: 'insideLeft', style: { fontSize: 11 } }}
+                      tick={{ fontSize: 11 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        fontSize: '12px'
+                      }}
+                      formatter={(value: number) => [`${value}ms`, 'Tiempo Promedio']}
+                    />
+                    <Bar dataKey="avgRT" radius={[8, 8, 0, 0]}>
+                      {reactionTimeComparisonData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Cognitive Profile Radar */}
+          <Card className="relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
+            <CardHeader className="relative pb-3">
+              <div className="flex items-center gap-2">
+                <Brain className="w-5 h-5 text-purple-600" />
+                <CardTitle className="text-base md:text-lg">Perfil Cognitivo</CardTitle>
+              </div>
+              <CardDescription className="text-xs md:text-sm">Vista general de habilidades cognitivas</CardDescription>
+            </CardHeader>
+            <CardContent className="relative flex justify-center">
+              <ResponsiveContainer width="100%" height={280}>
+                <RadarChart data={cognitiveProfileData}>
+                  <PolarGrid stroke="#e5e7eb" />
+                  <PolarAngleAxis 
+                    dataKey="ability" 
+                    tick={{ fontSize: 11, fill: '#6b7280' }}
+                  />
+                  <PolarRadiusAxis 
+                    angle={90} 
+                    domain={[0, 100]}
+                    tick={{ fontSize: 10 }}
+                  />
+                  <Radar 
+                    name="Rendimiento" 
+                    dataKey="score" 
+                    stroke="#8b5cf6" 
+                    fill="#8b5cf6" 
+                    fillOpacity={0.6}
+                    strokeWidth={2}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px',
+                      fontSize: '12px'
+                    }}
+                    formatter={(value: number) => [`${value}%`, 'Puntuación']}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 

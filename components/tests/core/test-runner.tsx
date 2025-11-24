@@ -211,8 +211,15 @@ export function TestRunner<TResult extends TestResult, TTrial = any>({
     } as TResult;
 
     setResult(finalResult);
-    finishTest();
-  }, [responses, config, sequence, logic, startTime, getDuration, setResult, finishTest]);
+    
+    // Call onComplete directly instead of showing intermediate results
+    if (onComplete) {
+      onComplete(finalResult);
+    } else {
+      // Only show results phase if no onComplete handler
+      finishTest();
+    }
+  }, [responses, config, sequence, logic, startTime, getDuration, setResult, finishTest, onComplete]);
 
   // Update refs whenever functions change
   useEffect(() => {

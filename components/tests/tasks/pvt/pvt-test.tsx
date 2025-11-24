@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { PVTResult, Response } from '@/lib/types/tests';
-import { TestResults, ResultsSummary } from '../../ui/results';
 import { TestInstructions } from '../../ui/instructions';
 import { TestCountdown } from '../../ui/test-countdown';
 import { TestProgress } from '../../ui/test-progress';
@@ -15,8 +14,7 @@ interface PVTTestProps {
 }
 
 export default function PVTTest({ onComplete }: PVTTestProps) {
-  const [phase, setPhase] = useState<'instructions' | 'countdown' | 'test' | 'results'>('instructions');
-  const [result, setResult] = useState<PVTResult | null>(null);
+  const [phase, setPhase] = useState<'instructions' | 'countdown' | 'test'>('instructions');
   const [countdown, setCountdown] = useState(3);
   const [trialCount, setTrialCount] = useState(0);
   const [responses, setResponses] = useState<Response[]>([]);
@@ -69,9 +67,9 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
       falseStarts
     };
     
-    setResult(finalResult);
-    setPhase('results');
-  }, [startTime, responses, TOTAL_TRIALS, STIMULUS_TIMEOUT, LAPSE_THRESHOLD]);
+    // Call onComplete directly instead of showing intermediate results
+    onComplete(finalResult);
+  }, [startTime, responses, TOTAL_TRIALS, STIMULUS_TIMEOUT, LAPSE_THRESHOLD, onComplete]);
 
   const runTrial = useCallback((trialNumber: number) => {
     if (trialNumber > TOTAL_TRIALS) {
@@ -222,7 +220,6 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
 
   const handleRetry = () => {
     setPhase('instructions');
-    setResult(null);
     setResponses([]);
     setTrialCount(0);
   };
@@ -269,56 +266,6 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
           </div>
         )}
 
-        {phase === 'results' && result && (
-          <TestResults
-            title="PVT Results"
-            subtitle="Your vigilance and reaction time performance"
-            metrics={[
-              {
-                label: 'Average RT',
-                value: result.averageReactionTime.toFixed(0),
-                suffix: 'ms',
-                color: 'blue',
-              },
-              {
-                label: 'Fastest RT',
-                value: result.minRT.toFixed(0),
-                suffix: 'ms',
-                color: 'green',
-              },
-              {
-                label: 'Lapses (>500ms)',
-                value: result.lapses,
-                color: 'orange',
-              },
-              {
-                label: 'False Starts',
-                value: result.falseStarts,
-                color: 'red',
-              },
-            ]}
-            summarySection={
-              <ResultsSummary title="Performance Level">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                    {result.averageReactionTime < 300 ? 'Excellent' :
-                     result.averageReactionTime < 400 ? 'Good' :
-                     result.averageReactionTime < 500 ? 'Fair' : 'Needs Improvement'}
-                  </div>
-                  <p className="text-sm">
-                    <strong>Max RT:</strong> {result.maxRT.toFixed(0)}ms
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Lower reaction times indicate better vigilance and alertness
-                  </p>
-                </div>
-              </ResultsSummary>
-            }
-            onRetry={handleRetry}
-            onContinue={() => onComplete(result)}
-            result={result}
-          />
-        )}
       </div>
     </div>
   );

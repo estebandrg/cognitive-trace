@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { TestResult, TestType } from '@/lib/types/tests';
 import { getTestMetadata } from '@/store/utils/test-metadata';
 import { calculateOverallScore } from '@/store/utils/score-calculator';
-import { Brain, Eye, Zap, Target, Trophy, Clock, CheckCircle, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { Brain, Eye, Zap, Target, Trophy, Clock, CheckCircle, AlertCircle, ArrowRight, Loader2, TrendingUp, BarChart3 } from 'lucide-react';
+import { LineChart, Line, BarChart, Bar, RadialBarChart, RadialBar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 
 const iconMap = {
   sart: Eye,
@@ -22,7 +23,6 @@ interface ResultsDashboardProps {
   completedTests: TestType[];
   missingTests: TestType[];
   onStartTest: (testType: TestType) => void;
-  onViewHistory: () => void;
   onReturnHome: () => void;
 }
 
@@ -31,12 +31,11 @@ export default function ResultsDashboard({
   completedTests,
   missingTests,
   onStartTest,
-  onViewHistory,
   onReturnHome
 }: ResultsDashboardProps) {
   const t = useTranslations();
   const [loadingTest, setLoadingTest] = useState<TestType | null>(null);
-  const [loadingAction, setLoadingAction] = useState<'history' | 'continue' | null>(null);
+  const [loadingAction, setLoadingAction] = useState<'continue' | null>(null);
   
   const testMetadata = getTestMetadata(completedResult.testType);
   const IconComponent = iconMap[completedResult.testType];
@@ -53,6 +52,32 @@ export default function ResultsDashboard({
   const performance = useMemo(() => getPerformanceLevel(completedResult.accuracy), [completedResult.accuracy]);
   const overallScore = useMemo(() => calculateOverallScore([completedResult]), [completedResult]);
 
+  // Prepare chart data
+  const reactionTimeData = useMemo(() => {
+    return completedResult.responses.map((response, index) => ({
+      trial: index + 1,
+      responseTime: response.responseTime,
+      correct: response.correct
+    }));
+  }, [completedResult.responses]);
+
+  const accuracyData = useMemo(() => [
+    {
+      name: 'Accuracy',
+      value: completedResult.accuracy,
+      fill: '#3b82f6'
+    }
+  ], [completedResult.accuracy]);
+
+  const responseDistribution = useMemo(() => {
+    const correct = completedResult.responses.filter(r => r.correct).length;
+    const incorrect = completedResult.responses.length - correct;
+    return [
+      { name: 'Correct', value: correct, fill: '#10b981' },
+      { name: 'Incorrect', value: incorrect, fill: '#ef4444' }
+    ];
+  }, [completedResult.responses]);
+
   // Handle test start with loading state
   const handleStartTest = async (testType: TestType) => {
     setLoadingTest(testType);
@@ -60,16 +85,6 @@ export default function ResultsDashboard({
       await onStartTest(testType);
     } finally {
       setLoadingTest(null);
-    }
-  };
-
-  // Handle view history with loading state
-  const handleViewHistory = async () => {
-    setLoadingAction('history');
-    try {
-      await onViewHistory();
-    } finally {
-      setLoadingAction(null);
     }
   };
 
@@ -155,6 +170,128 @@ export default function ResultsDashboard({
                   {t('tests.resultsDashboard.metrics.performance')}
                 </div>
               </div>
+            </Card>
+          </div>
+
+          {/* Performance Visualizations */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Reaction Time Trend */}
+            <Card className="relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+              <CardHeader className="relative">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-blue-600" />
+                  <CardTitle className="text-lg">Response Time Trend</CardTitle>
+                </div>
+                <CardDescription>Performance across all trials</CardDescription>
+              </CardHeader>
+              <CardContent className="relative">
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={reactionTimeData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis 
+                      dataKey="trial" 
+                      label={{ value: 'Trial', position: 'insideBottom', offset: -5 }}
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis 
+                      label={{ value: 'Time (ms)', angle: -90, position: 'insideLeft' }}
+                      tick={{ fontSize: 12 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                      formatter={(value: number) => [`${value.toFixed(0)}ms`, 'Response Time']}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="responseTime" 
+                      stroke="#3b82f6" 
+                      strokeWidth={2}
+                      dot={(props: any) => {
+                        const { cx, cy, payload } = props;
+                        return (
+                          <circle 
+                            cx={cx} 
+                            cy={cy} 
+                            r={4} 
+                            fill={payload.correct ? '#10b981' : '#ef4444'}
+                            stroke="#fff"
+                            strokeWidth={2}
+                          />
+                        );
+                      }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+                <div className="flex items-center justify-center gap-4 mt-4 text-xs">
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
+                    <span>Correct</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <span>Incorrect</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Accuracy & Distribution */}
+            <Card className="relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5" />
+              <CardHeader className="relative">
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-green-600" />
+                  <CardTitle className="text-lg">Response Distribution</CardTitle>
+                </div>
+                <CardDescription>Correct vs incorrect responses</CardDescription>
+              </CardHeader>
+              <CardContent className="relative">
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={responseDistribution}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis 
+                      dataKey="name" 
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis 
+                      label={{ value: 'Count', angle: -90, position: 'insideLeft' }}
+                      tick={{ fontSize: 12 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px'
+                      }}
+                      formatter={(value: number) => [value, 'Responses']}
+                    />
+                    <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                      {responseDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+                <div className="mt-4 grid grid-cols-2 gap-4 text-center">
+                  <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">
+                      {responseDistribution[0].value}
+                    </div>
+                    <div className="text-xs text-muted-foreground">Correct</div>
+                  </div>
+                  <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-red-600">
+                      {responseDistribution[1].value}
+                    </div>
+                    <div className="text-xs text-muted-foreground">Incorrect</div>
+                  </div>
+                </div>
+              </CardContent>
             </Card>
           </div>
 
@@ -271,22 +408,8 @@ export default function ResultsDashboard({
             </div>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-            <Button
-              onClick={handleViewHistory}
-              variant="outline"
-              disabled={loadingAction === 'history'}
-              className="flex items-center gap-2 w-full sm:w-auto disabled:opacity-50"
-              aria-label={t('tests.resultsDashboard.buttons.viewHistory')}
-            >
-              {loadingAction === 'history' ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Brain className="w-4 h-4" />
-              )}
-              {t('tests.resultsDashboard.buttons.viewHistory')}
-            </Button>
+          {/* Action Button */}
+          <div className="flex justify-center pt-4">
             <Button
               onClick={handleContinue}
               disabled={loadingAction === 'continue'}

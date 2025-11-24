@@ -50,11 +50,6 @@ export default function IndividualTestsPage() {
     setPageState('dashboard');
   };
 
-  const handleViewHistory = () => {
-    // TODO: Implement history view
-    console.log('View history clicked');
-  };
-
   const handleReturnHome = () => {
     setPageState('dashboard');
   };
@@ -75,7 +70,6 @@ export default function IndividualTestsPage() {
           completedTests={completedTests}
           missingTests={missingTests}
           onStartTest={handleStartTest}
-          onViewHistory={handleViewHistory}
           onReturnHome={handleReturnHome}
         />
       ) : (
