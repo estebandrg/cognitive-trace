@@ -1,6 +1,7 @@
 import { createTestSession, completeSession } from '@/lib/actions/session-actions';
 import { saveTestResult } from '@/lib/actions/test-actions';
 import type { TestResult } from '@/lib/types/tests';
+import { createClient } from '@/lib/supabase/client';
 
 /**
  * Helper para iniciar una nueva sesión de tests
@@ -11,13 +12,29 @@ export async function startTestSession(
 	startSessionLocal: (isSequential: boolean, dbSessionId?: string) => void
 ): Promise<{ success: boolean; sessionId?: string; error?: string }> {
 	try {
-		// Crear sesión en DB
+		// Check if user is authenticated first (single check)
+		const supabase = createClient();
+		const { data: { user } } = await supabase.auth.getUser();
+		
+		if (!user) {
+			// User not authenticated, create local session only
+			startSessionLocal(isSequential);
+			return {
+				success: true,
+				error: 'Local mode: Not authenticated',
+			};
+		}
+
+		// User is authenticated, create DB session
 		const response = await createTestSession(isSequential);
 		
 		if (!response.success || !response.data) {
+			// Si falla, crear sesión local sin DB
+			console.warn('Failed to create DB session, using local only:', response.error);
+			startSessionLocal(isSequential);
 			return {
-				success: false,
-				error: response.error || 'Error creando sesión',
+				success: true, // Success en términos de UX (funciona localmente)
+				error: `Local mode: ${response.error}`,
 			};
 		}
 
@@ -30,9 +47,11 @@ export async function startTestSession(
 		};
 	} catch (error: any) {
 		console.error('Error starting test session:', error);
+		// Fallback a modo local
+		startSessionLocal(isSequential);
 		return {
-			success: false,
-			error: error.message || 'Error inesperado',
+			success: true, // Success para UX
+			error: `Local mode: ${error.message}`,
 		};
 	}
 }
