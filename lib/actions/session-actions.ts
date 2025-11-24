@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { getCachedUser } from "@/lib/supabase/server-auth-cache";
 import { revalidatePath } from "next/cache";
 import type { Database } from "@/lib/supabase/database.types";
 
@@ -22,10 +23,27 @@ export async function createTestSession(
 	try {
 		const supabase = await createClient();
 		
-		// Verificar autenticación
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		// Use cached auth check - deduplicates calls within same request
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
+		}
+		
+		// Asegurar que el perfil existe (por si el trigger no funcionó)
+		const { error: profileError } = await supabase
+			.from('profiles')
+			.upsert(
+				{ 
+					id: user.id,
+					full_name: user.user_metadata?.full_name || user.email,
+					updated_at: new Date().toISOString()
+				},
+				{ onConflict: 'id', ignoreDuplicates: false }
+			);
+		
+		if (profileError) {
+			console.error('Error ensuring profile exists:', profileError);
+			// No retornar error, intentar crear sesión de todas formas
 		}
 		
 		// Crear sesión
@@ -65,8 +83,8 @@ export async function completeSession(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -114,8 +132,8 @@ export async function deleteSession(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -145,8 +163,8 @@ export async function getUserSessions(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -184,8 +202,8 @@ export async function getSessionById(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		

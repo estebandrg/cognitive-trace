@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { getCachedUser } from "@/lib/supabase/server-auth-cache";
 import { revalidatePath } from "next/cache";
 import type { Database } from "@/lib/supabase/database.types";
 import type { TestResult, TestType } from "@/lib/types/tests";
@@ -25,9 +26,8 @@ export async function saveTestResult(
 	try {
 		const supabase = await createClient();
 		
-		// Verificar autenticación
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -63,13 +63,10 @@ export async function saveTestResult(
 			start_time: new Date(testResult.startTime).toISOString(),
 			end_time: new Date(testResult.endTime).toISOString(),
 			duration: testResult.duration,
-			accuracy: testResult.accuracy,
+			accuracy: testResult.accuracy * 100, // Convert 0-1 to 0-100
 			avg_reaction_time: testResult.averageReactionTime || null,
 			specific_metrics: specificMetrics,
-			browser_info: typeof window !== 'undefined' ? {
-				userAgent: navigator.userAgent,
-				language: navigator.language,
-			} : null,
+			browser_info: null, // Browser info should be passed from client if needed
 		};
 		
 		// Insertar resultado del test
@@ -90,7 +87,7 @@ export async function saveTestResult(
 				test_result_id: savedTest.id,
 				trial_number: index + 1,
 				stimulus: String(response.stimulus),
-				response_given: response.responseTime > 0,
+				response_given: response.responseTime !== null && response.responseTime !== undefined,
 				response_time: response.responseTime || null,
 				is_correct: response.correct,
 				timestamp: response.timestamp,
@@ -125,8 +122,8 @@ export async function getSessionResults(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -159,8 +156,8 @@ export async function getTestResultsByType(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -198,8 +195,8 @@ export async function deleteTestResult(
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -227,8 +224,8 @@ export async function getUserStatistics(): Promise<ActionResponse> {
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -255,8 +252,8 @@ export async function getTestPerformanceSummary(): Promise<ActionResponse> {
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
@@ -282,8 +279,8 @@ export async function getRecentProgress(): Promise<ActionResponse> {
 	try {
 		const supabase = await createClient();
 		
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-		if (authError || !user) {
+		const user = await getCachedUser();
+		if (!user) {
 			return { success: false, error: 'No autenticado' };
 		}
 		
