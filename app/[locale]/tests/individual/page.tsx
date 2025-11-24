@@ -1,0 +1,90 @@
+'use client';
+
+import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { TestResult, TestType } from '@/lib/types/tests';
+import { useTestSession } from '@/hooks/use-test-session';
+import TestDashboard from '@/components/tests/orchestration/test-dashboard';
+import ResultsDashboard from '@/components/tests/orchestration/results-dashboard';
+
+type PageState = 'dashboard' | 'individual-result';
+
+export default function IndividualTestsPage() {
+  const router = useRouter();
+  const [pageState, setPageState] = useState<PageState>('dashboard');
+  const [lastCompletedResult, setLastCompletedResult] = useState<TestResult | null>(null);
+  const hasInitialized = useRef(false);
+  
+  const { 
+    handleTestComplete, 
+    completedTests, 
+    missingTests,
+    startNewSession,
+    currentSession
+  } = useTestSession();
+
+  // Initialize individual session on mount only if no session exists
+  React.useEffect(() => {
+    const initSession = async () => {
+      if (!currentSession && !hasInitialized.current) {
+        hasInitialized.current = true;
+        await startNewSession(false);
+      }
+    };
+    initSession();
+  }, [currentSession, startNewSession]);
+
+  const handleIndividualTestComplete = (result: TestResult) => {
+    handleTestComplete(result);
+    setLastCompletedResult(result);
+    setPageState('individual-result');
+  };
+
+  const handleBackToSelection = () => {
+    router.push('/tests');
+  };
+
+  const handleStartTest = (testType: TestType) => {
+    // The TestDashboard component handles starting tests internally
+    // This function is for the ResultsDashboard when user wants to start another test
+    setPageState('dashboard');
+  };
+
+  const handleReturnHome = () => {
+    setPageState('dashboard');
+  };
+
+  switch (pageState) {
+    case 'dashboard':
+      return (
+        <TestDashboard 
+          onBack={handleBackToSelection}
+          onTestComplete={handleIndividualTestComplete}
+        />
+      );
+    
+    case 'individual-result':
+      return lastCompletedResult ? (
+        <ResultsDashboard
+          completedResult={lastCompletedResult}
+          completedTests={completedTests}
+          missingTests={missingTests}
+          onStartTest={handleStartTest}
+          onReturnHome={handleReturnHome}
+        />
+      ) : (
+        <TestDashboard 
+          onBack={handleBackToSelection}
+          onTestComplete={handleIndividualTestComplete}
+        />
+      );
+    
+    default:
+      return (
+        <TestDashboard 
+          onBack={handleBackToSelection}
+          onTestComplete={handleIndividualTestComplete}
+        />
+      );
+  }
+}

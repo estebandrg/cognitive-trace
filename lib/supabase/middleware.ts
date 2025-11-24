@@ -2,8 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+export async function updateSession(request: NextRequest, response?: NextResponse) {
+  let supabaseResponse = response ?? NextResponse.next({
     request,
   });
 
@@ -38,24 +38,46 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getClaims(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
+  const pathname = request.nextUrl.pathname;
 
-  // IMPORTANT: If you remove getClaims() and you use server-side rendering
-  // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  // Extract locale from pathname if present
+  const localeMatch = pathname.match(/^\/(en|es)\//);
+  const locale = localeMatch ? localeMatch[1] : 'en';
 
-  if (
-    request.nextUrl.pathname !== "/" &&
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  // Check if the path is an auth path (either root or localized)
+  const isAuthPath = pathname.startsWith("/auth") ||
+    pathname.match(/^\/(?:en|es)\/auth/);
+
+  // Check if the path is a public path (root, localized root, or tests)
+  const isPublicPath = pathname === "/" ||
+    pathname.match(/^\/(?:en|es)$/) ||
+    pathname.startsWith("/tests") ||
+    pathname.match(/^\/(?:en|es)\/tests/) ||
+    pathname.startsWith("/faq") ||
+    pathname.match(/^\/(?:en|es)\/faq/);
+
+  // Only check auth for dashboard routes (most restrictive approach)
+  // Tests work in local mode without auth
+  // Auth routes handle their own logic
+  // Public/marketing routes don't need auth
+  const isDashboardPath = pathname.match(/^\/(?:en|es)?\/dashboard/);
+  
+  let user = null;
+  if (isDashboardPath) {
+    try {
+      // Use getUser() instead of getClaims() - simpler and faster
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      user = authUser;
+    } catch (error) {
+      // Silently handle - user will be redirected if needed
+      console.error('Error getting user:', error);
+    }
+  }
+
+  if (isDashboardPath && !user) {
+    // Redirect to login only for dashboard routes
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = `/${locale}/auth/login`;
     return NextResponse.redirect(url);
   }
 

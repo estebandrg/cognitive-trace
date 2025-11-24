@@ -1,0 +1,602 @@
+{
+  "metadata": {
+    "title": "CognitiveTrace",
+    "description": "Test intuitivo para evaluar atención dispersa mediante tareas de estímulos. Resultados claros en minutos."
+  },
+  "navbar": {
+    "faq": "Preguntas Frecuentes",
+    "startTest": "Comenzar test",
+    "menuLabel": "Menú de navegación",
+    "dashboard": "Mi Progreso",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión"
+  },
+  "hero": {
+    "badge": "Evaluación cognitiva completa",
+    "title": "Evaluá tu atención con estímulos",
+    "description": "CognitiveTrace es una plataforma completa de evaluación cognitiva con tests científicamente validados, seguimiento de progreso y análisis detallado de tu rendimiento. Mejorá tus habilidades cognitivas con práctica constante.",
+    "startTest": "Comenzar test",
+    "learnMore": "Saber más",
+    "features": {
+      "trackProgress": "• Seguimiento de progreso y evolución",
+      "stimulusBased": "• Tests científicamente validados",
+      "multiDevice": "• Dashboard con historial completo"
+    }
+  },
+  "features": {
+    "badge": "Características",
+    "title": "¿Qué ofrece CognitiveTrace?",
+    "stimulusTests": {
+      "title": "Tests Cognitivos Validados",
+      "description": "4 tests científicamente validados: SART, Flanker, N-Back y PVT para evaluar diferentes aspectos cognitivos."
+    },
+    "clearResults": {
+      "title": "Resultados Detallados",
+      "description": "Análisis completo con métricas de precisión, tiempo de reacción, gráficos y feedback personalizado."
+    },
+    "progressTracking": {
+      "title": "Seguimiento de Progreso",
+      "description": "Dashboard personal con historial completo, estadísticas, evolución temporal y análisis de tendencias."
+    },
+    "multiDevice": {
+      "title": "Multi-dispositivo",
+      "description": "Accedé desde cualquier dispositivo. Tus datos se sincronizan automáticamente."
+    }
+  },
+  "scientificValidation": {
+    "badge": "Metodología",
+    "title": "Base Científica",
+    "description": "Nuestras evaluaciones están respaldadas por metodologías validadas científicamente para medir con precisión las capacidades cognitivas.",
+    "methodologies": {
+      "sart": {
+        "name": "Tarea SART",
+        "description": "Mide la capacidad de mantener el foco atencional sostenido y detectar lapsos de atención en tiempo real, evaluando la consistencia en la respuesta a estímulos."
+      },
+      "stroopFlanker": {
+        "name": "Stroop y Flanker",
+        "description": "Evalúan el control inhibitorio y la capacidad de resistir la interferencia de estímulos distractores, midiendo el tiempo de reacción ante conflictos cognitivos."
+      },
+      "nBack": {
+        "name": "Tarea N-Back",
+        "description": "Analiza la memoria de trabajo, la retención de información y la capacidad de actualizar el foco atencional bajo diferentes cargas cognitivas."
+      },
+      "pvt": {
+        "name": "Tarea PVT",
+        "description": "Registra los tiempos de reacción y la variabilidad en el procesamiento atencional, siendo un indicador sensible a la fatiga mental."
+      }
+    }
+  },
+  "howItWorks": {
+    "badge": "Cómo funciona",
+    "title": "Tres pasos simples",
+    "steps": {
+      "preparation": {
+        "title": "1. Preparación",
+        "description": "Buscá un lugar tranquilo y asegurate de tener sonido si es necesario."
+      },
+      "stimulusTasks": {
+        "title": "2. Tareas de estímulo",
+        "description": "Respondé a estímulos visuales o auditivos lo más rápido y preciso posible."
+      },
+      "results": {
+        "title": "3. Resultados",
+        "description": "Obtené métricas clave y una interpretación clara de tu atención."
+      }
+    }
+  },
+  "cta": {
+    "title": "Listo para evaluar tu atención",
+    "description": "Empezá ahora. La prueba lleva menos de 5 minutos.",
+    "startTest": "Iniciar test",
+    "howItWorks": "Ver cómo funciona"
+  },
+  "footer": {
+    "copyright": "© {year} CognitiveTrace",
+    "navigation": {
+      "howItWorks": "Cómo funciona",
+      "features": "Características",
+      "start": "Comenzar"
+    }
+  },
+  "dashboardShowcase": {
+    "badge": "Dashboard",
+    "title": "Seguimiento completo de tu progreso",
+    "description": "Visualiza tu evolución, analiza tendencias y obtén insights detallados sobre tu rendimiento cognitivo a lo largo del tiempo.",
+    "features": {
+      "history": {
+        "title": "Historial Completo",
+        "description": "Accede a todos tus resultados anteriores y compara tu rendimiento entre sesiones."
+      },
+      "evolution": {
+        "title": "Evolución Temporal",
+        "description": "Observa cómo mejoran tus habilidades cognitivas con gráficos y tendencias claras."
+      },
+      "sessions": {
+        "title": "Gestión de Sesiones",
+        "description": "Organiza y revisa cada sesión de tests con métricas detalladas y análisis."
+      },
+      "achievements": {
+        "title": "Logros y Metas",
+        "description": "Celebra tus mejoras y mantén la motivación con estadísticas de progreso."
+      }
+    },
+    "preview": {
+      "title": "Tu Panel de Control",
+      "subtitle": "Visualiza tu progreso en tiempo real",
+      "badge": "Nivel Avanzado",
+      "chart": "Gráficos interactivos de rendimiento",
+      "stats": {
+        "tests": "Tests",
+        "accuracy": "Precisión",
+        "sessions": "Sesiones",
+        "streak": "Racha"
+      }
+    }
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "description": "Encontrá respuestas a las preguntas más comunes sobre CognitiveTrace",
+    "backToHome": "Volver al inicio",
+    "questions": {
+      "whatIs": {
+        "question": "¿Qué es CognitiveTrace?",
+        "answer": "CognitiveTrace es una herramienta de evaluación cognitiva que utiliza tareas de estímulo-respuesta para medir aspectos de la atención como el foco, la consistencia y la capacidad de respuesta. Está basado en metodologías científicamente validadas."
+      },
+      "howLong": {
+        "question": "¿Cuánto tiempo toma completar el test?",
+        "answer": "El test completo toma aproximadamente 5-10 minutos. Incluye varias tareas cortas diseñadas para evaluar diferentes aspectos de tu atención sin generar fatiga."
+      },
+      "needRegistration": {
+        "question": "¿Necesito registrarme para usar CognitiveTrace?",
+        "answer": "Podés realizar tests sin registrarte, pero crear una cuenta te permite guardar tu historial, hacer seguimiento de tu progreso en el tiempo, acceder a estadísticas detalladas y ver tu evolución en un dashboard personalizado."
+      },
+      "accuracy": {
+        "question": "¿Qué tan precisos son los resultados?",
+        "answer": "Los resultados están basados en metodologías científicamente validadas como SART, Stroop, Flanker, N-Back y PVT. Sin embargo, para diagnósticos clínicos siempre consultá con un profesional de la salud."
+      },
+      "dataPrivacy": {
+        "question": "¿Qué pasa con mis datos?",
+        "answer": "Si creás una cuenta, tus resultados de tests se guardan de forma segura para que puedas hacer seguimiento de tu progreso. Solo almacenamos datos de rendimiento en los tests y tu email. No compartimos tu información con terceros y podés eliminar tu cuenta en cualquier momento."
+      },
+      "preparation": {
+        "question": "¿Cómo me preparo para el test?",
+        "answer": "Buscá un lugar tranquilo, asegurate de tener sonido disponible, y dedicá unos minutos sin interrupciones. No necesitás preparación especial previa."
+      },
+      "retake": {
+        "question": "¿Puedo repetir el test?",
+        "answer": "Sí, podés repetir el test las veces que quieras. Sin embargo, recomendamos esperar al menos unas horas entre sesiones para obtener resultados más representativos."
+      }
+    }
+  },
+  "tests": {
+    "modeSelection": {
+      "backButton": "Volver al inicio",
+      "badge": "Evaluación Cognitiva",
+      "title": "Tests Cognitivos",
+      "description": "Elige cómo quieres realizar los tests cognitivos: todos de manera secuencial para una evaluación completa, o accede al dashboard para hacerlos individualmente.",
+      "sequential": {
+        "title": "Evaluación Completa",
+        "description": "Todos los tests de manera secuencial",
+        "duration": "~4-5 min",
+        "recommended": "Recomendado",
+        "content": "Realiza todos los tests cognitivos uno tras otro para obtener una evaluación completa de tu rendimiento cognitivo. Incluye SART, Flanker, N-Back y PVT.",
+        "includes": "Incluye:",
+        "includesList": {
+          "sart": "Test SART (Atención sostenida)",
+          "flanker": "Test Flanker (Control cognitivo)",
+          "nback": "Test N-Back (Memoria de trabajo)",
+          "pvt": "Test PVT (Vigilancia psicomotora)"
+        },
+        "button": "Comenzar Evaluación Completa"
+      },
+      "dashboard": {
+        "title": "Tests Individuales",
+        "description": "Elige tests específicos",
+        "flexible": "Flexible",
+        "customizable": "Personalizable",
+        "content": "Elige y realiza tests específicos según tus necesidades. Perfecto para entrenar habilidades cognitivas particulares.",
+        "advantages": "Ventajas:",
+        "advantagesList": {
+          "choose": "Elige tests específicos",
+          "repeat": "Repite tests individuales",
+          "control": "Controla tu ritmo",
+          "focus": "Enfoque en áreas específicas"
+        },
+        "button": "Elegir Tests"
+      },
+      "recommendations": {
+        "title": "Recomendaciones",
+        "complete": "Evaluación Completa: Ideal para obtener un perfil cognitivo completo",
+        "individual": "Tests Individuales: Perfecto para entrenar habilidades específicas",
+        "environment": "Busca un ambiente silencioso libre de distracciones",
+        "connection": "Asegúrate de tener una conexión a internet estable"
+      }
+    },
+    "sequential": {
+      "badge": "Evaluación Completa",
+      "title": "Batería de Tests Cognitivos",
+      "description": "Vas a realizar 4 tests cognitivos de manera secuencial. Cada test evalúa diferentes aspectos de tu rendimiento cognitivo.",
+      "instructions": {
+        "title": "Instrucciones Generales",
+        "duration": "Duración total: Aproximadamente 4-5 minutos",
+        "environment": "Ambiente: Busca un lugar silencioso y sin distracciones",
+        "focus": "Concentración: Mantén el foco durante toda la secuencia",
+        "breaks": "Descansos: Habrá breves pausas entre tests",
+        "results": "Resultados: Obtendrás un reporte completo al final"
+      },
+      "progress": {
+        "test": "Test {current} de {total}",
+        "completed": "{percent}% completado",
+        "completedTests": "Tests Completados",
+        "next": "Siguiente: {testName}",
+        "preparing": "Preparándote para el siguiente test..."
+      },
+      "buttons": {
+        "back": "Volver",
+        "start": "Comenzar Evaluación"
+      }
+    },
+    "results": {
+      "badge": "Evaluación Completada",
+      "title": "Resultados de la Evaluación Cognitiva",
+      "description": "Has completado todos los tests cognitivos. Aquí tienes un resumen completo de tu rendimiento.",
+      "overallScore": {
+        "title": "Puntuación General",
+        "description": "Puntuación basada en precisión y velocidad de respuesta",
+        "duration": "Duración total: {minutes} min",
+        "testsCompleted": "{count} tests completados"
+      },
+      "performance": {
+        "excellent": "Excelente",
+        "good": "Bueno",
+        "regular": "Regular",
+        "needsImprovement": "Necesita Mejora"
+      },
+      "performanceLevels": {
+        "excellent": {
+          "level": "Excelente",
+          "description": "¡Rendimiento excepcional! Demostraste habilidades cognitivas sobresalientes en todas las áreas evaluadas.",
+          "feedbackFast": "Tu precisión y velocidad de respuesta son excelentes. Mantén este nivel con práctica regular.",
+          "feedbackSlow": "Excelente balance entre velocidad y precisión. Considera practicar para mantener este alto rendimiento."
+        },
+        "good": {
+          "level": "Bueno",
+          "description": "¡Buen rendimiento general! Mostraste sólidas habilidades cognitivas en la mayoría de áreas.",
+          "feedbackFast": "Buen equilibrio entre velocidad y precisión. Continúa practicando para mejorar aún más.",
+          "feedbackSlow": "Tu precisión es buena. Intenta trabajar en la velocidad de respuesta para optimizar tu rendimiento."
+        },
+        "fair": {
+          "level": "Regular",
+          "description": "Rendimiento moderado. Hay áreas de oportunidad para mejorar tus habilidades cognitivas.",
+          "feedback": "Considera practicar las áreas donde tuviste menor rendimiento. La concentración y el descanso adecuado pueden mejorar significativamente tus resultados."
+        },
+        "needsImprovement": {
+          "level": "Necesita Mejora",
+          "description": "La evaluación fue desafiante. ¡No te preocupes! Las habilidades cognitivas se pueden mejorar con práctica y descanso.",
+          "feedback": "Recomendaciones: 1) Asegúrate de estar bien descansado antes de realizar tests. 2) Minimiza distracciones durante las pruebas. 3) Practica regularmente para mejorar. 4) Considera consultar con un profesional si las dificultades persisten."
+        }
+      },
+      "metrics": {
+        "accuracy": "Precisión",
+        "averageTime": "Tiempo Promedio",
+        "omissions": "Omisiones",
+        "commissions": "Comisiones",
+        "congruentRT": "RT Congruente",
+        "interference": "Interferencia",
+        "hits": "Aciertos",
+        "falsePositives": "Falsos Positivos",
+        "minRT": "RT Mínimo",
+        "lapses": "Lapsos"
+      },
+      "summary": {
+        "title": "Resumen y Recomendaciones",
+        "strengths": "Fortalezas Identificadas",
+        "improvements": "Áreas de Mejora",
+        "goodPerformance": "Buen rendimiento en {area}",
+        "fastReactions": "Tiempos de reacción rápidos",
+        "practice": "Practicar {area}",
+        "workOnSpeed": "Trabajar en velocidad de respuesta",
+        "maintainPractice": "Mantener práctica regular para mejorar consistencia"
+      },
+      "buttons": {
+        "home": "Volver al Inicio",
+        "retry": "Repetir Evaluación"
+      }
+    },
+    "resultsDashboard": {
+      "title": "Resultados de {testName}",
+      "subtitle": "{testFullName}",
+      "performanceLevels": {
+        "excellent": {
+          "level": "Excelente",
+          "description": "¡Rendimiento sobresaliente! Demostraste excelente atención y precisión.",
+          "feedbackFast": "Tus tiempos de respuesta fueron impresionantemente rápidos manteniendo alta precisión.",
+          "feedbackSlow": "Considera trabajar en la velocidad de respuesta para complementar tu excelente precisión."
+        },
+        "good": {
+          "level": "Bueno",
+          "description": "¡Buen rendimiento! Mostraste sólidas habilidades cognitivas en este test.",
+          "feedbackFast": "Gran balance entre velocidad y precisión. ¡Sigue así!",
+          "feedbackSlow": "Intenta responder un poco más rápido manteniendo tu nivel actual de precisión."
+        },
+        "fair": {
+          "level": "Regular",
+          "description": "Rendimiento regular. Hay espacio para mejorar tu desempeño cognitivo.",
+          "feedback": "Enfócate en mantener la concentración durante todo el test. La práctica puede ayudar a mejorar tanto la precisión como el tiempo de respuesta."
+        },
+        "needsImprovement": {
+          "level": "Necesita Mejora",
+          "description": "Este test fue desafiante para ti. ¡No te preocupes! Las habilidades cognitivas se pueden mejorar con práctica.",
+          "feedback": "Intenta tomar descansos durante las tareas, minimizar distracciones y practicar regularmente. Considera repetir este test después de descansar para ver si la fatiga fue un factor."
+        }
+      },
+      "metrics": {
+        "accuracy": "Precisión",
+        "avgTime": "Tiempo Prom.",
+        "correct": "Correctas",
+        "performance": "Rendimiento"
+      },
+      "continueAssessment": {
+        "title": "Continúa tu Evaluación",
+        "description": "Completa estos tests restantes para una evaluación integral"
+      },
+      "startTest": "Iniciar {testName}",
+      "allComplete": {
+        "title": "¡Evaluación Completa!",
+        "description": "Has completado todos los tests cognitivos disponibles"
+      },
+      "buttons": {
+        "viewHistory": "Ver Historial",
+        "continue": "Continuar",
+        "viewDashboard": "Ver mi Progreso"
+      }
+    },
+    "testNames": {
+      "sart": "SART",
+      "flanker": "Flanker",
+      "nback": "N-Back",
+      "pvt": "PVT"
+    },
+    "testDescriptions": {
+      "sart": "Atención Sostenida",
+      "flanker": "Control Cognitivo",
+      "nback": "Memoria de Trabajo",
+      "pvt": "Vigilancia Psicomotora"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "Bienvenido de nuevo",
+      "emailLabel": "Email",
+      "passwordLabel": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submitButton": "Iniciar Sesión",
+      "loadingButton": "Iniciando sesión...",
+      "orContinueWith": "O continúa con",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUpLink": "Regístrate",
+      "success": "Inicio de sesión exitoso",
+      "error": "Error al iniciar sesión"
+    },
+    "signup": {
+      "title": "Crear Cuenta",
+      "subtitle": "Únete a nosotros y comienza tu viaje",
+      "emailLabel": "Email",
+      "passwordLabel": "Contraseña",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "minChars": "Mínimo 8 caracteres",
+      "submitButton": "Crear Cuenta",
+      "loadingButton": "Creando cuenta...",
+      "alreadyAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión",
+      "success": "Cuenta creada exitosamente. Por favor verifica tu email.",
+      "error": "Error al crear la cuenta"
+    },
+    "forgotPassword": {
+      "title": "Recuperar Contraseña",
+      "subtitle": "Te enviaremos instrucciones a tu email",
+      "emailLabel": "Email",
+      "submitButton": "Enviar Instrucciones",
+      "loadingButton": "Enviando...",
+      "backToLogin": "Volver al inicio de sesión",
+      "success": "Se ha enviado un email con instrucciones",
+      "error": "Error al solicitar el restablecimiento"
+    },
+    "updatePassword": {
+      "title": "Nueva Contraseña",
+      "subtitle": "Ingresa tu nueva contraseña segura",
+      "passwordLabel": "Nueva Contraseña",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "submitButton": "Actualizar Contraseña",
+      "loadingButton": "Actualizando...",
+      "success": "Contraseña actualizada exitosamente",
+      "error": "Error al actualizar la contraseña"
+    },
+    "oauth": {
+      "continueWith": "Continuar con {provider}",
+      "redirecting": "Redirigiendo..."
+    },
+    "passwordStrength": {
+      "minChars": "Mínimo 8 caracteres",
+      "uppercase": "Una mayúscula",
+      "lowercase": "Una minúscula",
+      "number": "Un número",
+      "specialChar": "Un carácter especial"
+    },
+    "validation": {
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "weakPassword": "La contraseña no cumple con los requisitos",
+      "invalidEmail": "Dirección de correo inválida"
+    }
+  },
+  "dashboard": {
+    "title": "Mi Progreso",
+    "subtitle": "Historial y estadísticas de tus tests cognitivos",
+    "navigation": {
+      "home": "Inicio",
+      "history": "Historial",
+      "trends": "Tendencias",
+      "achievements": "Logros",
+      "startSession": "Iniciar Nueva Sesión",
+      "descriptions": {
+        "home": "Resumen y estadísticas",
+        "history": "Ver todas las sesiones",
+        "trends": "Análisis de rendimiento",
+        "achievements": "Desbloquear logros"
+      }
+    },
+    "sidebar": {
+      "yourProgress": "Tu Progreso",
+      "analytics": "Analíticas"
+    },
+    "overview": {
+      "title": "Resumen General",
+      "welcome": "Bienvenido de vuelta",
+      "totalSessions": "sesiones",
+      "avgAccuracy": "Precisión Promedio",
+      "bestSession": "Mejor Sesión",
+      "currentStreak": "Racha Actual",
+      "days": "días",
+      "testsCompleted": "tests completados",
+      "lastSession": "Última Sesión",
+      "recentActivity": "Actividad Reciente",
+      "topPerformance": "Mejor Rendimiento",
+      "quickStats": "Estadísticas Rápidas",
+      "improvementRate": "Tasa de Mejora",
+      "favoriteTest": "Test Favorito",
+      "noData": "No hay sesiones todavía. ¡Comienza tu primera evaluación!",
+      "personalRecord": "Récord personal",
+      "mostPracticed": "Más practicado",
+      "overallPerformance": "Rendimiento General",
+      "activityStreak": "Racha de Actividad",
+      "totalTests": "Tests Totales",
+      "sessions": "Sesiones",
+      "tests": "tests",
+      "motivationalMessage": "¡Sigue con el buen trabajo! 🎉",
+      "progressMessage": "Estás haciendo un progreso constante.",
+      "streakMessage": "días de racha!",
+      "startStreakMessage": "¡Comienza una racha hoy!"
+    },
+    "user": {
+      "logout": "Cerrar Sesión",
+      "language": "Idioma",
+      "theme": "Tema",
+      "lightMode": "Modo Claro",
+      "darkMode": "Modo Oscuro",
+      "systemMode": "Sistema",
+      "english": "Inglés",
+      "spanish": "Español"
+    },
+    "stats": {
+      "totalSessions": "Sesiones Totales",
+      "avgAccuracy": "Precisión Promedio",
+      "testsCompleted": "Tests Completados",
+      "avgReactionTime": "Tiempo de Reacción Promedio"
+    },
+    "sessions": {
+      "title": "Sesiones Recientes",
+      "empty": "No hay sesiones registradas todavía",
+      "completeAssessment": "Evaluación Completa",
+      "individualTests": "Tests Individuales",
+      "duration": "Duración",
+      "tests": "Tests",
+      "view": "Ver",
+      "delete": "Eliminar",
+      "deleting": "Eliminando...",
+      "confirmDelete": "¿Estás seguro de eliminar esta sesión?",
+      "inProgress": "En progreso"
+    },
+    "history": {
+      "title": "Historial de Sesiones",
+      "noSessions": "No hay sesiones registradas todavía. ¡Comienza tu primera evaluación cognitiva!",
+      "sessionDate": "Fecha de Sesión",
+      "testsCompleted": "Tests Completados",
+      "avgAccuracy": "Precisión Promedio",
+      "avgReactionTime": "Tiempo de Reacción Promedio",
+      "accuracyOverTime": "Precisión en el Tiempo",
+      "reactionTimeOverTime": "Tiempo de Reacción en el Tiempo",
+      "testDistribution": "Distribución de Tests",
+      "performanceByTest": "Rendimiento por Tipo de Test",
+      "sequential": "Secuencial",
+      "individual": "Individual",
+      "recentSessions": "Sesiones Recientes",
+      "viewDetails": "Ver Detalles",
+      "sessionDetails": "Detalles de la Sesión",
+      "sessionInfo": "Información de la Sesión",
+      "date": "Fecha",
+      "duration": "Duración",
+      "type": "Tipo",
+      "overallPerformance": "Rendimiento General",
+      "accuracy": "Precisión",
+      "reactionTime": "Tiempo de Reacción",
+      "testBreakdown": "Desglose por Test",
+      "comparison": "Comparación",
+      "aboveAverage": "sobre el promedio",
+      "belowAverage": "bajo el promedio",
+      "onAverage": "En promedio",
+      "specificMetrics": "Métricas Específicas",
+      "close": "Cerrar"
+    },
+    "trends": {
+      "title": "Tendencias de Rendimiento",
+      "noData": "No hay suficientes datos para mostrar tendencias",
+      "needMoreSessions": "Completa al menos 2 sesiones para ver el análisis de tendencias",
+      "overallTrend": "Tendencia General",
+      "improving": "Mejorando",
+      "declining": "Declinando",
+      "stable": "Estable",
+      "accuracyChange": "Cambio de Precisión",
+      "reactionTime": "Tiempo de Reacción",
+      "totalSessions": "Sesiones Totales",
+      "accuracyTrend": "Tendencia de Precisión",
+      "reactionTimeTrend": "Tendencia de Tiempo de Reacción",
+      "performanceRadar": "Rendimiento por Prueba",
+      "weeklyProgress": "Progreso Semanal",
+      "testComparison": "Rendimiento Temprano vs Reciente",
+      "insights": "Perspectivas y Recomendaciones",
+      "insightMessages": {
+        "greatProgress": "¡Gran progreso!",
+        "accuracyImproved": "Tu precisión ha mejorado un {percent}% en comparación con sesiones anteriores.",
+        "fasterReactions": "¡Reacciones más rápidas!",
+        "reactionImproved": "Tu tiempo de reacción promedio ha disminuido {ms}ms, mostrando una mejor velocidad cognitiva.",
+        "takeYourTime": "Tómate tu tiempo.",
+        "accuracyDeclined": "La precisión ha disminuido ligeramente. Considera enfocarte en la precisión sobre la velocidad en tu próxima sesión.",
+        "consistencyMilestone": "¡Hito de consistencia!",
+        "sessionsCompleted": "Has completado {count} sesiones. La práctica regular es clave para la mejora cognitiva."
+      }
+    },
+    "achievements": {
+      "title": "Logros",
+      "description": "Desbloquea logros completando pruebas y alcanzando hitos",
+      "unlocked": "Desbloqueado",
+      "locked": "Bloqueado",
+      "progress": "Progreso General",
+      "categories": {
+        "beginner": "Principiante",
+        "accuracy": "Precisión",
+        "speed": "Velocidad",
+        "consistency": "Consistencia",
+        "mastery": "Maestría"
+      }
+    },
+    "sessionDetail": {
+      "title": "Detalle de Sesión",
+      "backToDashboard": "Volver a Mi Progreso",
+      "overview": "Resumen",
+      "sessionType": "Tipo de Sesión",
+      "startTime": "Hora de Inicio",
+      "endTime": "Hora de Fin",
+      "duration": "Duración",
+      "status": "Estado",
+      "completed": "Completada",
+      "incomplete": "Incompleta",
+      "testResults": "Resultados de Tests",
+      "noResults": "No hay resultados disponibles",
+      "accuracy": "Precisión",
+      "avgReactionTime": "Tiempo de Reacción Promedio",
+      "testDuration": "Duración del Test"
+    }
+  }
+}
