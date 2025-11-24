@@ -1,134 +1,216 @@
-import { createClient } from '@/lib/supabase/server';
-import { SessionsList } from '@/components/dashboard/sessions-list-simple';
-import { redirect } from 'next/navigation';
-import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Target, Zap } from 'lucide-react';
+'use client';
 
-// Revalidate every 30 seconds
-export const revalidate = 30;
+import { useState, useEffect } from 'react';
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
+import { OverviewView } from '@/components/dashboard/overview-view';
+import { HistoryView } from '@/components/dashboard/history-view';
+import { TrendsView } from '@/components/dashboard/trends-view';
+import { AchievementsView } from '@/components/dashboard/achievements-view';
+import { useTranslations } from 'next-intl';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
-export default async function DashboardPage() {
-	const supabase = await createClient();
+interface SessionData {
+	id: string;
+	start_time: string;
+	end_time: string | null;
+	is_completed: boolean | null;
+	is_sequential: boolean | null;
+	total_tests_completed: number | null;
+	test_results: Array<{
+		id: string;
+		test_type: string;
+		accuracy: number;
+		avg_reaction_time: number | null;
+		duration: number;
+		specific_metrics: any;
+	}>;
+}
 
-	// Check authentication
-	const { data: { user }, error: authError } = await supabase.auth.getUser();
-	
-	if (authError || !user) {
-		redirect('/auth/login');
+export default function NewDashboardPage() {
+	const t = useTranslations('dashboard');
+	const tNav = useTranslations('dashboard.navigation');
+	const tUser = useTranslations('dashboard.user');
+	const tOverview = useTranslations('dashboard.overview');
+	const tHistory = useTranslations('dashboard.history');
+	const tTrends = useTranslations('dashboard.trends');
+	const tAchievements = useTranslations('dashboard.achievements');
+	const router = useRouter();
+
+	const [activeSection, setActiveSection] = useState<'home' | 'history' | 'trends' | 'achievements'>('home');
+	const [sessions, setSessions] = useState<SessionData[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [locale, setLocale] = useState('en');
+
+	useEffect(() => {
+		// Get locale from path
+		const pathLocale = window.location.pathname.split('/')[1];
+		if (pathLocale === 'en' || pathLocale === 'es') {
+			setLocale(pathLocale);
+		}
+
+		fetchSessions();
+	}, []);
+
+	const fetchSessions = async () => {
+		try {
+			const supabase = createClient();
+			
+			// Auth is already checked by middleware for dashboard routes
+			// No need for redundant client-side check
+			const { data, error } = await supabase
+				.from('sessions')
+				.select(`
+					*,
+					test_results (
+						id,
+						test_type,
+						accuracy,
+						avg_reaction_time,
+						duration,
+						specific_metrics
+					)
+				`)
+				.order('start_time', { ascending: false });
+
+			if (error) {
+				console.error('Error fetching sessions:', error);
+				// If auth fails, Supabase RLS will handle it
+				// Middleware will redirect if needed
+			} else {
+				setSessions(data || []);
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	if (loading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
+			</div>
+		);
 	}
-
-	// Fetch data in parallel
-	const [sessionsResult, statsResult] = await Promise.all([
-		// Sessions with results
-		supabase
-			.from('sessions')
-			.select(`
-				*,
-				test_results (
-					id,
-					test_type,
-					accuracy,
-					avg_reaction_time,
-					duration
-				)
-			`)
-			.order('start_time', { ascending: false })
-			.limit(10),
-
-		// User statistics
-		supabase
-			.from('user_statistics')
-			.select('*')
-			.single()
-	]);
-
-	// Handle errors
-	if (sessionsResult.error) {
-		console.error('Error fetching sessions:', sessionsResult.error);
-	}
-
-	const stats = statsResult.data;
 
 	return (
-		<div className="container mx-auto px-4 py-8">
-			{/* Background gradients */}
-			<div className="pointer-events-none absolute inset-0 -z-10">
-				<div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl" />
-				<div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-tr from-pink-500/20 to-purple-500/20 blur-3xl" />
-			</div>
-
-			{/* Header */}
-			<div className="mb-8">
-				<h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-					Mi Dashboard
-				</h1>
-				<p className="text-gray-600 dark:text-gray-300">
-					Historial y estadísticas de tus tests cognitivos
-				</p>
-			</div>
-
-			{/* Statistics Cards */}
-			{stats && (
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-					<StatsCard
-						icon={<Brain className="w-6 h-6" />}
-						title="Sesiones Totales"
-						value={stats.total_sessions || 0}
-						gradient="from-blue-500 to-purple-500"
-					/>
-					<StatsCard
-						icon={<Target className="w-6 h-6" />}
-						title="Precisión Promedio"
-						value={`${stats.avg_accuracy?.toFixed(1) || 0}%`}
-						gradient="from-green-500 to-blue-500"
-					/>
-					<StatsCard
-						icon={<Zap className="w-6 h-6" />}
-						title="Tests Completados"
-						value={stats.total_tests_completed || 0}
-						gradient="from-purple-500 to-pink-500"
-					/>
-				</div>
+		<DashboardLayout
+			activeSection={activeSection}
+			onSectionChange={setActiveSection}
+			translations={{
+				home: tNav('home'),
+				history: tNav('history'),
+				trends: tNav('trends'),
+				achievements: tNav('achievements'),
+				startSession: tNav('startSession'),
+				user: {
+					logout: tUser('logout'),
+					language: tUser('language'),
+					theme: tUser('theme'),
+					lightMode: tUser('lightMode'),
+					darkMode: tUser('darkMode'),
+					systemMode: tUser('systemMode'),
+					english: tUser('english'),
+					spanish: tUser('spanish')
+				}
+			}}
+			locale={locale}
+		>
+			{activeSection === 'home' ? (
+				<OverviewView
+					sessions={sessions}
+					translations={{
+						title: tOverview('title'),
+						welcome: tOverview('welcome'),
+						totalSessions: tOverview('totalSessions'),
+						avgAccuracy: tOverview('avgAccuracy'),
+						bestSession: tOverview('bestSession'),
+						currentStreak: tOverview('currentStreak'),
+						days: tOverview('days'),
+						testsCompleted: tOverview('testsCompleted'),
+						lastSession: tOverview('lastSession'),
+						recentActivity: tOverview('recentActivity'),
+						topPerformance: tOverview('topPerformance'),
+						quickStats: tOverview('quickStats'),
+						improvementRate: tOverview('improvementRate'),
+						favoriteTest: tOverview('favoriteTest'),
+						noData: tOverview('noData')
+					}}
+				/>
+			) : activeSection === 'history' ? (
+				<HistoryView
+					sessions={sessions}
+					translations={{
+						title: tHistory('title'),
+						noSessions: tHistory('noSessions'),
+						sessionDate: tHistory('sessionDate'),
+						testsCompleted: tHistory('testsCompleted'),
+						avgAccuracy: tHistory('avgAccuracy'),
+						avgReactionTime: tHistory('avgReactionTime'),
+						accuracyOverTime: tHistory('accuracyOverTime'),
+						reactionTimeOverTime: tHistory('reactionTimeOverTime'),
+						testDistribution: tHistory('testDistribution'),
+						performanceByTest: tHistory('performanceByTest'),
+						sequential: tHistory('sequential'),
+						individual: tHistory('individual'),
+						recentSessions: tHistory('recentSessions'),
+						viewDetails: tHistory('viewDetails'),
+						sessionDetails: tHistory('sessionDetails'),
+						sessionInfo: tHistory('sessionInfo'),
+						date: tHistory('date'),
+						duration: tHistory('duration'),
+						type: tHistory('type'),
+						overallPerformance: tHistory('overallPerformance'),
+						accuracy: tHistory('accuracy'),
+						reactionTime: tHistory('reactionTime'),
+						testBreakdown: tHistory('testBreakdown'),
+						comparison: tHistory('comparison'),
+						aboveAverage: tHistory('aboveAverage'),
+						belowAverage: tHistory('belowAverage'),
+						onAverage: tHistory('onAverage'),
+						specificMetrics: tHistory('specificMetrics'),
+						close: tHistory('close')
+					}}
+				/>
+			) : activeSection === 'achievements' ? (
+				<AchievementsView
+					sessions={sessions}
+					translations={{
+						title: tAchievements('title'),
+						description: tAchievements('description'),
+						unlocked: tAchievements('unlocked'),
+						locked: tAchievements('locked'),
+						progress: tAchievements('progress'),
+						categories: {
+							beginner: tAchievements('categories.beginner'),
+							accuracy: tAchievements('categories.accuracy'),
+							speed: tAchievements('categories.speed'),
+							consistency: tAchievements('categories.consistency'),
+							mastery: tAchievements('categories.mastery')
+						}
+					}}
+				/>
+			) : (
+				<TrendsView
+					sessions={sessions}
+					translations={{
+						title: tTrends('title'),
+						noData: tTrends('noData'),
+						overallTrend: tTrends('overallTrend'),
+						improving: tTrends('improving'),
+						declining: tTrends('declining'),
+						stable: tTrends('stable'),
+						accuracyTrend: tTrends('accuracyTrend'),
+						reactionTimeTrend: tTrends('reactionTimeTrend'),
+						performanceRadar: tTrends('performanceRadar'),
+						weeklyProgress: tTrends('weeklyProgress'),
+						testComparison: tTrends('testComparison'),
+						insights: tTrends('insights')
+					}}
+				/>
 			)}
-
-			{/* Sessions List */}
-			<div>
-				<h2 className="text-xl md:text-2xl font-semibold mb-4">
-					Sesiones Recientes
-				</h2>
-				<SessionsList sessions={sessionsResult.data || []} />
-			</div>
-		</div>
-	);
-}
-
-// Stats Card Component
-interface StatsCardProps {
-	icon: React.ReactNode;
-	title: string;
-	value: string | number;
-	gradient: string;
-}
-
-function StatsCard({ icon, title, value, gradient }: StatsCardProps) {
-	return (
-		<Card className="relative overflow-hidden">
-			<div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-5`} />
-			<CardContent className="p-6 relative">
-				<div className="flex items-start justify-between">
-					<div>
-						<p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-							{title}
-						</p>
-						<p className="text-3xl font-bold">
-							{value}
-						</p>
-					</div>
-					<div className={`p-3 rounded-full bg-gradient-to-br ${gradient} text-white`}>
-						{icon}
-					</div>
-				</div>
-			</CardContent>
-		</Card>
+		</DashboardLayout>
 	);
 }
