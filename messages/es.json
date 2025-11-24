@@ -7,7 +7,7 @@
     "faq": "Preguntas Frecuentes",
     "startTest": "Comenzar test",
     "menuLabel": "Menú de navegación",
-    "dashboard": "Dashboard",
+    "dashboard": "Mi Progreso",
     "login": "Iniciar sesión",
     "signup": "Registrarse",
     "logout": "Cerrar sesión"
@@ -155,11 +155,11 @@
         "button": "Comenzar Evaluación Completa"
       },
       "dashboard": {
-        "title": "Dashboard Individual",
+        "title": "Tests Individuales",
         "description": "Elige tests específicos",
         "flexible": "Flexible",
         "customizable": "Personalizable",
-        "content": "Accede al dashboard para elegir y realizar tests específicos según tus necesidades. Perfecto para entrenar habilidades cognitivas particulares.",
+        "content": "Elige y realiza tests específicos según tus necesidades. Perfecto para entrenar habilidades cognitivas particulares.",
         "advantages": "Ventajas:",
         "advantagesList": {
           "choose": "Elige tests específicos",
@@ -167,12 +167,12 @@
           "control": "Controla tu ritmo",
           "focus": "Enfoque en áreas específicas"
         },
-        "button": "Ir al Dashboard"
+        "button": "Elegir Tests"
       },
       "recommendations": {
         "title": "Recomendaciones",
         "complete": "Evaluación Completa: Ideal para obtener un perfil cognitivo completo",
-        "individual": "Dashboard Individual: Perfecto para entrenar habilidades específicas",
+        "individual": "Tests Individuales: Perfecto para entrenar habilidades específicas",
         "environment": "Busca un ambiente silencioso libre de distracciones",
         "connection": "Asegúrate de tener una conexión a internet estable"
       }
@@ -343,7 +343,175 @@
     "validation": {
       "passwordMismatch": "Las contraseñas no coinciden",
       "weakPassword": "La contraseña no cumple con los requisitos",
-      "invalidEmail": "Dirección de email inválida"
+      "invalidEmail": "Dirección de correo inválida"
+    }
+  },
+  "dashboard": {
+    "title": "Mi Progreso",
+    "subtitle": "Historial y estadísticas de tus tests cognitivos",
+    "navigation": {
+      "home": "Inicio",
+      "history": "Historial",
+      "trends": "Tendencias",
+      "achievements": "Logros",
+      "startSession": "Iniciar Nueva Sesión",
+      "descriptions": {
+        "home": "Resumen y estadísticas",
+        "history": "Ver todas las sesiones",
+        "trends": "Análisis de rendimiento",
+        "achievements": "Desbloquear logros"
+      }
+    },
+    "sidebar": {
+      "yourProgress": "Tu Progreso",
+      "analytics": "Analíticas"
+    },
+    "overview": {
+      "title": "Resumen General",
+      "welcome": "Bienvenido de vuelta",
+      "totalSessions": "sesiones",
+      "avgAccuracy": "Precisión Promedio",
+      "bestSession": "Mejor Sesión",
+      "currentStreak": "Racha Actual",
+      "days": "días",
+      "testsCompleted": "tests completados",
+      "lastSession": "Última Sesión",
+      "recentActivity": "Actividad Reciente",
+      "topPerformance": "Mejor Rendimiento",
+      "quickStats": "Estadísticas Rápidas",
+      "improvementRate": "Tasa de Mejora",
+      "favoriteTest": "Test Favorito",
+      "noData": "No hay sesiones todavía. ¡Comienza tu primera evaluación!",
+      "personalRecord": "Récord personal",
+      "mostPracticed": "Más practicado",
+      "overallPerformance": "Rendimiento General",
+      "activityStreak": "Racha de Actividad",
+      "totalTests": "Tests Totales",
+      "sessions": "Sesiones",
+      "tests": "tests",
+      "motivationalMessage": "¡Sigue con el buen trabajo! 🎉",
+      "progressMessage": "Estás haciendo un progreso constante.",
+      "streakMessage": "días de racha!",
+      "startStreakMessage": "¡Comienza una racha hoy!"
+    },
+    "user": {
+      "logout": "Cerrar Sesión",
+      "language": "Idioma",
+      "theme": "Tema",
+      "lightMode": "Modo Claro",
+      "darkMode": "Modo Oscuro",
+      "systemMode": "Sistema",
+      "english": "Inglés",
+      "spanish": "Español"
+    },
+    "stats": {
+      "totalSessions": "Sesiones Totales",
+      "avgAccuracy": "Precisión Promedio",
+      "testsCompleted": "Tests Completados",
+      "avgReactionTime": "Tiempo de Reacción Promedio"
+    },
+    "sessions": {
+      "title": "Sesiones Recientes",
+      "empty": "No hay sesiones registradas todavía",
+      "completeAssessment": "Evaluación Completa",
+      "individualTests": "Tests Individuales",
+      "duration": "Duración",
+      "tests": "Tests",
+      "view": "Ver",
+      "delete": "Eliminar",
+      "deleting": "Eliminando...",
+      "confirmDelete": "¿Estás seguro de eliminar esta sesión?",
+      "inProgress": "En progreso"
+    },
+    "history": {
+      "title": "Historial de Sesiones",
+      "noSessions": "No hay sesiones registradas todavía. ¡Comienza tu primera evaluación cognitiva!",
+      "sessionDate": "Fecha de Sesión",
+      "testsCompleted": "Tests Completados",
+      "avgAccuracy": "Precisión Promedio",
+      "avgReactionTime": "Tiempo de Reacción Promedio",
+      "accuracyOverTime": "Precisión en el Tiempo",
+      "reactionTimeOverTime": "Tiempo de Reacción en el Tiempo",
+      "testDistribution": "Distribución de Tests",
+      "performanceByTest": "Rendimiento por Tipo de Test",
+      "sequential": "Secuencial",
+      "individual": "Individual",
+      "recentSessions": "Sesiones Recientes",
+      "viewDetails": "Ver Detalles",
+      "sessionDetails": "Detalles de la Sesión",
+      "sessionInfo": "Información de la Sesión",
+      "date": "Fecha",
+      "duration": "Duración",
+      "type": "Tipo",
+      "overallPerformance": "Rendimiento General",
+      "accuracy": "Precisión",
+      "reactionTime": "Tiempo de Reacción",
+      "testBreakdown": "Desglose por Test",
+      "comparison": "Comparación",
+      "aboveAverage": "sobre el promedio",
+      "belowAverage": "bajo el promedio",
+      "onAverage": "En promedio",
+      "specificMetrics": "Métricas Específicas",
+      "close": "Cerrar"
+    },
+    "trends": {
+      "title": "Tendencias de Rendimiento",
+      "noData": "No hay suficientes datos para mostrar tendencias",
+      "needMoreSessions": "Completa al menos 2 sesiones para ver el análisis de tendencias",
+      "overallTrend": "Tendencia General",
+      "improving": "Mejorando",
+      "declining": "Declinando",
+      "stable": "Estable",
+      "accuracyChange": "Cambio de Precisión",
+      "reactionTime": "Tiempo de Reacción",
+      "totalSessions": "Sesiones Totales",
+      "accuracyTrend": "Tendencia de Precisión",
+      "reactionTimeTrend": "Tendencia de Tiempo de Reacción",
+      "performanceRadar": "Rendimiento por Prueba",
+      "weeklyProgress": "Progreso Semanal",
+      "testComparison": "Rendimiento Temprano vs Reciente",
+      "insights": "Perspectivas y Recomendaciones",
+      "insightMessages": {
+        "greatProgress": "¡Gran progreso!",
+        "accuracyImproved": "Tu precisión ha mejorado un {percent}% en comparación con sesiones anteriores.",
+        "fasterReactions": "¡Reacciones más rápidas!",
+        "reactionImproved": "Tu tiempo de reacción promedio ha disminuido {ms}ms, mostrando una mejor velocidad cognitiva.",
+        "takeYourTime": "Tómate tu tiempo.",
+        "accuracyDeclined": "La precisión ha disminuido ligeramente. Considera enfocarte en la precisión sobre la velocidad en tu próxima sesión.",
+        "consistencyMilestone": "¡Hito de consistencia!",
+        "sessionsCompleted": "Has completado {count} sesiones. La práctica regular es clave para la mejora cognitiva."
+      }
+    },
+    "achievements": {
+      "title": "Logros",
+      "description": "Desbloquea logros completando pruebas y alcanzando hitos",
+      "unlocked": "Desbloqueado",
+      "locked": "Bloqueado",
+      "progress": "Progreso General",
+      "categories": {
+        "beginner": "Principiante",
+        "accuracy": "Precisión",
+        "speed": "Velocidad",
+        "consistency": "Consistencia",
+        "mastery": "Maestría"
+      }
+    },
+    "sessionDetail": {
+      "title": "Detalle de Sesión",
+      "backToDashboard": "Volver a Mi Progreso",
+      "overview": "Resumen",
+      "sessionType": "Tipo de Sesión",
+      "startTime": "Hora de Inicio",
+      "endTime": "Hora de Fin",
+      "duration": "Duración",
+      "status": "Estado",
+      "completed": "Completada",
+      "incomplete": "Incompleta",
+      "testResults": "Resultados de Tests",
+      "noResults": "No hay resultados disponibles",
+      "accuracy": "Precisión",
+      "avgReactionTime": "Tiempo de Reacción Promedio",
+      "testDuration": "Duración del Test"
     }
   }
 }

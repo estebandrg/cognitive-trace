@@ -38,15 +38,6 @@ export async function updateSession(request: NextRequest, response?: NextRespons
     },
   );
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getClaims(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
-  // IMPORTANT: If you remove getClaims() and you use server-side rendering
-  // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
-
   const pathname = request.nextUrl.pathname;
 
   // Extract locale from pathname if present
@@ -61,14 +52,30 @@ export async function updateSession(request: NextRequest, response?: NextRespons
   const isPublicPath = pathname === "/" ||
     pathname.match(/^\/(?:en|es)$/) ||
     pathname.startsWith("/tests") ||
-    pathname.match(/^\/(?:en|es)\/tests/);
+    pathname.match(/^\/(?:en|es)\/tests/) ||
+    pathname.startsWith("/faq") ||
+    pathname.match(/^\/(?:en|es)\/faq/);
 
-  if (
-    !isPublicPath &&
-    !user &&
-    !isAuthPath
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  // Only check auth for dashboard routes (most restrictive approach)
+  // Tests work in local mode without auth
+  // Auth routes handle their own logic
+  // Public/marketing routes don't need auth
+  const isDashboardPath = pathname.match(/^\/(?:en|es)?\/dashboard/);
+  
+  let user = null;
+  if (isDashboardPath) {
+    try {
+      // Use getUser() instead of getClaims() - simpler and faster
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      user = authUser;
+    } catch (error) {
+      // Silently handle - user will be redirected if needed
+      console.error('Error getting user:', error);
+    }
+  }
+
+  if (isDashboardPath && !user) {
+    // Redirect to login only for dashboard routes
     const url = request.nextUrl.clone();
     url.pathname = `/${locale}/auth/login`;
     return NextResponse.redirect(url);

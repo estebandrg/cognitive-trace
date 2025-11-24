@@ -16,10 +16,8 @@ export default function SequentialTestsPage() {
   
   const { startNewSession } = useTestSession();
 
-  // Initialize sequential session on mount
-  React.useEffect(() => {
-    startNewSession(true);
-  }, []);
+  // Session is already initialized by TestModeSelection
+  // No need to initialize again here
 
   const handleSequentialComplete = (results: TestResult[]) => {
     setSequentialResults(results);
@@ -30,9 +28,9 @@ export default function SequentialTestsPage() {
     router.push('/tests');
   };
 
-  const handleRetrySequential = () => {
+  const handleRetrySequential = async () => {
     setSequentialResults([]);
-    startNewSession(true);
+    await startNewSession(true);
     setPageState('sequential');
   };
 

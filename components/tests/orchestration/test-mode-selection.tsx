@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PlayCircle, Grid3X3, Clock, Target } from 'lucide-react';
+import { startTestSession } from '@/lib/helpers/test-session-helpers';
+import { useStore } from '@/store';
 
 interface TestModeSelectionProps {
   onModeSelect?: (mode: 'sequential' | 'dashboard') => void; // Made optional for backward compatibility
@@ -14,18 +17,39 @@ interface TestModeSelectionProps {
 export default function TestModeSelection({ onModeSelect }: TestModeSelectionProps) {
   const t = useTranslations();
   const router = useRouter();
+  const { startSession } = useStore();
+  const [isLoading, setIsLoading] = useState<'sequential' | 'individual' | null>(null);
 
-  const handleModeSelect = (mode: 'sequential' | 'dashboard') => {
+  const handleModeSelect = async (mode: 'sequential' | 'dashboard') => {
     if (onModeSelect) {
       // Use callback if provided (backward compatibility)
       onModeSelect(mode);
-    } else {
-      // Use navigation to specific routes
+      return;
+    }
+    
+    const isSequential = mode === 'sequential';
+    setIsLoading(isSequential ? 'sequential' : 'individual');
+    
+    try {
+      // Try to create session in DB (will fail silently if not authenticated)
+      const result = await startTestSession(isSequential, startSession);
+      
+      // Navigate regardless of DB result - tests work with local state
       if (mode === 'sequential') {
         router.push('/tests/sequential');
       } else {
         router.push('/tests/individual');
       }
+    } catch (error: any) {
+      console.error('Error starting tests:', error);
+      // Still navigate - tests work without DB
+      if (mode === 'sequential') {
+        router.push('/tests/sequential');
+      } else {
+        router.push('/tests/individual');
+      }
+    } finally {
+      setIsLoading(null);
     }
   };
 
@@ -104,8 +128,9 @@ export default function TestModeSelection({ onModeSelect }: TestModeSelectionPro
                 onClick={() => handleModeSelect('sequential')}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
                 size="lg"
+                disabled={isLoading !== null}
               >
-                Comenzar Evaluación Completa
+                {isLoading === 'sequential' ? 'Iniciando...' : 'Comenzar Evaluación Completa'}
               </Button>
             </CardContent>
             
@@ -165,8 +190,9 @@ export default function TestModeSelection({ onModeSelect }: TestModeSelectionPro
                 onClick={() => handleModeSelect('dashboard')}
                 className="w-full bg-gradient-to-r from-green-600 to-purple-600 hover:from-green-700 hover:to-purple-700 text-white border-0"
                 size="lg"
+                disabled={isLoading !== null}
               >
-                Ir al Dashboard
+                {isLoading === 'individual' ? 'Iniciando...' : 'Ir al Dashboard'}
               </Button>
             </CardContent>
             

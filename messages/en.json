@@ -7,7 +7,7 @@
     "faq": "Frequently Asked Questions",
     "startTest": "Start test",
     "menuLabel": "Navigation menu",
-    "dashboard": "Dashboard",
+    "dashboard": "My Progress",
     "login": "Log in",
     "signup": "Sign up",
     "logout": "Log out"
@@ -155,11 +155,11 @@
         "button": "Start Complete Assessment"
       },
       "dashboard": {
-        "title": "Individual Dashboard",
+        "title": "Individual Tests",
         "description": "Choose specific tests",
         "flexible": "Flexible",
         "customizable": "Customizable",
-        "content": "Access the dashboard to choose and take specific tests according to your needs. Perfect for training particular cognitive skills.",
+        "content": "Choose and take specific tests according to your needs. Perfect for training particular cognitive skills.",
         "advantages": "Advantages:",
         "advantagesList": {
           "choose": "Choose specific tests",
@@ -167,12 +167,12 @@
           "control": "Control your pace",
           "focus": "Focus on specific areas"
         },
-        "button": "Go to Dashboard"
+        "button": "Choose Tests"
       },
       "recommendations": {
         "title": "Recommendations",
         "complete": "Complete Assessment: Ideal for getting a complete cognitive profile",
-        "individual": "Individual Dashboard: Perfect for training specific skills",
+        "individual": "Individual Tests: Perfect for training specific skills",
         "environment": "Find a quiet environment free from distractions",
         "connection": "Make sure you have a stable internet connection"
       }
@@ -344,6 +344,169 @@
       "passwordMismatch": "Passwords do not match",
       "weakPassword": "Password does not meet requirements",
       "invalidEmail": "Invalid email address"
+    }
+  },
+  "dashboard": {
+    "title": "My Progress",
+    "subtitle": "History and statistics of your cognitive tests",
+    "navigation": {
+      "home": "Home",
+      "history": "History",
+      "trends": "Trends Analysis",
+      "achievements": "Achievements",
+      "startSession": "Start Session",
+      "descriptions": {
+        "home": "Overview & stats",
+        "history": "View all sessions",
+        "trends": "Performance insights",
+        "achievements": "Unlock achievements"
+      }
+    },
+    "sidebar": {
+      "yourProgress": "Your Progress",
+      "analytics": "Analytics"
+    },
+    "overview": {
+      "title": "Overview",
+      "welcome": "Welcome back",
+      "totalSessions": "sessions",
+      "avgAccuracy": "Avg Accuracy",
+      "bestSession": "Best Session",
+      "currentStreak": "Current Streak",
+      "days": "days",
+      "testsCompleted": "tests completed",
+      "lastSession": "Last Session",
+      "recentActivity": "Recent Activity",
+      "topPerformance": "Top Performance",
+      "quickStats": "Quick Stats",
+      "improvementRate": "Improvement Rate",
+      "favoriteTest": "Favorite Test",
+      "noData": "No sessions yet. Start your first assessment!",
+      "personalRecord": "Personal record",
+      "mostPracticed": "Most practiced",
+      "overallPerformance": "Overall Performance",
+      "activityStreak": "Activity Streak",
+      "totalTests": "Total Tests",
+      "sessions": "Sessions",
+      "tests": "tests",
+      "motivationalMessage": "Keep up the great work! 🎉",
+      "progressMessage": "You're making steady progress.",
+      "streakMessage": "day streak!",
+      "startStreakMessage": "Start a streak today!",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode",
+      "systemMode": "System",
+      "english": "English",
+      "spanish": "Spanish"
+    },
+    "stats": {
+      "totalSessions": "Total Sessions",
+      "avgAccuracy": "Average Accuracy",
+      "testsCompleted": "Tests Completed",
+      "avgReactionTime": "Avg Reaction Time"
+    },
+    "sessions": {
+      "title": "Recent Sessions",
+      "empty": "No sessions recorded yet",
+      "completeAssessment": "Complete Assessment",
+      "individualTests": "Individual Tests",
+      "duration": "Duration",
+      "tests": "Tests",
+      "view": "View",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "confirmDelete": "Are you sure you want to delete this session?",
+      "inProgress": "In progress"
+    },
+    "history": {
+      "title": "Session History",
+      "noSessions": "No sessions recorded yet. Start your first cognitive assessment!",
+      "sessionDate": "Session Date",
+      "testsCompleted": "Tests Completed",
+      "avgAccuracy": "Average Accuracy",
+      "avgReactionTime": "Avg Reaction Time",
+      "accuracyOverTime": "Accuracy Over Time",
+      "reactionTimeOverTime": "Reaction Time Over Time",
+      "testDistribution": "Test Distribution",
+      "performanceByTest": "Performance by Test Type",
+      "sequential": "Sequential",
+      "individual": "Individual",
+      "recentSessions": "Recent Sessions",
+      "viewDetails": "View Details",
+      "sessionDetails": "Session Details",
+      "sessionInfo": "Session Information",
+      "date": "Date",
+      "duration": "Duration",
+      "type": "Type",
+      "overallPerformance": "Overall Performance",
+      "accuracy": "Accuracy",
+      "reactionTime": "Reaction Time",
+      "testBreakdown": "Test Breakdown",
+      "comparison": "Comparison",
+      "aboveAverage": "above average",
+      "belowAverage": "below average",
+      "onAverage": "On average",
+      "specificMetrics": "Specific Metrics",
+      "close": "Close"
+    },
+    "trends": {
+      "title": "Performance Trends",
+      "noData": "Not enough data to show trends",
+      "needMoreSessions": "Complete at least 2 sessions to see trend analysis",
+      "overallTrend": "Overall Trend",
+      "improving": "Improving",
+      "declining": "Declining",
+      "stable": "Stable",
+      "accuracyChange": "Accuracy Change",
+      "reactionTime": "Reaction Time",
+      "totalSessions": "Total Sessions",
+      "accuracyTrend": "Accuracy Trend",
+      "reactionTimeTrend": "Reaction Time Trend",
+      "performanceRadar": "Performance by Test",
+      "weeklyProgress": "Weekly Progress",
+      "testComparison": "Early vs Recent Performance",
+      "insights": "Insights & Recommendations",
+      "insightMessages": {
+        "greatProgress": "Great progress!",
+        "accuracyImproved": "Your accuracy has improved by {percent}% compared to earlier sessions.",
+        "fasterReactions": "Faster reactions!",
+        "reactionImproved": "Your average reaction time has decreased by {ms}ms, showing improved cognitive speed.",
+        "takeYourTime": "Take your time.",
+        "accuracyDeclined": "Accuracy has declined slightly. Consider focusing on accuracy over speed in your next session.",
+        "consistencyMilestone": "Consistency milestone!",
+        "sessionsCompleted": "You've completed {count} sessions. Regular practice is key to cognitive improvement."
+      }
+    },
+    "achievements": {
+      "title": "Achievements",
+      "description": "Unlock achievements by completing tests and reaching milestones",
+      "unlocked": "Unlocked",
+      "locked": "Locked",
+      "progress": "Overall Progress",
+      "categories": {
+        "beginner": "Beginner",
+        "accuracy": "Accuracy",
+        "speed": "Speed",
+        "consistency": "Consistency",
+        "mastery": "Mastery"
+      }
+    },
+    "sessionDetail": {
+      "title": "Session Detail",
+      "backToDashboard": "Back to Progress",
+      "overview": "Overview",
+      "sessionType": "Session Type",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "duration": "Duration",
+      "status": "Status",
+      "completed": "Completed",
+      "incomplete": "Incomplete",
+      "testResults": "Test Results",
+      "noResults": "No test results available",
+      "accuracy": "Accuracy",
+      "avgReactionTime": "Avg Reaction Time",
+      "testDuration": "Test Duration"
     }
   }
 }

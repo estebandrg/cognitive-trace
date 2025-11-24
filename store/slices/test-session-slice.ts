@@ -4,6 +4,7 @@ import { ALL_TEST_TYPES } from '../utils/test-metadata';
 
 export interface TestSession {
   id: string;
+  dbSessionId?: string; // ID de la sesión en Supabase
   startTime: number;
   endTime?: number;
   completedTests: TestType[];
@@ -14,10 +15,11 @@ export interface TestSession {
 export interface TestSessionSlice {
   currentSession: TestSession | null;
   
-  startSession: (isSequential?: boolean) => void;
+  startSession: (isSequential?: boolean, dbSessionId?: string) => void;
   addTestResult: (result: TestResult) => void;
   completeSession: () => TestSession | undefined;
   clearSession: () => void;
+  setDbSessionId: (dbSessionId: string) => void;
   
   getCompletedTests: () => TestType[];
   getMissingTests: () => TestType[];
@@ -34,9 +36,10 @@ export const createTestSessionSlice: StateCreator<
 > = (set, get) => ({
   currentSession: null,
 
-  startSession: (isSequential = false) => {
+  startSession: (isSequential = false, dbSessionId?: string) => {
     const newSession: TestSession = {
       id: `session_${Date.now()}`,
+      dbSessionId,
       startTime: Date.now(),
       completedTests: [],
       results: [],
@@ -44,6 +47,18 @@ export const createTestSessionSlice: StateCreator<
     };
     
     set({ currentSession: newSession });
+  },
+
+  setDbSessionId: (dbSessionId: string) => {
+    const { currentSession } = get();
+    if (!currentSession) return;
+
+    set({
+      currentSession: {
+        ...currentSession,
+        dbSessionId,
+      },
+    });
   },
 
   addTestResult: (result: TestResult) => {
