@@ -522,13 +522,13 @@ export default function ResultsDashboard({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-            {/* Dashboard button - visible only on mobile */}
+            {/* Dashboard button - Eye-catching gradient style */}
             <Button
               onClick={() => router.push('/dashboard')}
-              variant="outline"
-              className="flex items-center gap-2 w-full sm:hidden"
+              size="lg"
+              className="flex items-center gap-2 w-full sm:w-auto bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <BarChart3 className="w-4 h-4" />
+              <BarChart3 className="w-5 h-5" />
               {t('tests.resultsDashboard.buttons.viewDashboard')}
             </Button>
             
@@ -536,14 +536,16 @@ export default function ResultsDashboard({
             <Button
               onClick={handleContinue}
               disabled={loadingAction === 'continue'}
+              variant="outline"
+              size="lg"
               className="flex items-center gap-2 w-full sm:w-auto disabled:opacity-50"
               aria-label={t('tests.resultsDashboard.buttons.continue')}
             >
               {t('tests.resultsDashboard.buttons.continue')}
               {loadingAction === 'continue' ? (
-                <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                <Loader2 className="w-5 h-5 ml-2 animate-spin" />
               ) : (
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               )}
             </Button>
           </div>

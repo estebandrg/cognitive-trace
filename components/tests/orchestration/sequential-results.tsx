@@ -548,23 +548,22 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
           {/* Action Buttons */}
           <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-center">
             <Button onClick={onHome} variant="outline" size="lg" className="w-full md:w-auto">
-              <Home className="w-4 h-4 mr-2" />
+              <Home className="w-5 h-5 mr-2" />
               Volver al Inicio
             </Button>
             
-            {/* Dashboard button - visible only on mobile */}
+            {/* Dashboard button - Eye-catching gradient style */}
             <Button 
               onClick={() => router.push('/dashboard')} 
-              variant="outline" 
               size="lg" 
-              className="w-full md:hidden"
+              className="w-full md:w-auto bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Ver mi Progreso {/* TODO: Add translation */}
+              <BarChart3 className="w-5 h-5 mr-2" />
+              {t('tests.resultsDashboard.buttons.viewDashboard')}
             </Button>
             
             <Button onClick={onRetry} size="lg" className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0">
-              <RotateCcw className="w-4 h-4 mr-2" />
+              <RotateCcw className="w-5 h-5 mr-2" />
               Repetir Evaluación
             </Button>
           </div>
