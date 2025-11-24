@@ -218,6 +218,30 @@
         "regular": "Fair",
         "needsImprovement": "Needs Improvement"
       },
+      "performanceLevels": {
+        "excellent": {
+          "level": "Excellent",
+          "description": "Exceptional performance! You demonstrated outstanding cognitive abilities in all evaluated areas.",
+          "feedbackFast": "Your accuracy and response speed are excellent. Maintain this level with regular practice.",
+          "feedbackSlow": "Excellent balance between speed and accuracy. Consider practicing to maintain this high performance."
+        },
+        "good": {
+          "level": "Good",
+          "description": "Good overall performance! You showed solid cognitive abilities in most areas.",
+          "feedbackFast": "Good balance between speed and accuracy. Continue practicing to improve even more.",
+          "feedbackSlow": "Your accuracy is good. Try working on response speed to optimize your performance."
+        },
+        "fair": {
+          "level": "Fair",
+          "description": "Moderate performance. There are areas of opportunity to improve your cognitive abilities.",
+          "feedback": "Consider practicing areas where you had lower performance. Concentration and adequate rest can significantly improve your results."
+        },
+        "needsImprovement": {
+          "level": "Needs Improvement",
+          "description": "The assessment was challenging. Don't worry! Cognitive skills can be improved with practice and rest.",
+          "feedback": "Recommendations: 1) Make sure you are well rested before taking tests. 2) Minimize distractions during tests. 3) Practice regularly to improve. 4) Consider consulting a professional if difficulties persist."
+        }
+      },
       "metrics": {
         "accuracy": "Accuracy",
         "averageTime": "Average Time",
@@ -248,6 +272,30 @@
     "resultsDashboard": {
       "title": "{testName} Results",
       "subtitle": "{testFullName}",
+      "performanceLevels": {
+        "excellent": {
+          "level": "Excellent",
+          "description": "Outstanding performance! You demonstrated excellent attention and accuracy.",
+          "feedbackFast": "Your response times were impressively quick while maintaining high accuracy.",
+          "feedbackSlow": "Consider working on response speed to complement your excellent accuracy."
+        },
+        "good": {
+          "level": "Good",
+          "description": "Good performance! You showed solid cognitive abilities in this test.",
+          "feedbackFast": "Great balance between speed and accuracy. Keep up the good work!",
+          "feedbackSlow": "Try to respond a bit faster while maintaining your current accuracy level."
+        },
+        "fair": {
+          "level": "Fair",
+          "description": "Fair performance. There is room for improvement in your cognitive performance.",
+          "feedback": "Focus on maintaining concentration throughout the test. Practice can help improve both accuracy and response time."
+        },
+        "needsImprovement": {
+          "level": "Needs Improvement",
+          "description": "This test was challenging for you. Don't worry, cognitive skills can be improved with practice!",
+          "feedback": "Try taking breaks during tasks, minimizing distractions, and practicing regularly. Consider retaking this test after some rest to see if fatigue was a factor."
+        }
+      },
       "metrics": {
         "accuracy": "Accuracy",
         "avgTime": "Avg Time",

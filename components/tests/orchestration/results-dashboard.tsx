@@ -50,49 +50,49 @@ export default function ResultsDashboard({
     
     if (accuracyPercent >= 90) {
       return {
-        level: 'Excellent',
+        level: t('tests.resultsDashboard.performanceLevels.excellent.level'),
         color: 'text-green-600 border-green-600',
         gradientFrom: 'from-green-500',
         gradientTo: 'to-emerald-500',
         icon: '🎯',
-        description: 'Outstanding performance! You demonstrated excellent attention and accuracy.',
+        description: t('tests.resultsDashboard.performanceLevels.excellent.description'),
         feedback: rtFeedback === 'fast' 
-          ? 'Your response times were impressively quick while maintaining high accuracy.'
-          : 'Consider working on response speed to complement your excellent accuracy.'
+          ? t('tests.resultsDashboard.performanceLevels.excellent.feedbackFast')
+          : t('tests.resultsDashboard.performanceLevels.excellent.feedbackSlow')
       };
     }
     if (accuracyPercent >= 80) {
       return {
-        level: 'Good',
+        level: t('tests.resultsDashboard.performanceLevels.good.level'),
         color: 'text-blue-600 border-blue-600',
         gradientFrom: 'from-blue-500',
         gradientTo: 'to-cyan-500',
         icon: '👍',
-        description: 'Good performance! You showed solid cognitive abilities in this test.',
+        description: t('tests.resultsDashboard.performanceLevels.good.description'),
         feedback: rtFeedback === 'fast'
-          ? 'Great balance between speed and accuracy. Keep up the good work!'
-          : 'Try to respond a bit faster while maintaining your current accuracy level.'
+          ? t('tests.resultsDashboard.performanceLevels.good.feedbackFast')
+          : t('tests.resultsDashboard.performanceLevels.good.feedbackSlow')
       };
     }
     if (accuracyPercent >= 70) {
       return {
-        level: 'Fair',
+        level: t('tests.resultsDashboard.performanceLevels.fair.level'),
         color: 'text-yellow-600 border-yellow-600',
         gradientFrom: 'from-yellow-500',
         gradientTo: 'to-orange-500',
         icon: '📊',
-        description: 'Fair performance. There is room for improvement in your cognitive performance.',
-        feedback: 'Focus on maintaining concentration throughout the test. Practice can help improve both accuracy and response time.'
+        description: t('tests.resultsDashboard.performanceLevels.fair.description'),
+        feedback: t('tests.resultsDashboard.performanceLevels.fair.feedback')
       };
     }
     return {
-      level: 'Needs Improvement',
+      level: t('tests.resultsDashboard.performanceLevels.needsImprovement.level'),
       color: 'text-red-600 border-red-600',
       gradientFrom: 'from-red-500',
       gradientTo: 'to-orange-500',
       icon: '💪',
-      description: 'This test was challenging for you. Don\'t worry, cognitive skills can be improved with practice!',
-      feedback: 'Try taking breaks during tasks, minimizing distractions, and practicing regularly. Consider retaking this test after some rest to see if fatigue was a factor.'
+      description: t('tests.resultsDashboard.performanceLevels.needsImprovement.description'),
+      feedback: t('tests.resultsDashboard.performanceLevels.needsImprovement.feedback')
     };
   };
 

@@ -218,6 +218,30 @@
         "regular": "Regular",
         "needsImprovement": "Necesita Mejora"
       },
+      "performanceLevels": {
+        "excellent": {
+          "level": "Excelente",
+          "description": "¡Rendimiento excepcional! Demostraste habilidades cognitivas sobresalientes en todas las áreas evaluadas.",
+          "feedbackFast": "Tu precisión y velocidad de respuesta son excelentes. Mantén este nivel con práctica regular.",
+          "feedbackSlow": "Excelente balance entre velocidad y precisión. Considera practicar para mantener este alto rendimiento."
+        },
+        "good": {
+          "level": "Bueno",
+          "description": "¡Buen rendimiento general! Mostraste sólidas habilidades cognitivas en la mayoría de áreas.",
+          "feedbackFast": "Buen equilibrio entre velocidad y precisión. Continúa practicando para mejorar aún más.",
+          "feedbackSlow": "Tu precisión es buena. Intenta trabajar en la velocidad de respuesta para optimizar tu rendimiento."
+        },
+        "fair": {
+          "level": "Regular",
+          "description": "Rendimiento moderado. Hay áreas de oportunidad para mejorar tus habilidades cognitivas.",
+          "feedback": "Considera practicar las áreas donde tuviste menor rendimiento. La concentración y el descanso adecuado pueden mejorar significativamente tus resultados."
+        },
+        "needsImprovement": {
+          "level": "Necesita Mejora",
+          "description": "La evaluación fue desafiante. ¡No te preocupes! Las habilidades cognitivas se pueden mejorar con práctica y descanso.",
+          "feedback": "Recomendaciones: 1) Asegúrate de estar bien descansado antes de realizar tests. 2) Minimiza distracciones durante las pruebas. 3) Practica regularmente para mejorar. 4) Considera consultar con un profesional si las dificultades persisten."
+        }
+      },
       "metrics": {
         "accuracy": "Precisión",
         "averageTime": "Tiempo Promedio",
@@ -248,6 +272,30 @@
     "resultsDashboard": {
       "title": "Resultados de {testName}",
       "subtitle": "{testFullName}",
+      "performanceLevels": {
+        "excellent": {
+          "level": "Excelente",
+          "description": "¡Rendimiento sobresaliente! Demostraste excelente atención y precisión.",
+          "feedbackFast": "Tus tiempos de respuesta fueron impresionantemente rápidos manteniendo alta precisión.",
+          "feedbackSlow": "Considera trabajar en la velocidad de respuesta para complementar tu excelente precisión."
+        },
+        "good": {
+          "level": "Bueno",
+          "description": "¡Buen rendimiento! Mostraste sólidas habilidades cognitivas en este test.",
+          "feedbackFast": "Gran balance entre velocidad y precisión. ¡Sigue así!",
+          "feedbackSlow": "Intenta responder un poco más rápido manteniendo tu nivel actual de precisión."
+        },
+        "fair": {
+          "level": "Regular",
+          "description": "Rendimiento regular. Hay espacio para mejorar tu desempeño cognitivo.",
+          "feedback": "Enfócate en mantener la concentración durante todo el test. La práctica puede ayudar a mejorar tanto la precisión como el tiempo de respuesta."
+        },
+        "needsImprovement": {
+          "level": "Necesita Mejora",
+          "description": "Este test fue desafiante para ti. ¡No te preocupes! Las habilidades cognitivas se pueden mejorar con práctica.",
+          "feedback": "Intenta tomar descansos durante las tareas, minimizar distracciones y practicar regularmente. Considera repetir este test después de descansar para ver si la fatiga fue un factor."
+        }
+      },
       "metrics": {
         "accuracy": "Precisión",
         "avgTime": "Tiempo Prom.",

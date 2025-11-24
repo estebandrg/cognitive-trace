@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +18,7 @@ interface SequentialResultsProps {
 
 export default function SequentialResults({ results, onRetry, onHome }: SequentialResultsProps) {
   const router = useRouter();
+  const t = useTranslations();
   const [showDetailedFeedback, setShowDetailedFeedback] = useState(false);
 
   const getTestIcon = (testType: string) => {
@@ -76,49 +78,49 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
     
     if (overallScore >= 85) {
       return {
-        level: 'Excelente',
+        level: t('tests.results.performanceLevels.excellent.level'),
         color: 'text-green-600 border-green-600',
         gradientFrom: 'from-green-500',
         gradientTo: 'to-emerald-500',
         icon: '🏆',
-        description: '¡Rendimiento excepcional! Demostraste habilidades cognitivas sobresalientes en todas las áreas evaluadas.',
+        description: t('tests.results.performanceLevels.excellent.description'),
         feedback: totalAccuracy >= 0.9 
-          ? 'Tu precisión y velocidad de respuesta son excelentes. Mantén este nivel con práctica regular.'
-          : 'Excelente balance entre velocidad y precisión. Considera practicar para mantener este alto rendimiento.'
+          ? t('tests.results.performanceLevels.excellent.feedbackFast')
+          : t('tests.results.performanceLevels.excellent.feedbackSlow')
       };
     }
     if (overallScore >= 70) {
       return {
-        level: 'Bueno',
+        level: t('tests.results.performanceLevels.good.level'),
         color: 'text-blue-600 border-blue-600',
         gradientFrom: 'from-blue-500',
         gradientTo: 'to-cyan-500',
         icon: '⭐',
-        description: '¡Buen rendimiento general! Mostraste sólidas habilidades cognitivas en la mayoría de áreas.',
+        description: t('tests.results.performanceLevels.good.description'),
         feedback: avgReactionTime < 450
-          ? 'Buen equilibrio entre velocidad y precisión. Continúa practicando para mejorar aún más.'
-          : 'Tu precisión es buena. Intenta trabajar en la velocidad de respuesta para optimizar tu rendimiento.'
+          ? t('tests.results.performanceLevels.good.feedbackFast')
+          : t('tests.results.performanceLevels.good.feedbackSlow')
       };
     }
     if (overallScore >= 55) {
       return {
-        level: 'Regular',
+        level: t('tests.results.performanceLevels.fair.level'),
         color: 'text-yellow-600 border-yellow-600',
         gradientFrom: 'from-yellow-500',
         gradientTo: 'to-orange-500',
         icon: '📈',
-        description: 'Rendimiento moderado. Hay áreas de oportunidad para mejorar tus habilidades cognitivas.',
-        feedback: 'Considera practicar las áreas donde tuviste menor rendimiento. La concentración y el descanso adecuado pueden mejorar significativamente tus resultados.'
+        description: t('tests.results.performanceLevels.fair.description'),
+        feedback: t('tests.results.performanceLevels.fair.feedback')
       };
     }
     return {
-      level: 'Necesita Mejora',
+      level: t('tests.results.performanceLevels.needsImprovement.level'),
       color: 'text-red-600 border-red-600',
       gradientFrom: 'from-red-500',
       gradientTo: 'to-orange-500',
       icon: '💪',
-      description: 'La evaluación fue desafiante. ¡No te preocupes! Las habilidades cognitivas se pueden mejorar con práctica y descanso.',
-      feedback: 'Recomendaciones: 1) Asegúrate de estar bien descansado antes de realizar tests. 2) Minimiza distracciones durante las pruebas. 3) Practica regularmente para mejorar. 4) Considera consultar con un profesional si las dificultades persisten.'
+      description: t('tests.results.performanceLevels.needsImprovement.description'),
+      feedback: t('tests.results.performanceLevels.needsImprovement.feedback')
     };
   };
 
