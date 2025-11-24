@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,7 @@ export default function ResultsDashboard({
   onReturnHome
 }: ResultsDashboardProps) {
   const t = useTranslations();
+  const router = useRouter();
   const [loadingTest, setLoadingTest] = useState<TestType | null>(null);
   const [loadingAction, setLoadingAction] = useState<'continue' | null>(null);
   const [showDetailedFeedback, setShowDetailedFeedback] = useState(false);
@@ -518,8 +520,19 @@ export default function ResultsDashboard({
             </div>
           )}
 
-          {/* Action Button */}
-          <div className="flex justify-center pt-4">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+            {/* Dashboard button - visible only on mobile */}
+            <Button
+              onClick={() => router.push('/dashboard')}
+              variant="outline"
+              className="flex items-center gap-2 w-full sm:hidden"
+            >
+              <BarChart3 className="w-4 h-4" />
+              {t('tests.resultsDashboard.buttons.viewDashboard')}
+            </Button>
+            
+            {/* Continue button */}
             <Button
               onClick={handleContinue}
               disabled={loadingAction === 'continue'}

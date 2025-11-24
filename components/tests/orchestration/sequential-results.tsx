@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +16,7 @@ interface SequentialResultsProps {
 }
 
 export default function SequentialResults({ results, onRetry, onHome }: SequentialResultsProps) {
+  const router = useRouter();
   const [showDetailedFeedback, setShowDetailedFeedback] = useState(false);
 
   const getTestIcon = (testType: string) => {
@@ -547,6 +549,18 @@ export default function SequentialResults({ results, onRetry, onHome }: Sequenti
               <Home className="w-4 h-4 mr-2" />
               Volver al Inicio
             </Button>
+            
+            {/* Dashboard button - visible only on mobile */}
+            <Button 
+              onClick={() => router.push('/dashboard')} 
+              variant="outline" 
+              size="lg" 
+              className="w-full md:hidden"
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Ver mi Progreso {/* TODO: Add translation */}
+            </Button>
+            
             <Button onClick={onRetry} size="lg" className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0">
               <RotateCcw className="w-4 h-4 mr-2" />
               Repetir Evaluación

@@ -265,7 +265,8 @@
       },
       "buttons": {
         "viewHistory": "View History",
-        "continue": "Continue"
+        "continue": "Continue",
+        "viewDashboard": "View my Progress"
       }
     },
     "testNames": {
