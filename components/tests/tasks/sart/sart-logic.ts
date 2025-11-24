@@ -23,33 +23,54 @@ export const sartLogic: TestLogic<SARTResult, SARTTrial> = {
   },
 
   validateResponse: (trial, input) => {
-    // Response is correct if user responds to non-no-go numbers
-    return input.hasResponse && !trial.isNoGo;
+    // For go trials (not 3): correct if user responds
+    // For no-go trials (3): correct if user does NOT respond
+    if (trial.isNoGo) {
+      // No-go trial: correct = no response
+      return !input.hasResponse;
+    } else {
+      // Go trial: correct = response given
+      return input.hasResponse;
+    }
   },
 
   calculateResults: (responses, config, sequence) => {
     const { NO_GO_NUMBER } = SART_CONSTANTS;
     
-    // Separate go and no-go responses
-    const goTrials = responses.filter(r => Number(r.stimulus) !== NO_GO_NUMBER || 
-                                            (typeof r.stimulus === 'string' && !r.stimulus.includes(String(NO_GO_NUMBER))));
-    const noGoResponses = responses.filter(r => Number(r.stimulus) === NO_GO_NUMBER ||
-                                                  (typeof r.stimulus === 'string' && r.stimulus.includes(String(NO_GO_NUMBER))));
+    // Separate go and no-go trials from sequence
+    const goSequence = sequence.filter(t => !t.isNoGo);
+    const noGoSequence = sequence.filter(t => t.isNoGo);
+    
+    // Filter responses by trial type
+    const goResponses = responses.filter((r, idx) => !sequence[idx]?.isNoGo);
+    const noGoResponses = responses.filter((r, idx) => sequence[idx]?.isNoGo);
     
     // Calculate metrics
-    const totalGoTrials = sequence.filter(t => !t.isNoGo).length;
-    const hits = goTrials.filter(r => r.correct).length;
-    const omissions = totalGoTrials - hits;
-    const commissions = noGoResponses.length;
+    const totalGoTrials = goSequence.length;
+    const totalNoGoTrials = noGoSequence.length;
     
-    // Calculate RT statistics
-    const validRTs = getValidRTs(goTrials);
+    // Hits: correct responses to go trials
+    const hits = goResponses.filter(r => r.correct).length;
+    
+    // Omissions: missed go trials (incorrect responses to go trials)
+    const omissions = goResponses.filter(r => !r.correct).length;
+    
+    // Commissions: incorrect responses to no-go trials (pressing when shouldn't)
+    const commissions = noGoResponses.filter(r => !r.correct).length;
+    
+    // Calculate RT statistics (only from correct go responses)
+    const correctGoResponses = goResponses.filter(r => r.correct);
+    const validRTs = getValidRTs(correctGoResponses);
     const averageRT = validRTs.length > 0 
       ? validRTs.reduce((a, b) => a + b, 0) / validRTs.length 
       : 0;
     
     const rtVariability = calculateStdDev(validRTs);
-    const accuracy = totalGoTrials > 0 ? hits / totalGoTrials : 0;
+    
+    // Accuracy: total correct responses / total trials
+    const totalCorrect = responses.filter(r => r.correct).length;
+    const totalTrials = sequence.length;
+    const accuracy = totalTrials > 0 ? totalCorrect / totalTrials : 0;
     
     return {
       testType: 'sart',

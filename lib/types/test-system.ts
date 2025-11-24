@@ -36,7 +36,7 @@ export interface TestLogic<TResult extends TestResult, TTrial = any> {
 }
 
 export interface InputEvent {
-  type: 'keyboard' | 'touch' | 'click';
+  type: 'keyboard' | 'touch' | 'click' | 'timeout';
   key?: string;
   timestamp: number;
   responseTime?: number;

@@ -40,9 +40,10 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
+    // Valid responses are those with RT > 100ms and < timeout (excluding false starts with RT=0)
     const validResponses = responses.filter(r => r.responseTime < STIMULUS_TIMEOUT && r.responseTime > 100);
     const lapses = validResponses.filter(r => r.responseTime > LAPSE_THRESHOLD).length;
-    const falseStarts = responses.length - validResponses.length;
+    const falseStarts = responses.filter(r => r.responseTime === 0 && !r.correct).length;
     
     const reactionTimes = validResponses.map(r => r.responseTime);
     const averageRT = reactionTimes.length > 0 
@@ -51,7 +52,8 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
     
     const minRT = reactionTimes.length > 0 ? Math.min(...reactionTimes) : 0;
     const maxRT = reactionTimes.length > 0 ? Math.max(...reactionTimes) : 0;
-    const accuracy = validResponses.filter(r => r.correct).length / TOTAL_TRIALS;
+    // Accuracy: correct responses / total trials
+    const accuracy = responses.filter(r => r.correct).length / TOTAL_TRIALS;
     
     const finalResult: PVTResult = {
       testType: 'pvt',
@@ -157,6 +159,15 @@ export default function PVTTest({ onComplete }: PVTTestProps) {
         runTrial(trialCount + 1);
       }, FEEDBACK_DURATION);
     } else if (isWaiting && !showStimulus) {
+      // False start - responded before stimulus appeared
+      const response: Response = {
+        stimulus: 'reaction-stimulus',
+        responseTime: 0, // No valid RT for false starts
+        correct: false,
+        timestamp: Date.now()
+      };
+      
+      setResponses(prev => [...prev, response]);
       setFalseStart(true);
       setShowFeedback(true);
       setIsWaiting(false);

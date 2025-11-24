@@ -118,10 +118,19 @@ export function TestRunner<TResult extends TestResult, TTrial = any>({
     stimulusTimeoutRef.current = setTimeout(() => {
       // No response given, record miss if needed
       if (!responseGivenRef.current && config.recordMissesAutomatically !== false) {
+        // Validate no-response using the test logic
+        const noResponseEvent: TestInputEvent = {
+          type: 'timeout',
+          hasResponse: false,
+          timestamp: Date.now(),
+          responseTime: config.stimulusDuration,
+        };
+        const correct = logic.validateResponse(trial, noResponseEvent);
+        
         const missResponse: Response = {
           stimulus: JSON.stringify(trial),
           responseTime: config.stimulusDuration,
-          correct: false,
+          correct,
           timestamp: Date.now(),
         };
         addResponse(missResponse);
@@ -131,7 +140,7 @@ export function TestRunner<TResult extends TestResult, TTrial = any>({
       setCurrentTrial(null);
       advanceToNextTrial();
     }, config.stimulusDuration);
-  }, [config, sequence, addResponse, startTrial, stopTimer, onTrialStart, advanceToNextTrial]);
+  }, [config, sequence, addResponse, startTrial, stopTimer, onTrialStart, advanceToNextTrial, logic]);
 
   const handleInput = useCallback((inputEvent?: Partial<TestInputEvent>) => {
     if (phase !== 'test' || !currentTrial || responseGivenRef.current) return;

@@ -27,9 +27,10 @@ export const pvtLogic: TestLogic<PVTResult, PVTTrial> = {
   calculateResults: (responses, config, sequence) => {
     const { LAPSE_THRESHOLD } = PVT_CONSTANTS;
     
+    // Valid responses are those with RT > 100ms and < timeout (excluding false starts with RT=0)
     const validResponses = responses.filter(r => r.responseTime < config.stimulusDuration && r.responseTime > 100);
     const lapses = validResponses.filter(r => r.responseTime > LAPSE_THRESHOLD).length;
-    const falseStarts = responses.length - validResponses.length;
+    const falseStarts = responses.filter(r => r.responseTime === 0 && !r.correct).length;
     
     const reactionTimes = validResponses.map(r => r.responseTime);
     const averageRT = reactionTimes.length > 0 
@@ -38,7 +39,8 @@ export const pvtLogic: TestLogic<PVTResult, PVTTrial> = {
     
     const minRT = reactionTimes.length > 0 ? Math.min(...reactionTimes) : 0;
     const maxRT = reactionTimes.length > 0 ? Math.max(...reactionTimes) : 0;
-    const accuracy = validResponses.filter(r => r.correct).length / config.totalTrials;
+    // Accuracy: correct responses / total trials
+    const accuracy = responses.filter(r => r.correct).length / config.totalTrials;
     
     return {
       testType: 'pvt',
