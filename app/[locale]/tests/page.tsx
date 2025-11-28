@@ -1,9 +1,14 @@
 'use client';
 
-import TestModeSelection from '@/components/tests/orchestration/test-mode-selection';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function TestsPage() {
-	// This page now only shows the mode selection
-	// Individual routes handle their own logic
-	return <TestModeSelection />;
+	const router = useRouter();
+	
+	useEffect(() => {
+		router.replace('/tests/individual');
+	}, [router]);
+	
+	return null;
 }
